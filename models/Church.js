@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Church = sequelize.define(
-    "User",
+    "Church",
     {
       name: DataTypes.STRING,
       address: DataTypes.STRING,
       image: DataTypes.STRING,
     },
     {
-      tableName: "User",
+      tableName: "Church",
       classMethods: {
         associate: (models) => {},
       },
