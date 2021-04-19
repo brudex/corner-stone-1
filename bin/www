@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 const app = require("../app");
-const config = require("../config");
+const config = require("../config/config");
 const debug = require("debug")("corner-stone:server");
 const http = require("http");
-const db = require('../models');
+const db = require("../models");
 
 /**
  * Get port from environment and store in Express.
@@ -30,18 +30,18 @@ var server = http.createServer(app);
 // server.on("error", onError);
 // server.on("listening", onListening);
 
-
 db.sequelize
-    .sync()
-    .then(() => {
-      if (!module.parent) {
-        server.listen(port);
-        server.on("error", onError);
-        server.on("listening", onListening);
-      }
-    }).catch((e) => {
-  throw new Error(e);
-});
+  .sync()
+  .then(() => {
+    if (!module.parent) {
+      server.listen(port);
+      server.on("error", onError);
+      server.on("listening", onListening);
+    }
+  })
+  .catch((e) => {
+    throw new Error(e);
+  });
 
 /**
  * Normalize a port into a number, string, or false.
@@ -98,4 +98,3 @@ function onListening() {
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
-

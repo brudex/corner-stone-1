@@ -23,7 +23,7 @@ Controller.registerUser = async (req, res, next) => {
   const user = await User.create({ ...req.body, password: hashedPassword });
   const userToken = user.generateAuthToken();
   res
-    .header("Authorization", `Bearer ${token}`)
+    .header("Authorization", `Bearer ${userToken}`)
     .header("access-control-expose-headers", "Authorization")
     .send("success");
 };

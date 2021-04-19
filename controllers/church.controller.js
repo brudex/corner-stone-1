@@ -1,4 +1,3 @@
-const createError = require("http-errors");
 const { sequelize, Sequelize } = require("../models/index");
 const church = require("../models/Church");
 const Church = church(sequelize, Sequelize);
