@@ -29,6 +29,7 @@
     "sequelize": "^5.21.7"
   },
   "devDependencies": {
+    "ngrok": "^4.0.1",
     "nodemon": "^2.0.7"
   }
 }
