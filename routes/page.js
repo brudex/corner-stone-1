@@ -4,6 +4,7 @@ const passport = require("passport");
 const auth = require("../middlewares/auth");
 const indexController = require("../controllers/index.controller");
 const accountController = require("../controllers/account.controller");
+const churchController = require("../controllers/church.controller");
 
 /*****Page Routes*********************/
 
@@ -19,5 +20,7 @@ router.post(
 );
 router.post("/logout", accountController.logout);
 router.get("/register", accountController.register); //todo implement : Note don't write implementation code here write it in the controller
+router.get("/addchurch", churchController.addChurchView);
+router.post("/addchurch", churchController.addChurch);
 
 module.exports = router;

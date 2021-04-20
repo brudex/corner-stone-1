@@ -1,0 +1,39 @@
+<% if (messages.success) { %>
+<div
+  class="alert alert-soft-success alert-dismissible fade show mb-0"
+  role="alert"
+>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+  <div class="d-flex flex-wrap align-items-start">
+    <div class="mr-8pt">
+      <i class="material-icons">check</i>
+    </div>
+    <div class="flex" style="min-width: 180px">
+      <small class="text-black-100">
+        <strong> Success - </strong> <%= messages.success %>
+      </small>
+    </div>
+  </div>
+</div>
+<%} %> <% if (messages.error) { %>
+<div
+  class="alert alert-soft-warning alert-dismissible fade show mb-0"
+  role="alert"
+>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button>
+  <div class="d-flex flex-wrap align-items-start">
+    <div class="mr-8pt">
+      <i class="material-icons">warning</i>
+    </div>
+    <div class="flex" style="min-width: 180px">
+      <small class="text-black-100">
+        <strong> Error - </strong> <%= messages.error %>
+      </small>
+    </div>
+  </div>
+</div>
+<%} %>

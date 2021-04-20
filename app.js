@@ -1,8 +1,9 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
@@ -21,6 +22,7 @@ initializePassport(passport);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
+app.use(expressLayouts);
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -30,7 +32,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //passport config
-app.use(flash());
 app.use(
   session({
     secret: config.jwt_secret,
@@ -38,6 +39,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

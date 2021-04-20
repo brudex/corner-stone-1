@@ -3,7 +3,7 @@ module.exports = Controller;
 
 //todo implement
 Controller.loginView = (req, res) => {
-  res.render("login", { title: "Express" });
+  res.render("login", { title: "Login", layout: "blank-layout" });
 };
 
 //todo implement

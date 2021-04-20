@@ -1,0 +1,55 @@
+
+<div class="container page__container page-section">
+  <%- include('./partials/requestResponse.ejs') %>  
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">ADD CHURCH</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        To add a new church, Enter the church name, GPS coordinates and and select upload an image for the church.
+      </p>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form action="/addchurch" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label class="form-label" for="churchname">Church name:</label>
+            <input
+            type="text"
+            class="form-control"
+            id="churchname"
+            name='name'
+            placeholder="Enter church name"
+            required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="address"
+            >GPS co-ordinates</label
+            >
+            <input
+            type="text"
+            class="form-control"
+            id="address"
+            name="address"
+            placeholder="Enter church location"
+            required
+            />
+          </div>
+          <div class="form-group m-0">
+            <label class="form-label" for="exampleInputPassword1"
+            >Church image</label>
+            <div class="custom-file">
+              <input type="file" id="file" class="custom-file-input" name="church-image" required>
+              <label for="file" class="custom-file-label">Select church image</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
