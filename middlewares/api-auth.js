@@ -1,0 +1,29 @@
+const createError = require("http-errors");
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
+const debug = require("debug")("corner-stone:server");
+
+module.exports = function (req, res, next) {
+  const token = req.header("Authorization");
+  if (!token)
+    return next(
+      createError(401, {
+        status_code: "03",
+        message: "request failed",
+        reason: "Access denied, missing auth token",
+      })
+    );
+
+  try {
+    const decoded = jwt.verify(token, config.jwt_secret);
+    req.user = decoded;
+    next();
+  } catch (e) {
+    debug(e);
+    res.status(400).json({
+      status_code: "03",
+      message: "request failed",
+      reason: "Invalid token",
+    });
+  }
+};
