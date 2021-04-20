@@ -10,7 +10,10 @@ const Controller = {};
 module.exports = Controller;
 
 Controller.getChurches = async (req, res, next) => {
-  const churches = await Church.findAll();
+  const churches = await Church.findAll({ raw: true });
+  churches.forEach(
+    (church) => (church.image = `${req.headers.host}/uploads/${church.image}`)
+  );
   res.send(churches);
 };
 
