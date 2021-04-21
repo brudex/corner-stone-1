@@ -1,6 +1,6 @@
 const createError = require("http-errors");
 const { sequelize, Sequelize } = require("../models/index");
-const user = require("../models/User");
+const user = require("../models/user");
 const User = user(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
 

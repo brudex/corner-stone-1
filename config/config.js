@@ -8,7 +8,7 @@ const config = {
     app: {
       name: "cornerstone",
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST || "157.230.150.194",
     db: process.env.DBNAME || "cornerstone",
     dbuser: process.env.DBUSER || "appuser",
@@ -22,7 +22,7 @@ const config = {
     app: {
       name: "cornerstone",
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST || "157.230.150.194",
     db: process.env.DBNAME || "cornerstone",
     dbuser: process.env.DBUSER || "appuser",
@@ -36,7 +36,7 @@ const config = {
     app: {
       name: "cornerstone",
     },
-    port: process.env.PORT || 3004,
+    port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST || "157.230.150.194",
     db: process.env.DBNAME || "cornerstone",
     dbuser: process.env.DBUSER || "appuser",
