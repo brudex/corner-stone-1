@@ -61,3 +61,14 @@ Controller.addChurch = async (req, res, next) => {
     return res.redirect("/addchurch");
   });
 };
+
+
+Controller.bookAppointment =async (req,res) =>{
+  //get the user info and save the appointment
+
+};
+
+Controller.getAvailableAppointmentTimes =async (req,res) =>{
+  //get the user info and save the appointment
+
+};
