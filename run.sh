@@ -9,7 +9,7 @@ if command -v pm2 ; then
 fi
 
 echo "Using node version $(node -v)"
-echo "Installing Node modules for Cornerston"
+echo "Installing Node modules for Cornerstone"
 npm install
 
 if command -v pm2 ; then
