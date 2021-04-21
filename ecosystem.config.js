@@ -6,6 +6,7 @@ module.exports = {
             NODE_ENV: "production",
             PORT: 3005,
             DBPASS: "Pass123@$$123",
+            JWT_SECRET : "123joisuiu"
         }
     }]
 };
