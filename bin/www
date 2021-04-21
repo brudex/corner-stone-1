@@ -13,7 +13,7 @@ const db = require("../models");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(config.port);
 app.set("port", port);
 
 /**
@@ -33,11 +33,9 @@ var server = http.createServer(app);
 db.sequelize
   .sync()
   .then(() => {
-    if (!module.parent) {
-      server.listen(port);
-      server.on("error", onError);
-      server.on("listening", onListening);
-    }
+    server.listen(port);
+    server.on("error", onError);
+    server.on("listening", onListening);
   })
   .catch((e) => {
     throw new Error(e);
@@ -96,5 +94,6 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  console.log("Server listening on >>"+bind);
   debug("Listening on " + bind);
 }
