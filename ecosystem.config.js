@@ -1,7 +1,7 @@
 module.exports = {
     apps : [{
         name: "cornerstone",
-        script: "./app.js",
+        script: "./bin/www",
         env: {
             NODE_ENV: "production",
             PORT: 3000,
