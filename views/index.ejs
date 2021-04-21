@@ -6,150 +6,201 @@
       class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Home</h2>
+        <h2 class="mb-0">Dashboard</h2>
 
         <ol class="breadcrumb p-0 m-0">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <!-- <li class="breadcrumb-item active">Home</li> -->
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
         </ol>
       </div>
     </div>
 
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/addchurch" class="btn btn-outline-secondary">New Church</a>
+        <a href="/addchurch" class="btn btn-outline-secondary">Add Chuhrch</a>
       </div>
     </div>
   </div>
 </div>
-<div class="page-section">
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page__container page-section">
   <div class="page-separator">
     <div class="page-separator__text">Overview</div>
   </div>
 
-  <div class="row mb-lg-8pt">
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="position-relative mr-16pt">
-              <div
-                class="text-center fullbleed d-flex align-items-center justify-content-center flex-column z-0"
+  <div class="row card-group-row mb-lg-8pt">
+    <div class="col-lg-6 col-md-12 card-group-row__col">
+      <div class="card card-group-row__card p-relative o-hidden">
+        <div class="card-body d-flex flex-row align-items-center">
+          <div class="flex">
+            <p class="card-title d-flex align-items-center">
+              <strong>Church</strong>
+              <span class="text-20 ml-8pt"></span>
+              <i class="material-icons text-accent ml-4pt icon-16pt"
+                >home_work</i
               >
-                <small>92%</small>
-              </div>
-              <canvas
-                width="48"
-                height="48"
-                class="chart-canvas position-relative z-1 js-update-chart-progress"
-                id="inTimeProgressChart"
-                data-chart-line-background-color="primary;gray"
-                data-chart-disable-tooltips="true"
-              ></canvas>
-            </div>
-            <div class="flex">
-              <strong>In Time</strong>
-            </div>
-            <div class="text-50">60</div>
+            </p>
+            <span class="h2 m-0">133</span>
           </div>
+          <i class="material-icons icon-32pt text-20 ml-8pt">home_work</i>
+        </div>
+        <div class="progress" style="height: 3px">
+          <div
+            class="progress-bar bg-accent"
+            role="progressbar"
+            style="width: 100%"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="position-relative mr-16pt">
-              <div
-                class="text-center fullbleed d-flex align-items-center justify-content-center flex-column z-0"
+    <div class="col-lg-6 col-md-12 card-group-row__col">
+      <div class="card card-group-row__card p-relative o-hidden">
+        <div class="card-body d-flex flex-row align-items-center">
+          <div class="flex">
+            <p class="card-title d-flex align-items-center">
+              <strong>Registered Users</strong>
+              <span class="text-20 ml-8pt"></span>
+              <i class="material-icons text-primary ml-4pt icon-16pt"
+                >contacts</i
               >
-                <small>23%</small>
-              </div>
-              <canvas
-                width="48"
-                height="48"
-                class="chart-canvas position-relative z-1 js-update-chart-progress-accent"
-                id="lateProgressChart"
-                data-chart-line-background-color="accent;gray"
-                data-chart-disable-tooltips="true"
-              ></canvas>
-            </div>
-            <div class="flex">
-              <strong>In Time</strong>
-            </div>
-            <div class="text-50">15</div>
+            </p>
+            <span class="h2 m-0">56,830</span>
           </div>
+          <i class="material-icons icon-32pt text-20 ml-8pt">contacts</i>
+        </div>
+        <div class="progress" style="height: 3px">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: 100%"
+            aria-valuenow="50"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="position-relative mr-16pt">
-              <div
-                class="text-center fullbleed d-flex align-items-center justify-content-center flex-column z-0"
-              >
-                <small>6%</small>
-              </div>
-              <canvas
-                width="48"
-                height="48"
-                class="chart-canvas position-relative z-1"
-                id="absentsProgressChart"
-                data-chart-line-background-color="yellow;gray"
-                data-chart-disable-tooltips="true"
-              ></canvas>
-            </div>
-            <div class="flex">
-              <strong>Absents</strong>
-            </div>
-            <div class="text-50">4</div>
+    <!-- <div class="col-lg-6 col-md-12 card-group-row__col">
+      <div class="card card-group-row__card">
+        <div class="card-body d-flex flex-row align-items-center">
+          <div class="card-title flex">
+            <strong>Churches</strong>
+            <div class="h2 m-0">133</div>
           </div>
+          <i class="material-icons icon-32pt text-20">home_work</i>
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            <div class="position-relative mr-16pt">
-              <div
-                class="text-center fullbleed d-flex align-items-center justify-content-center flex-column z-0"
-              >
-                <small>1%</small>
-              </div>
-              <canvas
-                width="48"
-                height="48"
-                class="chart-canvas position-relative z-1"
-                id="vacationProgressChart"
-                data-chart-line-background-color="yellow;gray"
-                data-chart-disable-tooltips="true"
-              ></canvas>
-            </div>
-            <div class="flex">
-              <strong>Vacation</strong>
-            </div>
-            <div class="text-50">1</div>
+    <div class="col-lg-6 col-md-12 card-group-row__col">
+      <div class="card card-group-row__card">
+        <div class="card-body d-flex flex-row align-items-center">
+          <div class="card-title flex">
+            <strong>Registered Users</strong>
+            <div class="h2 m-0">13k</div>
           </div>
+          <i class="material-icons icon-32pt text-20">contacts</i>
         </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="card mb-lg-32pt">
+    <div class="card-header d-flex align-items-center">
+      <strong class="card-title">Earnings</strong>
+      <div class="flatpickr-wrapper flatpickr-calendar-right d-flex ml-auto">
+        <div
+          id="recent_orders_date"
+          data-toggle="flatpickr"
+          data-flatpickr-wrap="true"
+          data-flatpickr-static="true"
+          data-flatpickr-mode="range"
+          data-flatpickr-alt-format="d/m/Y"
+          data-flatpickr-date-format="d/m/Y"
+        >
+          <a href="javascript:void(0)" class="link-date" data-toggle
+            >13/03/2018 to 20/03/2018</a
+          >
+          <input
+            class="d-none"
+            type="hidden"
+            value="13/03/2018 to 20/03/2018"
+            data-input
+          />
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div
+        class="chart-legend mt-0 mb-24pt justify-content-start"
+        id="ordersChartLegend"
+      ></div>
+      <div class="chart">
+        <canvas
+          id="ordersChart"
+          class="chart-canvas js-update-chart-bar"
+          data-chart-legend="#ordersChartLegend"
+          data-chart-prefix="$"
+          data-chart-suffix="k"
+          data-chart-line-background-color="primary"
+        ></canvas>
       </div>
     </div>
   </div>
 
   <div class="page-separator">
-    <div class="page-separator__text">Churches</div>
+    <div class="page-separator__text">Employees</div>
   </div>
 
-  <div class="card mb-32pt">
+  <div class="card mb-0">
     <div
       class="table-responsive"
       data-toggle="lists"
-      data-lists-sort-by="js-lists-values-date"
-      data-lists-sort-desc="true"
-      data-lists-values='["js-lists-values-name", "js-lists-values-department", "js-lists-values-status", "js-lists-values-type", "js-lists-values-phone", "js-lists-values-date"]'
+      data-lists-sort-by="js-lists-values-employee-name"
+      data-lists-values='["js-lists-values-employee-name", "js-lists-values-employer-name", "js-lists-values-projects", "js-lists-values-activity", "js-lists-values-earnings"]'
     >
+      <div class="card-header">
+        <form class="form-inline">
+          <label class="mr-sm-2 form-label" for="inlineFormFilterBy"
+            >Filter by:</label
+          >
+          <input
+            type="text"
+            class="form-control search mb-2 mr-sm-2 mb-sm-0"
+            id="inlineFormFilterBy"
+            placeholder="Search ..."
+          />
+
+          <label class="sr-only" for="inlineFormRole">Role</label>
+          <select
+            id="inlineFormRole"
+            class="custom-select mb-2 mr-sm-2 mb-sm-0"
+          >
+            <option value="All Roles">All Roles</option>
+          </select>
+
+          <div class="ml-auto mb-2 mb-sm-0 custom-control-inline mr-0">
+            <label class="form-label mb-0" for="active">Active</label>
+            <div class="custom-control custom-checkbox-toggle ml-8pt">
+              <input
+                checked=""
+                type="checkbox"
+                id="active"
+                class="custom-control-input"
+              />
+              <label class="custom-control-label" for="active">Active</label>
+            </div>
+          </div>
+        </form>
+      </div>
+
       <table class="table mb-0 thead-border-top-0 table-nowrap">
         <thead>
           <tr>
@@ -158,210 +209,74 @@
                 <input
                   type="checkbox"
                   class="custom-control-input js-toggle-check-all"
-                  data-target="#employees"
-                  id="customCheckAllemployees"
+                  data-target="#staff"
+                  id="customCheckAllstaff"
                 />
-                <label
-                  class="custom-control-label"
-                  for="customCheckAllemployees"
+                <label class="custom-control-label" for="customCheckAllstaff"
                   ><span class="text-hide">Toggle all</span></label
                 >
               </div>
             </th>
 
-            <th style="width: 48px">
+            <th>
               <a
                 href="javascript:void(0)"
                 class="sort"
-                data-sort="js-lists-values-name"
-                >Name</a
+                data-sort="js-lists-values-employee-name"
+                >Employee</a
               >
             </th>
 
-            <th style="width: 48px">
+            <th style="width: 150px">
               <a
                 href="javascript:void(0)"
                 class="sort"
-                data-sort="js-lists-values-status"
-                >Status</a
+                data-sort="js-lists-values-employer-name"
+                >Employer</a
               >
             </th>
 
-            <th style="width: 48px">
+            <th class="text-center" style="width: 48px">
               <a
                 href="javascript:void(0)"
                 class="sort"
-                data-sort="js-lists-values-type"
-                >Type</a
+                data-sort="js-lists-values-projects"
+                >Projects</a
               >
             </th>
 
-            <th style="width: 48px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-phone"
-                >Phone</a
-              >
-            </th>
+            <th style="width: 37px">Status</th>
 
-            <th style="width: 48px">
+            <th style="width: 120px">
               <a
                 href="javascript:void(0)"
                 class="sort"
-                data-sort="js-lists-values-date"
-                >Hire date</a
+                data-sort="js-lists-values-activity"
+                >Activity</a
               >
             </th>
-            <th style="width: 24px"></th>
+            <th style="width: 51px">
+              <a
+                href="javascript:void(0)"
+                class="sort"
+                data-sort="js-lists-values-earnings"
+                >Earnings</a
+              >
+            </th>
+            <th style="width: 24px" class="pl-0"></th>
           </tr>
         </thead>
-        <tbody class="list" id="employees">
-          <tr>
+        <tbody class="list" id="staff">
+          <tr class="selected">
             <td class="pr-0">
               <div class="custom-control custom-checkbox">
                 <input
                   type="checkbox"
                   class="custom-control-input js-check-selected-row"
-                  id="customCheck1_employees1"
+                  checked=""
+                  id="customCheck1_staff1"
                 />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_employees1"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td>
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <span class="avatar-title rounded-circle">BN</span>
-                </div>
-                <div class="media-body">
-                  <div class="d-flex align-items-center">
-                    <div class="flex d-flex flex-column">
-                      <p class="mb-0">
-                        <strong class="js-lists-values-name"
-                          >Billy Nunez</strong
-                        >
-                      </p>
-                      <small class="js-lists-values-email text-50"
-                        >annabell.kris@yahoo.com</small
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-
-            <td>
-              <div class="d-flex flex-column">
-                <small class="js-lists-values-status text-50 mb-4pt"
-                  >Probation</small
-                >
-                <span class="indicator-line rounded bg-warning"></span>
-              </div>
-            </td>
-
-            <td>
-              <small class="js-lists-values-type text-50">Temporary</small>
-            </td>
-
-            <td>
-              <small class="js-lists-values-phone text-50">239-721-3649</small>
-            </td>
-
-            <td>
-              <small class="js-lists-values-date text-50">19/02/2019</small>
-            </td>
-            <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
-          </tr>
-
-          <tr>
-            <td class="pr-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  id="customCheck1_employees2"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_employees2"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td>
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <span class="avatar-title rounded-circle">TP</span>
-                </div>
-                <div class="media-body">
-                  <div class="d-flex align-items-center">
-                    <div class="flex d-flex flex-column">
-                      <p class="mb-0">
-                        <strong class="js-lists-values-name">Tony Parks</strong>
-                      </p>
-                      <small class="js-lists-values-email text-50"
-                        >vida_glover@gmail.com</small
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-
-            <td>
-              <div class="d-flex flex-column">
-                <small class="js-lists-values-status text-50 mb-4pt"
-                  >Active</small
-                >
-                <span class="indicator-line rounded bg-primary"></span>
-              </div>
-            </td>
-
-            <td>
-              <small class="js-lists-values-type text-50">On Contract</small>
-            </td>
-
-            <td>
-              <small class="js-lists-values-phone text-50">169-769-4821</small>
-            </td>
-
-            <td>
-              <small class="js-lists-values-date text-50">18/02/2019</small>
-            </td>
-            <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
-          </tr>
-
-          <tr>
-            <td class="pr-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  id="customCheck1_employees3"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_employees3"
+                <label class="custom-control-label" for="customCheck1_staff1"
                   ><span class="text-hide">Check</span></label
                 >
               </div>
@@ -380,43 +295,42 @@
                   />
                 </div>
                 <div class="media-body">
-                  <div class="d-flex align-items-center">
-                    <div class="flex d-flex flex-column">
-                      <p class="mb-0">
-                        <strong class="js-lists-values-name"
-                          >Gilbert Barrett</strong
-                        >
-                      </p>
-                      <small class="js-lists-values-email text-50"
-                        >paolo.zieme@gmail.com</small
+                  <div class="d-flex flex-column">
+                    <p class="mb-0">
+                      <strong class="js-lists-values-employee-name"
+                        >Michael Smith</strong
                       >
-                    </div>
+                    </p>
+                    <small class="js-lists-values-employee-email text-50"
+                      >lorna_kirlin@nora.biz</small
+                    >
                   </div>
                 </div>
               </div>
             </td>
 
             <td>
-              <div class="d-flex flex-column">
-                <small class="js-lists-values-status text-50 mb-4pt"
-                  >Active</small
+              <div class="d-flex align-items-center">
+                <a href="#" class="text-warning"
+                  ><i class="material-icons mr-8pt">star</i></a
                 >
-                <span class="indicator-line rounded bg-primary"></span>
+                <a href="" class="text-70"
+                  ><span class="js-lists-values-employer-name"
+                    >Black Ops</span
+                  ></a
+                >
               </div>
             </td>
 
-            <td>
-              <small class="js-lists-values-type text-50">On Contract</small>
-            </td>
+            <td class="text-center js-lists-values-projects small">12</td>
 
             <td>
-              <small class="js-lists-values-phone text-50">462-060-7408</small>
+              <a href="" class="chip chip-outline-secondary">Admin</a>
             </td>
 
-            <td>
-              <small class="js-lists-values-date text-50">17/02/2019</small>
-            </td>
-            <td class="text-right">
+            <td class="text-50 js-lists-values-activity small">3 days ago</td>
+            <td class="js-lists-values-earnings small">$12,402</td>
+            <td class="text-right pl-0">
               <a href="" class="text-50"
                 ><i class="material-icons">more_vert</i></a
               >
@@ -429,11 +343,74 @@
                 <input
                   type="checkbox"
                   class="custom-control-input js-check-selected-row"
-                  id="customCheck1_employees4"
+                  id="customCheck1_staff2"
                 />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_employees4"
+                <label class="custom-control-label" for="customCheck1_staff2"
+                  ><span class="text-hide">Check</span></label
+                >
+              </div>
+            </td>
+
+            <td>
+              <div
+                class="media flex-nowrap align-items-center"
+                style="white-space: nowrap"
+              >
+                <div class="avatar avatar-sm mr-8pt">
+                  <span class="avatar-title rounded-circle">CS</span>
+                </div>
+                <div class="media-body">
+                  <div class="d-flex flex-column">
+                    <p class="mb-0">
+                      <strong class="js-lists-values-employee-name"
+                        >Connie Smith</strong
+                      >
+                    </p>
+                    <small class="js-lists-values-employee-email text-50"
+                      >paolo.zieme@gmail.com</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class="d-flex align-items-center">
+                <a href="#" class="text-warning"
+                  ><i class="material-icons mr-8pt">star</i></a
+                >
+                <a href="" class="text-70"
+                  ><span class="js-lists-values-employer-name"
+                    >Backend Ltd</span
+                  ></a
+                >
+              </div>
+            </td>
+
+            <td class="text-center js-lists-values-projects small">42</td>
+
+            <td>
+              <a href="" class="chip chip-outline-secondary">User</a>
+            </td>
+
+            <td class="text-50 js-lists-values-activity small">1 week ago</td>
+            <td class="js-lists-values-earnings small">$1,943</td>
+            <td class="text-right pl-0">
+              <a href="" class="text-50"
+                ><i class="material-icons">more_vert</i></a
+              >
+            </td>
+          </tr>
+
+          <tr>
+            <td class="pr-0">
+              <div class="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  class="custom-control-input js-check-selected-row"
+                  id="customCheck1_staff3"
+                />
+                <label class="custom-control-label" for="customCheck1_staff3"
                   ><span class="text-hide">Check</span></label
                 >
               </div>
@@ -452,43 +429,42 @@
                   />
                 </div>
                 <div class="media-body">
-                  <div class="d-flex align-items-center">
-                    <div class="flex d-flex flex-column">
-                      <p class="mb-0">
-                        <strong class="js-lists-values-name"
-                          >Ollie Wallace</strong
-                        >
-                      </p>
-                      <small class="js-lists-values-email text-50"
-                        >lorna_kirlin@nora.biz</small
+                  <div class="d-flex flex-column">
+                    <p class="mb-0">
+                      <strong class="js-lists-values-employee-name"
+                        >John Connor</strong
                       >
-                    </div>
+                    </p>
+                    <small class="js-lists-values-employee-email text-50"
+                      >vida_glover@gmail.com</small
+                    >
                   </div>
                 </div>
               </div>
             </td>
 
             <td>
-              <div class="d-flex flex-column">
-                <small class="js-lists-values-status text-50 mb-4pt"
-                  >Active</small
+              <div class="d-flex align-items-center">
+                <a href="#" class="text-warning"
+                  ><i class="material-icons mr-8pt">star</i></a
                 >
-                <span class="indicator-line rounded bg-primary"></span>
+                <a href="" class="text-70"
+                  ><span class="js-lists-values-employer-name"
+                    >Frontted</span
+                  ></a
+                >
               </div>
             </td>
 
-            <td>
-              <small class="js-lists-values-type text-50">Full Time</small>
-            </td>
+            <td class="text-center js-lists-values-projects small">31</td>
 
             <td>
-              <small class="js-lists-values-phone text-50">285-626-6050</small>
+              <a href="" class="chip chip-outline-secondary">Manager</a>
             </td>
 
-            <td>
-              <small class="js-lists-values-date text-50">16/02/2019</small>
-            </td>
-            <td class="text-right">
+            <td class="text-50 js-lists-values-activity small">2 weeks ago</td>
+            <td class="js-lists-values-earnings small">$1,401</td>
+            <td class="text-right pl-0">
               <a href="" class="text-50"
                 ><i class="material-icons">more_vert</i></a
               >
@@ -502,11 +478,9 @@
                   type="checkbox"
                   class="custom-control-input js-check-selected-row"
                   checked=""
-                  id="customCheck1_employees5"
+                  id="customCheck1_staff4"
                 />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_employees5"
+                <label class="custom-control-label" for="customCheck1_staff4"
                   ><span class="text-hide">Check</span></label
                 >
               </div>
@@ -518,50 +492,45 @@
                 style="white-space: nowrap"
               >
                 <div class="avatar avatar-sm mr-8pt">
-                  <img
-                    src="/images/people/110/guy-3.jpg"
-                    alt="Avatar"
-                    class="avatar-img rounded-circle"
-                  />
+                  <span class="avatar-title rounded-circle">LB</span>
                 </div>
                 <div class="media-body">
-                  <div class="d-flex align-items-center">
-                    <div class="flex d-flex flex-column">
-                      <p class="mb-0">
-                        <strong class="js-lists-values-name"
-                          >Ricardo Bell</strong
-                        >
-                      </p>
-                      <small class="js-lists-values-email text-50"
-                        >smith_winfield@douglas.io</small
+                  <div class="d-flex flex-column">
+                    <p class="mb-0">
+                      <strong class="js-lists-values-employee-name"
+                        >Laza Bogdan</strong
                       >
-                    </div>
+                    </p>
+                    <small class="js-lists-values-employee-email text-50"
+                      >annabell.kris@yahoo.com</small
+                    >
                   </div>
                 </div>
               </div>
             </td>
 
             <td>
-              <div class="d-flex flex-column">
-                <small class="js-lists-values-status text-50 mb-4pt"
-                  >Terminated</small
+              <div class="d-flex align-items-center">
+                <a href="#" class="text-warning"
+                  ><i class="material-icons mr-8pt">star</i></a
                 >
-                <span class="indicator-line rounded bg-danger"></span>
+                <a href="" class="text-70"
+                  ><span class="js-lists-values-employer-name"
+                    >Frontted</span
+                  ></a
+                >
               </div>
             </td>
 
-            <td>
-              <small class="js-lists-values-type text-50">Temporary</small>
-            </td>
+            <td class="text-center js-lists-values-projects small">44</td>
 
             <td>
-              <small class="js-lists-values-phone text-50">285-626-6050</small>
+              <a href="" class="chip chip-outline-secondary">Admin</a>
             </td>
 
-            <td>
-              <small class="js-lists-values-date text-50">01/12/2018</small>
-            </td>
-            <td class="text-right">
+            <td class="text-50 js-lists-values-activity small">3 weeks ago</td>
+            <td class="js-lists-values-earnings small">$22,402</td>
+            <td class="text-right pl-0">
               <a href="" class="text-50"
                 ><i class="material-icons">more_vert</i></a
               >
@@ -598,521 +567,6 @@
       </ul>
     </div>
     <!-- <div class="card-body bordet-top text-right">
-15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
-</div> -->
-  </div>
-
-  <div class="page-separator">
-    <div class="page-separator__text">Shift distribution</div>
-  </div>
-
-  <div class="d-flex align-items-center mb-24pt mb-lg-32pt">
-    <div class="position-relative">
-      <a
-        class="d-flex flex-column border-1 rounded bg-alt px-16pt py-8pt lh-1"
-        href=""
-      >
-        <small><strong>Day</strong></small>
-        <small class="text-50">07:30 - 20:00</small>
-      </a>
-      <a href="" class="position-close-4pt">
-        <i class="material-icons text-50 icon-16pt">close</i>
-      </a>
-    </div>
-    <div class="position-relative ml-8pt">
-      <a
-        class="d-flex flex-column border-1 rounded bg-alt px-16pt py-8pt lh-1"
-        href=""
-      >
-        <small><strong>Night</strong></small>
-        <small class="text-50">20:00 - 08:00</small>
-      </a>
-      <a href="" class="position-close-4pt">
-        <i class="material-icons text-50 icon-16pt">close</i>
-      </a>
-    </div>
-    <a
-      class="d-flex flex-column border-1 rounded bg-alt px-16pt py-8pt lh-1 text-center ml-8pt"
-      href=""
-    >
-      <i class="material-icons text-50 icon-16pt">add</i>
-      <small><strong>New Shift</strong></small>
-    </a>
-  </div>
-
-  <div class="page-separator">
-    <div class="page-separator__text">Shift distribution</div>
-  </div>
-
-  <div class="card mb-0">
-    <div
-      class="table-responsive"
-      data-toggle="lists"
-      data-lists-values='["js-lists-values-name"]'
-    >
-      <table
-        class="table table-bordered table-flush mb-0 thead-border-top-0 table-nowrap"
-      >
-        <thead>
-          <tr>
-            <th style="width: 18px" class="pr-0 border-right-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-toggle-check-all"
-                  data-target="#contacts"
-                  id="customCheckAll_contacts"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheckAll_contacts"
-                  ><span class="text-hide">Toggle all</span></label
-                >
-              </div>
-            </th>
-
-            <th class="border-left-0">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-name"
-                >Name</a
-              >
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Monday <small>25/02/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Tuesday <small>26/02/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Wednesday <small>27/02/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Thursday <small>28/02/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Friday <small>01/03/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Saturday <small>02/03/2019</small>
-              </div>
-            </th>
-            <th>
-              <div class="lh-1 d-flex flex-column text-50 my-4pt">
-                Sunday <small>03/03/2019</small>
-              </div>
-            </th>
-            <th style="width: 24px"></th>
-          </tr>
-        </thead>
-        <tbody class="list" id="contacts">
-          <tr>
-            <td class="pr-0 border-right-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  id="customCheck1_contacts_1"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_contacts_1"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td class="border-left-0">
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <span
-                    class="avatar-title rounded-circle bg-white border text-100"
-                    >BN</span
-                  >
-                </div>
-                <div class="media-body ml-4pt">
-                  <p class="mb-0">
-                    <strong class="js-lists-values-name">Billy Nunez</strong>
-                  </p>
-                </div>
-              </div>
-            </td>
-            <!-- <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td> -->
-            <!-- <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td></td>
-            <td></td> -->
-            <!-- <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td> -->
-            <!-- <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td> -->
-            <!-- <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td> -->
-            <!-- <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td> -->
-          </tr>
-
-          <tr>
-            <td class="pr-0 border-right-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  id="customCheck1_contacts_2"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_contacts_2"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td class="border-left-0">
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <span
-                    class="avatar-title rounded-circle bg-white border text-100"
-                    >TP</span
-                  >
-                </div>
-                <div class="media-body ml-4pt">
-                  <p class="mb-0">
-                    <strong class="js-lists-values-name">Tony Parks</strong>
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
-          </tr>
-
-          <tr class="selected">
-            <td class="pr-0 border-right-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  checked=""
-                  id="customCheck1_contacts_3"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_contacts_3"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td class="border-left-0">
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <img
-                    src="/images/people/110/guy-1.jpg"
-                    alt="Avatar"
-                    class="avatar-img rounded-circle"
-                  />
-                </div>
-                <div class="media-body ml-4pt">
-                  <p class="mb-0">
-                    <strong class="js-lists-values-name"
-                      >Gilbert Barrett</strong
-                    >
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Night</strong
-                  ></small
-                >
-                <small class="text-black-50">20:00 - 08:00</small>
-              </a>
-            </td>
-            <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
-          </tr>
-
-          <tr>
-            <td class="pr-0 border-right-0">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input js-check-selected-row"
-                  id="customCheck1_contacts_4"
-                />
-                <label
-                  class="custom-control-label"
-                  for="customCheck1_contacts_4"
-                  ><span class="text-hide">Check</span></label
-                >
-              </div>
-            </td>
-
-            <td class="border-left-0">
-              <div
-                class="media flex-nowrap align-items-center"
-                style="white-space: nowrap"
-              >
-                <div class="avatar avatar-sm mr-8pt">
-                  <img
-                    src="/images/people/110/guy-2.jpg"
-                    alt="Avatar"
-                    class="avatar-img rounded-circle"
-                  />
-                </div>
-                <div class="media-body ml-4pt">
-                  <p class="mb-0">
-                    <strong class="js-lists-values-name">Ollie Wallace</strong>
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td>
-            <td>
-              <a
-                class="d-flex flex-column border-1 rounded bg-light px-8pt py-4pt lh-1"
-                href=""
-              >
-                <small
-                  ><strong class="js-lists-values-name text-black-100"
-                    >Day</strong
-                  ></small
-                >
-                <small class="text-black-50">07:30 - 20:00</small>
-              </a>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card-footer border-0 p-8pt">
-      <ul class="pagination justify-content-start pagination-xsm m-0">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true" class="material-icons">chevron_left</span>
-            <span>Prev</span>
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Page 1">
-            <span>1</span>
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Page 2">
-            <span>2</span>
-          </a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span>Next</span>
-            <span aria-hidden="true" class="material-icons">chevron_right</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <!-- <div class="card-body text-right">
 15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
 </div> -->
   </div>

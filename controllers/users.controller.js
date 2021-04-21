@@ -17,8 +17,8 @@ Controller.registerUser = async (req, res, next) => {
     );
 
   //check if email exists
-  const userExist = await User.findAll({ where: { email } });
-  if (userExist.length > 0)
+  const userExist = await User.findByEmail(email);
+  if (userExist)
     return next(
       createError(400, { ...failed, reason: "Email already exists" })
     );
@@ -46,19 +46,19 @@ Controller.login = async (req, res, next) => {
       })
     );
 
-  const user = await User.findAll({ where: { email } });
-  if (user.length < 1)
+  const user = await User.findByEmail(email, false);
+  if (!user)
     return next(
       createError(400, { ...failed, reason: "Invalid email or password" })
     );
 
-  const isValidPassword = await bcrypt.compare(password, user[0].password);
+  const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword)
     return next(
       createError(400, { ...failed, reason: "Invalid email or password" })
     );
 
-  const token = user[0].generateAuthToken();
+  const token = user.generateAuthToken();
 
   res
     .header("Authorization", `Bearer ${token}`)
@@ -66,23 +66,23 @@ Controller.login = async (req, res, next) => {
     .json({ token, status_code: "00", message: "login successful" });
 };
 
-Controller.forgottenPassword = async (req, res, next) => {
+Controller.resetPassword = async (req, res, next) => {
+  const failed = { status_code: "03", message: "password reset failed" };
   const { email, password } = req.body;
   const { error } = User.validateDetails(req.body);
-  const failed = { status_code: "03", message: "password reset failed" };
   if (error)
     return next(
       createError(400, { ...failed, reason: error.details[0].message })
     );
 
-  const user = await User.findAll({ where: { email } });
-  if (user.length < 1)
+  const user = await User.findByEmail(email, false);
+  if (!user)
     return next(createError(400, { ...failed, reason: "User not found" }));
 
   const hashedPassword = await User.hashPassword(password);
   user.password = hashedPassword;
 
-  await user[0].save();
+  await user.save();
 
   res.json({ status_code: "00", message: "password reset successful" });
 };

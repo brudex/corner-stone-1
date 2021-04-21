@@ -10,6 +10,11 @@ const churchController = require("../controllers/church.controller");
 
 router.get("/", auth, indexController.index);
 router.get("/login", accountController.loginView);
+router.get("/register", accountController.register);
+router.get("/forgotpassword", accountController.forgotPasswordView);
+router.get("/resetpassword/:token", accountController.resetPasswordView);
+router.get("/addchurch", auth, churchController.addChurchView);
+
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -19,8 +24,8 @@ router.post(
   })
 );
 router.post("/logout", accountController.logout);
-router.get("/register", accountController.register); //todo implement : Note don't write implementation code here write it in the controller
-router.get("/addchurch", churchController.addChurchView);
-router.post("/addchurch", churchController.addChurch);
+router.post("/forgotpassword", accountController.forgotPassword);
+router.post("/resetpassword", accountController.resetPassword);
+router.post("/addchurch", auth, churchController.addChurch);
 
 module.exports = router;

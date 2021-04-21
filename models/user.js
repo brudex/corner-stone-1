@@ -41,8 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.hash(password, 10);
   };
 
-  User.findByEmail = async function (email) {
-    return await this.findOne({ raw: true, where: { email } });
+  User.findByEmail = async function (email, raw = true) {
+    return await this.findOne({ raw, where: { email } });
   };
 
   User.validateUser = function (user) {
@@ -62,6 +62,19 @@ module.exports = (sequelize, DataTypes) => {
       password: Joi.string().min(6).max(256).required(),
     });
     return schema.validate(userDetails);
+  };
+
+  User.validatePasswordReset = function (passwords) {
+    const schema = Joi.object({
+      token: Joi.string().required(),
+      password: Joi.string().min(6).max(256).required().label("Password"),
+      confirmPassword: Joi.any()
+        .equal(Joi.ref("password"))
+        .required()
+        .label("Confirm password")
+        .messages({ "any.only": "passwords do not match" }),
+    });
+    return schema.validate(passwords);
   };
 
   User.prototype.generateAuthToken = function () {
