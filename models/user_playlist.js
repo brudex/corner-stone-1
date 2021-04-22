@@ -5,8 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       userId: DataTypes.INTEGER,
       churchContentId: DataTypes.INTEGER,
-      title: DataTypes.STRING
-
+      title: DataTypes.STRING,
     },
     {
       tableName: "UserPlayList",
@@ -15,5 +14,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
-  return ChurchContent;
+  return UserPlayList;
 };

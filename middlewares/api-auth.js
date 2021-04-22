@@ -1,10 +1,12 @@
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
-const debug = require("debug")("corner-stone:server");
+const debug = require("debug")("corner-stone:api-auth");
 
 module.exports = function (req, res, next) {
-  const token = req.header("Authorization");
+  let token = req.header("Authorization");
+  token = req.headers.authorization.split(" ")[1];
+  debug(token);
   if (!token)
     return next(
       createError(401, {

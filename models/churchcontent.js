@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       churchId: DataTypes.INTEGER, // churchId from church model
       title: DataTypes.STRING,
       contentType: DataTypes.STRING, //audio sermon, devotional text, videolinks
-      videoUrl: DataTypes.STRING,
-      audioLink: DataTypes.STRING,
-      contentText: DataTypes.STRING,//devotional text
-
+      // videoUrl: DataTypes.STRING,
+      // audioLink: DataTypes.STRING,
+      // contentText: DataTypes.STRING,//devotional text
+      contentData: DataTypes.STRING, // using contentData field to store content regardless of type.
     },
     {
       tableName: "ChurchContent",
@@ -18,5 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
+  ChurchContent.validateContent = function (content) {
+    const schema = Joi.object({
+      churchId: Joi.number().positive().integer().required(),
+      title: Joi.string().min(1).max(256).required(),
+      contentType: Joi.string().valid("sermon", "devotional", "video"),
+      contentData: Joi.string().min(1).max(10000).required(),
+    });
+    return schema.validate(content);
+  };
   return ChurchContent;
 };

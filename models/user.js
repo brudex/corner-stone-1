@@ -2,6 +2,7 @@
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const config = require("../config/config");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -84,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
         isAdmin: this.isAdmin,
         churchId: this.churchId,
       },
-      process.env.JWT_SECRET
+      config.jwt_secret
     );
   };
 
