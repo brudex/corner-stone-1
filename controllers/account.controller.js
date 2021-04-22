@@ -1,5 +1,5 @@
 const { sequelize, Sequelize } = require("../models/index");
-const user = require("../models/User");
+const user = require("../models/user");
 const sendMail = require("../utils/sendMail");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
