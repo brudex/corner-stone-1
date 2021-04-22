@@ -13,7 +13,8 @@ router.get("/login", accountController.loginView);
 router.get("/register", accountController.register);
 router.get("/forgotpassword", accountController.forgotPasswordView);
 router.get("/resetpassword/:token", accountController.resetPasswordView);
-router.get("/addchurch", auth, churchController.addChurchView);
+router.get("/churches", auth, churchController.churchesView);
+router.get("/churches/add", auth, churchController.addChurchView);
 
 router.post(
   "/login",

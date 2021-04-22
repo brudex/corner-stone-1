@@ -9,6 +9,11 @@ const allowImagesOnly = require("../utils/allowImagesOnly");
 const Controller = {};
 module.exports = Controller;
 
+Controller.churchesView = async (req, res, next) => {
+  const churches = await Church.findAll();
+  res.render("churches", { title: "Churches", churches });
+};
+
 Controller.getChurches = async (req, res, next) => {
   const churches = await Church.findAll({ raw: true });
   churches.forEach(
@@ -22,6 +27,7 @@ Controller.addChurchView = async (req, res, next) => {
 };
 
 Controller.addChurch = async (req, res, next) => {
+  const redirectUrl = "/churches/add";
   const storage = multer.diskStorage({
     destination: "./public/uploads",
     filename: (req, file, cb) => {
@@ -41,23 +47,23 @@ Controller.addChurch = async (req, res, next) => {
   upload(req, res, async (err) => {
     if (err) {
       req.flash("error", err);
-      return res.redirect("/addchurch");
+      return res.redirect(redirectUrl);
     }
 
     const { error } = Church.validate(req.body);
     if (error) {
       req.flash("error", error.details[0].message);
-      return res.redirect("/addchurch");
+      return res.redirect(redirectUrl);
     }
     const churchExists = await Church.findOne({
       where: { name: req.body.name },
     });
     if (churchExists) {
       req.flash("error", "Church already exist");
-      return res.redirect("/addchurch");
+      return res.redirect(redirectUrl);
     }
     await Church.create({ ...req.body, image: req.file.filename });
     req.flash("success", "Church added successfully");
-    return res.redirect("/addchurch");
+    return res.redirect(redirectUrl);
   });
 };
