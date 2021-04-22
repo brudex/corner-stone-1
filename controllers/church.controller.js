@@ -1,5 +1,5 @@
 const { sequelize, Sequelize } = require("../models/index");
-const church = require("../models/Church");
+const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
 const multer = require("multer");
 const path = require("path");
@@ -68,13 +68,10 @@ Controller.addChurch = async (req, res, next) => {
   });
 };
 
-
-Controller.bookAppointment =async (req,res) =>{
+Controller.bookAppointment = async (req, res) => {
   //get the user info and save the appointment
-
 };
 
-Controller.getAvailableAppointmentTimes =async (req,res) =>{
+Controller.getAvailableAppointmentTimes = async (req, res) => {
   //get the user info and save the appointment
-
 };
