@@ -10,31 +10,55 @@ const donationController = require("../controllers/donation.controller");
 //Middlewares
 const api_auth = require("../middlewares/api-auth");
 /*****Api routes*********************/
-router.post("/users/register", usersController.registerUser);
 //for the home page pull daily devotional, featured audio and featured videos
-router.post("/users/login", usersController.login);
-router.post("/users/forgotten_password", usersController.resetPassword);
-router.post("/articles", articlesController.articles); //todo : this is just an example of how the routes should be done
 router.get("/churches", churchesController.getChurches);
+router.get(
+  "/churchcontent/search/:id",
+  api_auth,
+  churchContentController.getChurchContentById
+);
 router.get(
   "/churchcontent/search",
   api_auth,
   churchContentController.searchChurchContent
 );
-router.get("/getmyplaylist", churchContentController.searchChurchContent); //add the jwt middleware to identify the user
+router.get(
+  "/churchcontent/dailydevotional",
+  api_auth,
+  churchContentController.getDailyDevotionals
+);
+router.get(
+  "/churchcontent/:contentType",
+  api_auth,
+  churchContentController.getChurchContent
+); //fetch church content for homepage based on content type
+router.get("/events", api_auth, eventsController.getUpcomingEvents);
+router.get("/getmyplaylist", api_auth, churchContentController.getUserPlayList); //add the jwt middleware to identify the user
 router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the jwt middleware to identify the user
+router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
+router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
+
+router.get(
+  "/donationTypes",
+  api_auth,
+  donationController.getChurchDonationTypes
+);
+router.post(
+  "/churchContent/playlist/add",
+  api_auth,
+  churchContentController.addToUserPlayList
+); //add the jwt middleware to identify the user
 router.post("/bookappointment", churchesController.bookAppointment); //add the jwt middleware to identify the user
 router.post(
   "/getavailabletimesbydate",
   churchesController.getAvailableAppointmentTimes
 ); //add the jwt middleware to identify the user
 
-router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
 router.post("/makedonation", donationController.makeDonation); //add the jwt middleware to identify the user
-router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
-
+router.post("/users/login", usersController.login);
+router.post("/users/forgotten_password", usersController.resetPassword);
+router.post("/articles", articlesController.articles); //todo : this is just an example of how the routes should be done
+router.post("/users/register", usersController.registerUser);
 //Todo return church contact info on login
-
-//test routes--- will be removed
 
 module.exports = router;

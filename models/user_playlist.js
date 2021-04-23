@@ -14,5 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
+  UserPlayList.validateList = function (list) {
+    const schema = Joi.object({
+      churchContentId: Joi.number().integer().positive().required(),
+      title: Joi.string().min(1).max(256).required(),
+    });
+    return schema.validate(list);
+  };
   return UserPlayList;
 };

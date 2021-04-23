@@ -1,6 +1,10 @@
 const { sequelize, Sequelize } = require("../models/index");
 const churchContent = require("../models/churchcontent");
 const ChurchContent = churchContent(sequelize, Sequelize);
+const dailyDevoptional = require("../models/dailydevotional");
+const userPlayList = require("../models/user_playlist");
+const DailyDevotional = dailyDevoptional(sequelize, Sequelize);
+const UserPlayList = userPlayList(sequelize, Sequelize);
 const Op = Sequelize.Op;
 const createError = require("http-errors");
 const db = require("../models");
@@ -34,22 +38,97 @@ Controller.searchChurchContent = async (req, res) => {
   }); ///data is array of search results
 };
 
-Controller.getChurchContentById = (req, res) => {
-  //req.body = {searchText:"daily devotional"}
-  //get the users church and search in that church
-  //Query church content and return the results
-  res.json({ status: "00", data: [{}] }); ///data is array of search results
+Controller.getChurchContentById = async (req, res) => {
+  const { churchId } = req.user;
+  const churchContent = await ChurchContent.findOne({
+    where: { id: req.params.id, churchId },
+  });
+  res.json({ status: "00", data: churchContent });
 };
 
-Controller.getMyPlayList = (req, res) => {
-  //return the user's playlist
-  res.json({ status: "00", data: [{}] }); ///data is array of search results
+Controller.getChurchContent = async (req, res, next) => {
+  const { limit, offset } = req.query;
+  const { churchId } = req.user;
+  const { contentType } = req.params;
+
+  const videos = await ChurchContent.findAll({
+    where: { contentType, churchId },
+    order: [["createdAt", "DESC"]],
+    limit: parseInt(limit) || 10,
+    offset: parseInt(offset),
+  });
+
+  res.json({ status_code: "03", data: videos });
 };
 
+Controller.getDailyDevotionals = async (req, res) => {
+  const { churchId } = req.user;
+  let dailyDevotional = await DailyDevotional.findOne({
+    where: {
+      churchId,
+      dateToShow: dateFns.format(new Date(), "yyyy-MM-dd"),
+    },
+  });
+  if (!dailyDevotional)
+    dailyDevotional = await DailyDevotional.findOne({
+      where: {
+        churchId,
+        isDefault: true,
+      },
+    });
+  res.json({ status: "00", data: dailyDevotional });
+};
+
+Controller.getUserPlayList = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const playlist = await UserPlayList.findAll({ userId });
+
+  res.json({ status_code: "00", data: playlist });
+};
+
+Controller.addToUserPlayList = async (req, res, next) => {
+  const { id: userId } = req.user;
+  const { churchContentId, title } = req.body;
+  const { error } = UserPlayList.validateList(req.body);
+  if (error) return next(createError(400, error.details[0].message));
+
+  const churchContent = await ChurchContent.findOne({
+    where: { id: churchContentId },
+  });
+  if (!churchContent)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "add to user playlist failed",
+        reason: "Church content not Found",
+      })
+    );
+  if (churchContent.title !== title)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "add to user playlist failed",
+        reason: "Church content titles do not match",
+      })
+    );
+  await UserPlayList.create({ ...req.body, userId });
+
+  res.json({ status: "00", message: "playlist updated successfully" });
+};
+
+//Test controllers to be deleted
 Controller.addChurchContent = async (req, res, next) => {
   const { error } = ChurchContent.validateContent(req.body);
   if (error) return next(createError(400, error.details[0].message));
 
   const newContent = await ChurchContent.create(req.body);
   res.send(newContent);
+};
+
+Controller.addDailyDevotional = async (req, res, next) => {
+  const { error } = DailyDevotional.validateDevotional(req.body);
+  if (error) return next(createError(400, error.details[0].message));
+
+  const newDevotional = await DailyDevotional.create(req.body);
+  res.send(newDevotional);
 };
