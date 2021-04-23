@@ -7,11 +7,23 @@ const churchesController = require("../controllers/church.controller");
 const churchContentController = require("../controllers/churchcontent.controller");
 const eventsController = require("../controllers/events.controller");
 const donationController = require("../controllers/donation.controller");
+const appointmentController = require("../controllers/appointment.controller");
 //Middlewares
 const api_auth = require("../middlewares/api-auth");
 /*****Api routes*********************/
 //for the home page pull daily devotional, featured audio and featured videos
+router.get(
+  "/appointment/:date",
+  api_auth,
+  appointmentController.getAppointmentTimes
+);
+router.get(
+  "/featuredContent",
+  api_auth,
+  churchContentController.getFeaturedContent
+);
 router.get("/churches", churchesController.getChurches);
+router.get("/church", api_auth, churchesController.getChurch);
 router.get(
   "/churchcontent/search/:id",
   api_auth,
@@ -43,6 +55,7 @@ router.get(
   api_auth,
   donationController.getChurchDonationTypes
 );
+router.post("/appointment/set", api_auth, appointmentController.setAppointment);
 router.post(
   "/churchContent/playlist/add",
   api_auth,

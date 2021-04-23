@@ -1,20 +1,19 @@
 const Joi = require("joi");
 module.exports = (sequelize, DataTypes) => {
-  const ChurchAppointments = sequelize.define(
-    "ChurchAppointments",
+  const AvailableAppointmentTime = sequelize.define(
+    "AvailableAppointmentTime",
     {
-      churchId: DataTypes.INTEGER,
-      appointmentDay: DataTypes.INTEGER,
-      appointmentTimes: DataTypes.INTEGER,
-
-     },
+      appointmentDateId: DataTypes.INTEGER,
+      appointmentTime: DataTypes.STRING,
+      numberOfAllowedAppointments: DataTypes.INTEGER,
+    },
     {
-      tableName: "ChurchAppointments",
+      tableName: "AvailableAppointmentTime",
       classMethods: {
         associate: (models) => {},
       },
     }
   );
 
-  return ChurchAppointments;
+  return AvailableAppointmentTime;
 };

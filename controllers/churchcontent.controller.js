@@ -2,9 +2,11 @@ const { sequelize, Sequelize } = require("../models/index");
 const churchContent = require("../models/churchcontent");
 const ChurchContent = churchContent(sequelize, Sequelize);
 const dailyDevoptional = require("../models/dailydevotional");
-const userPlayList = require("../models/user_playlist");
 const DailyDevotional = dailyDevoptional(sequelize, Sequelize);
+const userPlayList = require("../models/user_playlist");
 const UserPlayList = userPlayList(sequelize, Sequelize);
+const featuredContent = require("../models/featuredcontent");
+const FeaturedContent = featuredContent(sequelize, Sequelize);
 const Op = Sequelize.Op;
 const createError = require("http-errors");
 const db = require("../models");
@@ -14,6 +16,21 @@ const debug = require("debug")("corner-stone:churchcontent");
 
 const Controller = {};
 module.exports = Controller;
+
+Controller.getFeaturedContent = async (req, res, next) => {
+  const { churchId } = req.user;
+  const featuredContent = await FeaturedContent.findAll({
+    where: { churchId },
+  });
+
+  const churchContentIds = featuredContent.map(
+    (content) => content.churchContentId
+  );
+  const content = await ChurchContent.findAll({
+    where: { id: { [Op.or]: churchContentIds } },
+  });
+  res.json({ status: "00", data: content });
+};
 
 Controller.searchChurchContent = async (req, res) => {
   debug(req.user);

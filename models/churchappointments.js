@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       churchId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       appointmentReason: DataTypes.STRING,
-      appointmentDate: DataTypes.DATE,
-     },
+      appointmentTimeId: DataTypes.INTEGER,
+    },
     {
       tableName: "ChurchAppointments",
       classMethods: {

@@ -22,6 +22,12 @@ Controller.getChurches = async (req, res, next) => {
   res.send(churches);
 };
 
+Controller.getChurch = async (req, res, next) => {
+  const { churchId } = req.user;
+  const church = await Church.findOne({ where: { id: churchId } });
+  res.send(church);
+};
+
 Controller.addChurchView = async (req, res, next) => {
   res.render("add-church", { title: "Add Church" });
 };
