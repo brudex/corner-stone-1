@@ -8,7 +8,7 @@ const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
 const initializePassport = require("./config/passport");
-var MemoryStore = require('memorystore')(session)
+var MemoryStore = require('memorystore')(session);
 require("dotenv").config();
 
 var pageRoutes = require("./routes/page");
