@@ -15,6 +15,8 @@ router.get("/forgotpassword", accountController.forgotPasswordView);
 router.get("/resetpassword/:token", accountController.resetPasswordView);
 router.get("/churches", auth, churchController.churchesView);
 router.get("/churches/add", auth, churchController.addChurchView);
+router.get("/churches/delete/:id", churchController.deleteChurch);
+router.get("/churches/edit/:id", churchController.editChurchView);
 
 router.post(
   "/login",
@@ -28,5 +30,7 @@ router.post("/logout", accountController.logout);
 router.post("/forgotpassword", accountController.forgotPassword);
 router.post("/resetpassword", accountController.resetPassword);
 router.post("/addchurch", auth, churchController.addChurch);
+router.post("/churches/edit/:id", churchController.editChurch);
+router.post("/churches/edit/image/:id", churchController.editChurchImage);
 
 module.exports = router;

@@ -1,6 +1,7 @@
+const multer = require("multer");
 const path = require("path");
 
-module.exports = function (req, file, cb) {
+module.exports.allowImagesOnly = function (req, file, cb) {
   const allowedTypes = /jpeg|jpg|png/;
 
   const extnameIsALlowed = allowedTypes.test(
@@ -12,3 +13,13 @@ module.exports = function (req, file, cb) {
     ? cb(null, true)
     : cb("file type not supported");
 };
+
+module.exports.storage = multer.diskStorage({
+  destination: "./public/uploads",
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+    );
+  },
+});

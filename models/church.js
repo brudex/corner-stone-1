@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       address: Joi.string().min(3).max(256).required(),
       phone: Joi.string().min(3).max(256).required(),
       email: Joi.string().email().min(3).max(256).required(),
-      website: Joi.string().uri(),
-      fbHandle: Joi.string().uri(),
-      IGHandle: Joi.string().uri(),
-      twitterHandle: Joi.string().uri(),
+      website: Joi.string().uri().allow(""),
+      fbHandle: Joi.string().uri().allow(""),
+      IGHandle: Joi.string().uri().allow(""),
+      twitterHandle: Joi.string().uri().allow(""),
     });
     return schema.validate(church);
   };

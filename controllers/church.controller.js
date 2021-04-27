@@ -2,17 +2,35 @@ const { sequelize, Sequelize } = require("../models/index");
 const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
 const multer = require("multer");
-const path = require("path");
+const Op = Sequelize.Op;
+const debug = require("debug")("corner-stone:church-controller");
 //utils
-const allowImagesOnly = require("../utils/allowImagesOnly");
+const { allowImagesOnly, storage } = require("../utils/image_upload");
+const upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: allowImagesOnly,
+}).single("church-image");
 
 const Controller = {};
 module.exports = Controller;
 
+//START VIEWS
 Controller.churchesView = async (req, res, next) => {
   const churches = await Church.findAll();
   res.render("churches", { title: "Churches", churches });
 };
+
+Controller.addChurchView = async (req, res, next) => {
+  res.render("add-church", { title: "Add Church" });
+};
+
+Controller.editChurchView = async (req, res, next) => {
+  const { id } = req.params;
+  const church = await Church.findOne({ raw: true, where: { id } });
+  res.render("edit-church", { title: "Edit Church", values: church });
+};
+//END VIEWS
 
 Controller.getChurches = async (req, res, next) => {
   const churches = await Church.findAll({ raw: true });
@@ -28,50 +46,90 @@ Controller.getChurch = async (req, res, next) => {
   res.send(church);
 };
 
-Controller.addChurchView = async (req, res, next) => {
-  res.render("add-church", { title: "Add Church" });
-};
-
 Controller.addChurch = async (req, res, next) => {
-  const redirectUrl = "/churches/add";
-  const storage = multer.diskStorage({
-    destination: "./public/uploads",
-    filename: (req, file, cb) => {
-      cb(
-        null,
-        `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-      );
-    },
-  });
+  const page = "add-church";
 
-  const upload = multer({
-    storage,
-    limits: { fileSize: 1024 * 1024 * 5 },
-    fileFilter: allowImagesOnly,
-  }).single("church-image");
-
-  upload(req, res, async (err) => {
+  await upload(req, res, async (err) => {
+    const { name, email, phone } = req.body;
     if (err) {
       req.flash("error", err);
-      return res.redirect(redirectUrl);
+      return res.render(page, { title: "Add Church", values: req.body });
     }
-
     const { error } = Church.validate(req.body);
     if (error) {
       req.flash("error", error.details[0].message);
-      return res.redirect(redirectUrl);
+      return res.render(page, { title: "Add Church", values: req.body });
     }
     const churchExists = await Church.findOne({
-      where: { name: req.body.name },
+      where: { [Op.or]: [{ name }, { email }, { phone }] },
     });
     if (churchExists) {
       req.flash("error", "Church already exist");
-      return res.redirect(redirectUrl);
+      return res.render(page, { title: "Add Church", values: req.body });
     }
     await Church.create({ ...req.body, image: req.file.filename });
     req.flash("success", "Church added successfully");
-    return res.redirect(redirectUrl);
+    return res.render(page, { title: "Add Church" });
   });
+};
+
+Controller.editChurchImage = async (req, res) => {
+  const { id } = req.params;
+  const page = "edit-church";
+
+  await upload(req, res, async (err) => {
+    if (err) {
+      req.flash("error", err);
+      return res.render(page, { title: "Add Church", values: req.body });
+    }
+    const church = await Church.findOne({ where: { id } });
+    if (!church) {
+      req.flash("error", "Church not found");
+      return res.redirect(`/churches/edit/${id}`);
+    }
+    church.image = req.file.filename;
+    await church.save();
+
+    req.flash("success", "Church image changed successfully");
+    res.redirect(`/churches/edit/${id}`);
+  });
+};
+
+Controller.editChurch = async (req, res) => {
+  const page = "edit-church";
+  const { id } = req.params;
+  const { name, email, phone } = req.body;
+
+  const { error } = Church.validate(req.body);
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.render(page, { title: "Edit Church", values: req.body });
+  }
+
+  const churchExists = await Church.findOne({
+    where: { id: { [Op.ne]: id }, [Op.or]: [{ name }, { email }, { phone }] },
+  });
+  if (churchExists) {
+    req.flash("error", "Church already exist");
+    return res.render(page, { title: "Edit Church", values: req.body });
+  }
+
+  const church = await Church.findOne({ where: { id } });
+  for (const [key, value] of Object.entries(req.body)) {
+    church[key] = value;
+  }
+
+  await church.save();
+
+  req.flash("success", "Church updated successfully");
+  return res.redirect("/churches");
+};
+
+Controller.deleteChurch = async (req, res) => {
+  const { id } = req.params;
+  await Church.destroy({ where: { id } });
+  req.flash("success", "Church deleted successfully");
+  res.redirect("/churches");
 };
 
 Controller.bookAppointment = async (req, res) => {
