@@ -2,12 +2,66 @@ const createError = require("http-errors");
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
 const User = user(sequelize, Sequelize);
+const church = require("../models/church");
+const Church = church(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
 
 const Controller = {};
 module.exports = Controller;
+
+//START VIEWS
+
+Controller.usersView = async (req, res, next) => {
+  const paginationResults = await User.paginate(req);
+  res.render("users/users", {
+    title: "Users",
+    ...paginationResults,
+  });
+};
+
+Controller.addUserView = async (req, res) => {
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+  debug(churches);
+  res.render("users/add-user", { title: "Add User", churches });
+};
+
+//END VIEWS
+
+Controller.addUser = async (req, res) => {
+  const page = "users/add-user";
+  const { email } = req.body;
+
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const password = generator.generate({
+    length: 10,
+    numbers: true,
+  });
+  const { error } = User.validateUser({ ...req.body, password });
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.render(page, { title: "Add User", values: req.body, churches });
+  }
+
+  const userExists = await User.findOne({ where: { email } });
+  if (userExists) {
+    req.flash("error", "User already exist");
+    return res.render(page, { title: "Add User", values: req.body, churches });
+  }
+  const hashedPassword = await User.hashPassword(password);
+  await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+  req.flash("success", "User added successfully");
+  return res.render(page, { title: "Add User", churches });
+};
 
 Controller.registerUser = async (req, res, next) => {
   const failed = { status_code: "03", message: "Registration failed" };
@@ -92,5 +146,3 @@ Controller.resetPassword = async (req, res, next) => {
     message: "We have sent an email with password reset instructions.",
   });
 };
-
-module.exports = Controller;

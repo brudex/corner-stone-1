@@ -8,14 +8,12 @@ const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
 const initializePassport = require("./config/passport");
-var MemoryStore = require('memorystore')(session)
+var MemoryStore = require("memorystore")(session);
 require("dotenv").config();
 
 var pageRoutes = require("./routes/page");
 const apiRoutes = require("./routes/api");
 const config = require("./config/config");
-
-// var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -35,10 +33,10 @@ app.use(express.static(path.join(__dirname, "public")));
 //passport config
 app.use(
   session({
-      cookie: { maxAge: 86400000 },
-      store: new MemoryStore({
-          checkPeriod: 86400000 // prune expired entries every 24h
-      }),
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    }),
     secret: config.jwt_secret,
     resave: false,
     saveUninitialized: false,
@@ -50,7 +48,6 @@ app.use(passport.session());
 
 app.use("/", pageRoutes);
 app.use("/api", apiRoutes);
-//app.use('/users', usersRouter); //this is no longer needed
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

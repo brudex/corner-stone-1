@@ -5,6 +5,7 @@ const auth = require("../middlewares/auth");
 const indexController = require("../controllers/index.controller");
 const accountController = require("../controllers/account.controller");
 const churchController = require("../controllers/church.controller");
+const usersController = require("../controllers/users.controller");
 
 /*****Page Routes*********************/
 
@@ -17,6 +18,8 @@ router.get("/churches", auth, churchController.churchesView);
 router.get("/churches/add", auth, churchController.addChurchView);
 router.get("/churches/delete/:id", churchController.deleteChurch);
 router.get("/churches/edit/:id", churchController.editChurchView);
+router.get("/users", usersController.usersView);
+router.get("/users/add", usersController.addUserView);
 
 router.post(
   "/login",
@@ -26,6 +29,7 @@ router.post(
     failureFlash: true,
   })
 );
+router.post("/users/add", usersController.addUser);
 router.post("/logout", accountController.logout);
 router.post("/forgotpassword", accountController.forgotPassword);
 router.post("/resetpassword", accountController.resetPassword);

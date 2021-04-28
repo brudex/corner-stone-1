@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const sendMail = require("../utils/sendMail");
 const config = require("../config/config");
+const pagination = require("../utils/pagination");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -100,6 +101,9 @@ module.exports = (sequelize, DataTypes) => {
     sendMail(options);
   };
 
+  User.paginate = function (req) {
+    return pagination(this, req);
+  };
   User.prototype.generateAuthToken = function () {
     return jwt.sign(
       {

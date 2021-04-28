@@ -1,0 +1,116 @@
+<%- include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Add church</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/churches">Useres</a></li>
+          <li class="breadcrumb-item">Add church</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">Add User</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Fill all fields specified below to add a new user.
+        <strong>NB:</strong> Users as automatically added as admin users for the
+        selected church.
+      </p>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form action="/users/add" method="post">
+          <div class="form-group">
+            <label class="form-label" for="firstName">First name*:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              value="<% if(typeof values !== 'undefined') {%><%=values.firstName%><%}%>"
+              placeholder="Enter first name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lastName">Last name*:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              name="lastName"
+              value="<% if(typeof values !== 'undefined') {%><%=values.lastName%><%}%>"
+              placeholder="Enter last name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email*</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              value="<% if(typeof values !== 'undefined') {%><%=values.email%><%}%>"
+              placeholder="Enter email address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="church">Select Church</label>
+            <select
+              id="church"
+              data-toggle="select"
+              class="form-control select2-hidden-accessible"
+              data-select2-id="church"
+              tabindex="-1"
+              aria-hidden="true"
+              name="churchId"
+            >
+              <!-- <option selected="" data-select2-id="2">My first option</option> -->
+              <% churches.forEach(church => {%>
+              <option value="<%=church.id %>"><%=church.name %></option>
+              <%})%></select
+            ><span
+              class="select2 select2-container select2-container--bootstrap4"
+              dir="ltr"
+              data-select2-id="1"
+              style="width: 589.333px"
+              ><span class="selection"
+                ><span
+                  class="select2-selection select2-selection--single"
+                  role="combobox"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  tabindex="0"
+                  aria-disabled="false"
+                  aria-labelledby="select2-church-container"
+                  ><span class="select2-selection__arrow" role="presentation"
+                    ><b role="presentation"></b></span></span></span
+              ><span class="dropdown-wrapper" aria-hidden="true"></span
+            ></span>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

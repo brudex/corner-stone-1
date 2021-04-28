@@ -17,6 +17,7 @@
     "express-ejs-layouts": "^2.5.0",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.1",
+    "generate-password": "^1.6.0",
     "http-errors": "~1.6.3",
     "joi": "^17.4.0",
     "joi-phone-number": "^5.0.1",
