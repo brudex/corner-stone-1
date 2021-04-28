@@ -4,10 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     "ChurchDonation",
     {
       churchId: DataTypes.STRING,
-      userId: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      pageId: DataTypes.STRING,
       amount: DataTypes.DECIMAL,
-      paymentMode: DataTypes.DECIMAL,
+      paymentMode: DataTypes.STRING, //stripe,paypal
       donationTypeId: DataTypes.INTEGER, // Donation Type ID
+      paymentStatus: DataTypes.STRING, // 00=success,01=pending,03=failed,
+      statusMessage: DataTypes.STRING
      },
     {
       tableName: "ChurchDonation",

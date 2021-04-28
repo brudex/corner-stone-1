@@ -4,6 +4,7 @@ const passport = require("passport");
 const auth = require("../middlewares/auth");
 const indexController = require("../controllers/index.controller");
 const accountController = require("../controllers/account.controller");
+const stripeController = require("../controllers/stripe.controller");
 const churchController = require("../controllers/church.controller");
 
 /*****Page Routes*********************/
@@ -32,5 +33,9 @@ router.post("/resetpassword", accountController.resetPassword);
 router.post("/addchurch", auth, churchController.addChurch);
 router.post("/churches/edit/:id", churchController.editChurch);
 router.post("/churches/edit/image/:id", churchController.editChurchImage);
+
+/***************Payment Url*****************/
+router.get("/paymentPage/:pageId", stripeController.paymentPage);
+
 
 module.exports = router;

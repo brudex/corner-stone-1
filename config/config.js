@@ -15,6 +15,7 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
+    stripe_apiKey: process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
   },
 
   test: {
@@ -29,6 +30,7 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
+    stripe_apiKey: process.env.SESSION_SECRET ||"sk_test_4eC39HqLyjWDarjtT1zdp7dc"
   },
 
   production: {
@@ -43,6 +45,7 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
+    stripe_apiKey: process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
   },
 };
 
