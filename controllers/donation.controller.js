@@ -15,7 +15,6 @@ Controller.getChurchDonationTypes = async (req, res) => {
 
 Controller.makeDonation = (req, res) => {
   //get the users church adn get upcoming events for that church
-
   res.json({ status: "00", data: [] }); ///data is array of events
 };
 
