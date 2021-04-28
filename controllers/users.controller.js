@@ -3,6 +3,8 @@ const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
 const User = user(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
+const debug = require("debug")("corner-stone:userscontroller");
 
 const Controller = {};
 module.exports = Controller;
@@ -68,23 +70,27 @@ Controller.login = async (req, res, next) => {
 
 Controller.resetPassword = async (req, res, next) => {
   const failed = { status_code: "03", message: "password reset failed" };
-  const { email, password } = req.body;
-  const { error } = User.validateDetails(req.body);
+  const { email } = req.body;
+  const schema = Joi.string().email().required().label("Email");
+  const { error } = schema.validate(email);
+
   if (error)
     return next(
       createError(400, { ...failed, reason: error.details[0].message })
     );
+  const userExist = await User.findByEmail(email);
+  debug(userExist);
+  if (!userExist)
+    return res.json({
+      status_code: "00",
+      message: "We have sent an email with password reset instructions.",
+    }); //False success message (security measure)
+  await User.sendResetPasswordMail(email, req);
 
-  const user = await User.findByEmail(email, false);
-  if (!user)
-    return next(createError(400, { ...failed, reason: "User not found" }));
-
-  const hashedPassword = await User.hashPassword(password);
-  user.password = hashedPassword;
-
-  await user.save();
-
-  res.json({ status_code: "00", message: "password reset successful" });
+  res.json({
+    status_code: "00",
+    message: "We have sent an email with password reset instructions.",
+  });
 };
 
 module.exports = Controller;

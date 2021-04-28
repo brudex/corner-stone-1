@@ -2,6 +2,7 @@
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const sendMail = require("../utils/sendMail");
 const config = require("../config/config");
 
 module.exports = (sequelize, DataTypes) => {
@@ -76,6 +77,27 @@ module.exports = (sequelize, DataTypes) => {
         .messages({ "any.only": "passwords do not match" }),
     });
     return schema.validate(passwords);
+  };
+
+  User.sendResetPasswordMail = async function (email, req) {
+    const token = await jwt.sign({ email }, config.jwt_secret);
+
+    const hostname = `${req.protocol}://${req.headers.host}`;
+    const options = {
+      from: '"noreply"<test@senyotheart.com>',
+      to: email,
+      subject: "Corner Stone",
+      html: `<DOCTYPE html>
+        <html>
+          <body>          
+            <p>Hi there, you're receiving this mail because you initiated a password reset. <strong>If this wasn't you, please ignore</strong>.</p>
+            <p>Click on the link below to reset your password!</p>
+            <a href="${hostname}/resetpassword/${token}">Click here to reset your password</a>
+          </body>
+        </html>`,
+    };
+
+    sendMail(options);
   };
 
   User.prototype.generateAuthToken = function () {

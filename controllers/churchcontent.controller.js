@@ -42,9 +42,8 @@ Controller.searchChurchContent = async (req, res) => {
   });
 
   content.forEach((content) => {
-    if (content.contentType === "sermon") {
-      content.contentData = `${req.headers.host}/uploads/sermons/${content.contentData}`;
-    }
+    if (content.contentType === "sermon")
+      ChurchContent.createSermonUrl(content, req);
   });
 
   //get the users church and search in that church
@@ -60,6 +59,7 @@ Controller.getChurchContentById = async (req, res) => {
   const churchContent = await ChurchContent.findOne({
     where: { id: req.params.id, churchId },
   });
+  ChurchContent.createSermonUrl(churchContent, req);
   res.json({ status: "00", data: churchContent });
 };
 
@@ -68,14 +68,18 @@ Controller.getChurchContent = async (req, res, next) => {
   const { churchId } = req.user;
   const { contentType } = req.params;
 
-  const videos = await ChurchContent.findAll({
+  const churchContents = await ChurchContent.findAll({
     where: { contentType, churchId },
     order: [["createdAt", "DESC"]],
     limit: parseInt(limit) || 10,
     offset: parseInt(offset),
   });
 
-  res.json({ status_code: "03", data: videos });
+  churchContents.forEach((content) =>
+    ChurchContent.createSermonUrl(content, req)
+  );
+
+  res.json({ status_code: "03", data: churchContents });
 };
 
 Controller.getDailyDevotionals = async (req, res) => {
