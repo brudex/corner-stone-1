@@ -6,6 +6,7 @@ const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
 
@@ -31,6 +32,25 @@ Controller.addUserView = async (req, res) => {
   res.render("users/add-user", { title: "Add User", churches });
 };
 
+Controller.editUserView = async (req, res) => {
+  const { id } = req.params;
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const user = await User.findOne({
+    raw: true,
+    where: { id },
+  });
+  if (!user) {
+    req.flash("error", "User does not exist");
+    return res.redirect("/users");
+  }
+  debug(churches);
+  res.render("users/edit-user", { title: "Edit User", churches, values: user });
+};
+
 //END VIEWS
 
 Controller.addUser = async (req, res) => {
@@ -54,13 +74,65 @@ Controller.addUser = async (req, res) => {
 
   const userExists = await User.findOne({ where: { email } });
   if (userExists) {
-    req.flash("error", "User already exist");
+    req.flash("error", "Email already exist");
     return res.render(page, { title: "Add User", values: req.body, churches });
   }
   const hashedPassword = await User.hashPassword(password);
   await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
   req.flash("success", "User added successfully");
   return res.render(page, { title: "Add User", churches });
+};
+
+Controller.editUser = async (req, res) => {
+  const page = "users/edit-user";
+  const { email } = req.body;
+  const { id } = req.params;
+
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const { error } = User.validateUser(req.body, "update");
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.render(page, {
+      title: "Edit User",
+      values: { ...req.body, id },
+      churches,
+    });
+  }
+
+  const userExists = await User.findOne({
+    where: { id: { [Op.ne]: id }, email },
+  });
+  if (userExists) {
+    req.flash("error", "Email already exist");
+    return res.render(page, {
+      title: "Edit User",
+      values: { ...req.body, id },
+      churches,
+    });
+  }
+
+  const user = await User.findOne({ where: { id } });
+  for (const [key, value] of Object.entries(req.body)) {
+    user[key] = value;
+  }
+  await user.save();
+  req.flash("success", "User updated successfully");
+  return res.render(page, {
+    title: "Edit User",
+    churches,
+    values: user,
+  });
+};
+
+Controller.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  await User.destroy({ where: { id } });
+  req.flash("success", "User deleted successfully");
+  res.redirect("/users");
 };
 
 Controller.registerUser = async (req, res, next) => {

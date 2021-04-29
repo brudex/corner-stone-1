@@ -18,6 +18,10 @@ Controller.index = async (req, res) => {
   });
 };
 
+Controller._403 = (req, res) => {
+  res.render("403", { title: "403", layout: "blank-layout" });
+};
+
 Controller.login = (req, res) => {
   res.render("index", { title: "Express" });
 };

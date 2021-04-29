@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      isSuperAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       tableName: "User",
@@ -48,15 +49,21 @@ module.exports = (sequelize, DataTypes) => {
     return await this.findOne({ raw, where: { email } });
   };
 
-  User.validateUser = function (user) {
+  User.validateUser = function (user, requestType = "create") {
     const schema = Joi.object({
       firstName: Joi.string().min(1).max(256).required(),
       lastName: Joi.string().min(1).max(256).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
-      password: Joi.string().min(6).max(256).required(),
+      password: Joi.string()
+        .min(6)
+        .max(256)
+        .alter({
+          create: (schema) => schema.required(),
+          update: (schema) => schema.forbidden(),
+        }),
     });
-    return schema.validate(user);
+    return schema.tailor(requestType).validate(user);
   };
 
   User.validateDetails = function (userDetails) {
