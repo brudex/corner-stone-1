@@ -17,7 +17,7 @@ Controller.initiatePaymentIntent = async (req, res) => {
     donation.paymentStatus ="01";
     donation.statusMessage = "pending";
     db.ChurchDonation.create(donation);
-    res.json({ status: "00", paymentUrl : "/paymentPage/"+donation.pageId });
+    res.json({ status: "00", paymentUrl : "/paymentPage/"+donation.pageId,reference:donation.pageId });
 };
 
 Controller.paymentPage = async (req, res) => {
@@ -45,10 +45,23 @@ Controller.paymentPage = async (req, res) => {
         })
 };
 
+Controller.paymentStatus = async (req, res) => {
+    db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
+        .then(function (donation) {
+            if(donation){
+
+               return  res.json({status:donation.paymentStatus, message:donation.statusMessage})
+            }else{
+                return res.status(404).json({status:"404",message:"Not Found"})
+            }
+        })
+};
+
+
 
 const calculateOrderAmount = donation => {
     console.log('Donation object >>',donation.toJSON());
     //todo add charge fees if any
     console.log("the donation amount is >>>",donation.amount);
-    return Number(donation.amount);
+    return Number(Number(donation.amount)*100);
 };

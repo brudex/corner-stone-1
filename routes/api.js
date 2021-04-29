@@ -43,15 +43,16 @@ router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the 
 /************Booking appointment*****/
 router.post("/appointment/set", api_auth, appointmentController.setAppointment);
 router.post("/bookappointment", churchesController.bookAppointment); //add the jwt middleware to identify the user
-router.post( "/getavailabletimesbydate",  churchesController.getAvailableAppointmentTimes); //add the jwt middleware to identify the user
+router.post("/getavailabletimesbydate",  churchesController.getAvailableAppointmentTimes); //add the jwt middleware to identify the user
 router.get("/appointment/:date",  api_auth,appointmentController.getAppointmentTimes);
 
 
 /*************Donation and Payment Initiation***************/
-router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
-router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
+router.get("/getdonationtypes", donationController.getChurchDonationTypes);
+router.get("/donationhistory",api_auth, donationController.donationHistory); //add the jwt middleware to identify the user
 router.get("/donationTypes", api_auth,  donationController.getChurchDonationTypes);
 router.post("/initiatePaymentIntent", api_auth,stripeController.initiatePaymentIntent); //call this endpoint to state a payment session it will return the url which has the payment form
+router.get("/paymentStatus/:pageId", api_auth,stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
 
 
 module.exports = router;
