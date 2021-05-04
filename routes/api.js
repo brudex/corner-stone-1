@@ -64,14 +64,16 @@ router.post(
 router.post("/bookappointment", churchesController.bookAppointment); //add the jwt middleware to identify the user
 router.post(
   "/getavailabletimesbydate",
+  api_auth,
   churchesController.getAvailableAppointmentTimes
 ); //add the jwt middleware to identify the user
 
-router.post("/makedonation", donationController.makeDonation); //add the jwt middleware to identify the user
+router.post("/makedonation", api_auth, donationController.makeDonation); //add the jwt middleware to identify the user
 router.post("/users/login", usersController.login);
 router.post("/users/forgotten_password", usersController.resetPassword);
 router.post("/articles", articlesController.articles); //todo : this is just an example of how the routes should be done
 router.post("/users/register", usersController.registerUser);
+router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
 module.exports = router;

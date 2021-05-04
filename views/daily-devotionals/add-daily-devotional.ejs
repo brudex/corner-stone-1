@@ -1,0 +1,86 @@
+<%- include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Add daily devotionals</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item">
+            <a href="/daily-devotionals">Daily Devotionals</a>
+          </li>
+          <li class="breadcrumb-item">Add daily devotional</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">Add Devotional</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Fill all fields specified below to add a new devotional.
+      </p>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form action="/daily-devotionals/add" method="post">
+          <div class="form-group">
+            <label class="form-label" for="dateToShow">Date to show</label>
+            <input
+              id="dateToShow"
+              type="hidden"
+              class="form-control flatpickr-input"
+              data-toggle="flatpickr"
+              name="dateToShow"
+              value="<% if(typeof values !== 'undefined') {%><%=values.dateToShow%><%}%>"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="devotionalContent">Message*:</label>
+            <textarea
+              id="devotionalContent"
+              name="devotionalContent"
+              placeholder="Enter Message"
+              class="form-control"
+              rows="3"
+            >
+<% if(typeof values !== 'undefined') {%><%=values.devotionalContent%><%}%></textarea
+            >
+          </div>
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input
+                id="customCheck01"
+                type="checkbox"
+                class="custom-control-input"
+                name="isDefault"
+                checked=""
+              />
+              <label for="customCheck01" class="custom-control-label"
+                >Set as default</label
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>

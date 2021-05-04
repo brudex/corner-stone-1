@@ -17,19 +17,26 @@ module.exports = Controller;
 
 //START VIEWS
 Controller.churchesView = async (req, res, next) => {
-  // const churches = await Church.findAll();
   const paginationResults = await Church.paginate(req);
-  res.render("church/churches", { title: "Churches", ...paginationResults });
+  res.render("church/churches", {
+    title: "Churches",
+    user: req.user,
+    ...paginationResults,
+  });
 };
 
 Controller.addChurchView = async (req, res, next) => {
-  res.render("church/add-church", { title: "Add Church" });
+  res.render("church/add-church", { title: "Add Church", user: req.user });
 };
 
 Controller.editChurchView = async (req, res, next) => {
   const { id } = req.params;
   const church = await Church.findOne({ raw: true, where: { id } });
-  res.render("church/edit-church", { title: "Edit Church", values: church });
+  res.render("church/edit-church", {
+    title: "Edit Church",
+    user: req.user,
+    values: church,
+  });
 };
 //END VIEWS
 

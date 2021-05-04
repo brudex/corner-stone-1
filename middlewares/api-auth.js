@@ -4,6 +4,15 @@ const config = require("../config/config");
 const debug = require("debug")("corner-stone:api-auth");
 
 module.exports = function (req, res, next) {
+  if (!req.header("Authorization"))
+    return next(
+      createError(401, {
+        status_code: "03",
+        message: "request failed",
+        reason: "Access denied, missing auth token",
+      })
+    );
+
   let token = req.header("Authorization");
   token = req.headers.authorization.split(" ")[1];
   debug(token);

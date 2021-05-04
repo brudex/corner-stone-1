@@ -1,0 +1,73 @@
+<%- include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Edit devotionals</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item">
+            <a href="/devotionals">Devotionals</a>
+          </li>
+          <li class="breadcrumb-item">Edit devotionals</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">Edit Devotional</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Modify all fields you wish to update and submit.
+      </p>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form action="/devotionals/edit/<%=id%>" method="post">
+          <div class="form-group">
+            <label class="form-label" for="title">Title*:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              value="<% if(typeof values !== 'undefined') {%><%=values.title%><%}%>"
+              placeholder="Enter devotional title"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contentData">Message*:</label>
+            <textarea
+              id="contentData"
+              name="contentData"
+              placeholder="Enter Message"
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="5"
+            >
+<% if(typeof values !== 'undefined') {%><%=values.contentData%><%}%></textarea
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>

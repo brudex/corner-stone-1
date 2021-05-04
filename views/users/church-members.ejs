@@ -5,19 +5,19 @@
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Users</h2>
+        <h2 class="mb-0">Members</h2>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item">Members</li>
         </ol>
       </div>
     </div>
-    <div class="row" role="tablist">
+    <!-- <div class="row" role="tablist">
       <div class="col-auto">
         <a href="/users/add" class="btn btn-outline-secondary">Add User</a>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -28,7 +28,7 @@
 <!-- Page Content -->
 <div class="container page__container page-section">
   <div class="page-separator">
-    <div class="page-separator__text">Users</div>
+    <div class="page-separator__text">Members</div>
   </div>
 
   <div class="card mb-0">
@@ -81,7 +81,7 @@
               >
             </th>
 
-            <th class="text-center" style="width: 48px">
+            <!-- <th class="text-center" style="width: 48px">
               <a
                 href="javascript:void(0)"
                 class="sort"
@@ -89,11 +89,11 @@
                 >Actions</a
               >
             </th>
-            <th style="width: 24px" class="pl-0"></th>
+            <th style="width: 24px" class="pl-0"></th> -->
           </tr>
         </thead>
         <tbody class="list" id="staff">
-          <% data.forEach(user => {%>
+          <% data.forEach(member => {%>
           <tr>
             <td>
               <div
@@ -104,7 +104,7 @@
                   <div class="d-flex flex-column">
                     <p class="mb-0">
                       <strong class="js-lists-values-employee-name"
-                        ><%=user.firstName + ' ' + user.lastName %></strong
+                        ><%=member.firstName + ' ' + member.lastName %></strong
                       >
                     </p>
                     <!-- <small class="js-lists-values-employee-email text-50"
@@ -115,36 +115,36 @@
               </div>
             </td>
             <td>
-              <div class="d-flex align-items-center"><%=user.email %></div>
+              <div class="d-flex align-items-center"><%=member.email %></div>
             </td>
 
             <td>
               <div class="d-flex align-items-center">
-                <%=user.isAdmin ? 'Admin' : 'Church member' %>
+                <%=member.isAdmin ? 'Admin' : 'Church member' %>
               </div>
             </td>
 
-            <td class="text-center js-lists-values-projects small">
+            <!-- <td class="text-center js-lists-values-projects small">
               <a
                 type="button"
                 class="btn btn-warning"
-                href="/users/edit/<%=user.id %>"
+                href="/users/edit/<%=member.id %>"
               >
                 <i class="material-icons">edit</i>
               </a>
               <a
                 type="button"
                 class="btn btn-danger"
-                href="/users/delete/<%=user.id %>"
+                href="/users/delete/<%=member.id %>"
               >
                 <i class="material-icons">delete</i>
               </a>
-            </td>
-            <td class="text-right pl-0">
+            </td> -->
+            <!-- <td class="text-right pl-0">
               <a href="" class="text-50"
                 ><i class="material-icons">more_vert</i></a
               >
-            </td>
+            </td> -->
           </tr>
           <% })%> <% if (data.length === 0) {%>
           <tr>
