@@ -1,9 +1,9 @@
 const { sequelize, Sequelize } = require("../models/index");
 const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
-const multer = require("multer");
 const Op = Sequelize.Op;
 const debug = require("debug")("corner-stone:church-controller");
+const multer = require("multer");
 //utils
 const { allowImagesOnly, storage } = require("../utils/image_upload");
 const upload = multer({
@@ -17,18 +17,19 @@ module.exports = Controller;
 
 //START VIEWS
 Controller.churchesView = async (req, res, next) => {
-  const churches = await Church.findAll();
-  res.render("churches", { title: "Churches", churches });
+  // const churches = await Church.findAll();
+  const paginationResults = await Church.paginate(req);
+  res.render("church/churches", { title: "Churches", ...paginationResults });
 };
 
 Controller.addChurchView = async (req, res, next) => {
-  res.render("add-church", { title: "Add Church" });
+  res.render("church/add-church", { title: "Add Church" });
 };
 
 Controller.editChurchView = async (req, res, next) => {
   const { id } = req.params;
   const church = await Church.findOne({ raw: true, where: { id } });
-  res.render("edit-church", { title: "Edit Church", values: church });
+  res.render("church/edit-church", { title: "Edit Church", values: church });
 };
 //END VIEWS
 
@@ -47,7 +48,7 @@ Controller.getChurch = async (req, res, next) => {
 };
 
 Controller.addChurch = async (req, res, next) => {
-  const page = "add-church";
+  const page = "church/add-church";
 
   await upload(req, res, async (err) => {
     const { name, email, phone } = req.body;
@@ -75,7 +76,7 @@ Controller.addChurch = async (req, res, next) => {
 
 Controller.editChurchImage = async (req, res) => {
   const { id } = req.params;
-  const page = "edit-church";
+  const page = "church/edit-church";
 
   await upload(req, res, async (err) => {
     if (err) {
@@ -96,7 +97,7 @@ Controller.editChurchImage = async (req, res) => {
 };
 
 Controller.editChurch = async (req, res) => {
-  const page = "edit-church";
+  const page = "church/edit-church";
   const { id } = req.params;
   const { name, email, phone } = req.body;
 

@@ -2,10 +2,138 @@ const createError = require("http-errors");
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
 const User = user(sequelize, Sequelize);
+const church = require("../models/church");
+const Church = church(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
+const Op = Sequelize.Op;
+const generator = require("generate-password");
+const debug = require("debug")("corner-stone:userscontroller");
 
 const Controller = {};
 module.exports = Controller;
+
+//START VIEWS
+
+Controller.usersView = async (req, res, next) => {
+  const paginationResults = await User.paginate(req);
+  res.render("users/users", {
+    title: "Users",
+    ...paginationResults,
+  });
+};
+
+Controller.addUserView = async (req, res) => {
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+  debug(churches);
+  res.render("users/add-user", { title: "Add User", churches });
+};
+
+Controller.editUserView = async (req, res) => {
+  const { id } = req.params;
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const user = await User.findOne({
+    raw: true,
+    where: { id },
+  });
+  if (!user) {
+    req.flash("error", "User does not exist");
+    return res.redirect("/users");
+  }
+  debug(churches);
+  res.render("users/edit-user", { title: "Edit User", churches, values: user });
+};
+
+//END VIEWS
+
+Controller.addUser = async (req, res) => {
+  const page = "users/add-user";
+  const { email } = req.body;
+
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const password = generator.generate({
+    length: 10,
+    numbers: true,
+  });
+  const { error } = User.validateUser({ ...req.body, password });
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.render(page, { title: "Add User", values: req.body, churches });
+  }
+
+  const userExists = await User.findOne({ where: { email } });
+  if (userExists) {
+    req.flash("error", "Email already exist");
+    return res.render(page, { title: "Add User", values: req.body, churches });
+  }
+  const hashedPassword = await User.hashPassword(password);
+  await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+  req.flash("success", "User added successfully");
+  return res.render(page, { title: "Add User", churches });
+};
+
+Controller.editUser = async (req, res) => {
+  const page = "users/edit-user";
+  const { email } = req.body;
+  const { id } = req.params;
+
+  const churches = await Church.findAll({
+    raw: true,
+    attributes: ["id", "name"],
+  });
+
+  const { error } = User.validateUser(req.body, "update");
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.render(page, {
+      title: "Edit User",
+      values: { ...req.body, id },
+      churches,
+    });
+  }
+
+  const userExists = await User.findOne({
+    where: { id: { [Op.ne]: id }, email },
+  });
+  if (userExists) {
+    req.flash("error", "Email already exist");
+    return res.render(page, {
+      title: "Edit User",
+      values: { ...req.body, id },
+      churches,
+    });
+  }
+
+  const user = await User.findOne({ where: { id } });
+  for (const [key, value] of Object.entries(req.body)) {
+    user[key] = value;
+  }
+  await user.save();
+  req.flash("success", "User updated successfully");
+  return res.render(page, {
+    title: "Edit User",
+    churches,
+    values: user,
+  });
+};
+
+Controller.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  await User.destroy({ where: { id } });
+  req.flash("success", "User deleted successfully");
+  res.redirect("/users");
+};
 
 Controller.registerUser = async (req, res, next) => {
   const failed = { status_code: "03", message: "Registration failed" };
@@ -68,23 +196,25 @@ Controller.login = async (req, res, next) => {
 
 Controller.resetPassword = async (req, res, next) => {
   const failed = { status_code: "03", message: "password reset failed" };
-  const { email, password } = req.body;
-  const { error } = User.validateDetails(req.body);
+  const { email } = req.body;
+  const schema = Joi.string().email().required().label("Email");
+  const { error } = schema.validate(email);
+
   if (error)
     return next(
       createError(400, { ...failed, reason: error.details[0].message })
     );
+  const userExist = await User.findByEmail(email);
+  debug(userExist);
+  if (!userExist)
+    return res.json({
+      status_code: "00",
+      message: "We have sent an email with password reset instructions.",
+    }); //False success message (security measure)
+  await User.sendResetPasswordMail(email, req);
 
-  const user = await User.findByEmail(email, false);
-  if (!user)
-    return next(createError(400, { ...failed, reason: "User not found" }));
-
-  const hashedPassword = await User.hashPassword(password);
-  user.password = hashedPassword;
-
-  await user.save();
-
-  res.json({ status_code: "00", message: "password reset successful" });
+  res.json({
+    status_code: "00",
+    message: "We have sent an email with password reset instructions.",
+  });
 };
-
-module.exports = Controller;

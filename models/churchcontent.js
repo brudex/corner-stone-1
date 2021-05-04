@@ -27,5 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     });
     return schema.validate(content);
   };
+  ChurchContent.createSermonUrl = function (content, req) {
+    if (content.contentType === "sermon")
+      content.contentData = `${req.protocol}://${req.headers.host}/uploads/sermons/${content.contentData}`;
+  };
   return ChurchContent;
 };

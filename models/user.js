@@ -2,7 +2,9 @@
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const sendMail = require("../utils/sendMail");
 const config = require("../config/config");
+const pagination = require("../utils/pagination");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -29,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      isSuperAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       tableName: "User",
@@ -46,15 +49,21 @@ module.exports = (sequelize, DataTypes) => {
     return await this.findOne({ raw, where: { email } });
   };
 
-  User.validateUser = function (user) {
+  User.validateUser = function (user, requestType = "create") {
     const schema = Joi.object({
       firstName: Joi.string().min(1).max(256).required(),
       lastName: Joi.string().min(1).max(256).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
-      password: Joi.string().min(6).max(256).required(),
+      password: Joi.string()
+        .min(6)
+        .max(256)
+        .alter({
+          create: (schema) => schema.required(),
+          update: (schema) => schema.forbidden(),
+        }),
     });
-    return schema.validate(user);
+    return schema.tailor(requestType).validate(user);
   };
 
   User.validateDetails = function (userDetails) {
@@ -78,6 +87,30 @@ module.exports = (sequelize, DataTypes) => {
     return schema.validate(passwords);
   };
 
+  User.sendResetPasswordMail = async function (email, req) {
+    const token = await jwt.sign({ email }, config.jwt_secret);
+
+    const hostname = `${req.protocol}://${req.headers.host}`;
+    const options = {
+      from: '"noreply"<test@senyotheart.com>',
+      to: email,
+      subject: "Corner Stone",
+      html: `<DOCTYPE html>
+        <html>
+          <body>          
+            <p>Hi there, you're receiving this mail because you initiated a password reset. <strong>If this wasn't you, please ignore</strong>.</p>
+            <p>Click on the link below to reset your password!</p>
+            <a href="${hostname}/resetpassword/${token}">Click here to reset your password</a>
+          </body>
+        </html>`,
+    };
+
+    sendMail(options);
+  };
+
+  User.paginate = function (req) {
+    return pagination(this, req);
+  };
   User.prototype.generateAuthToken = function () {
     return jwt.sign(
       {

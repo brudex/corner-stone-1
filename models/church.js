@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const pagination = require("../utils/pagination");
 module.exports = (sequelize, DataTypes) => {
   const Church = sequelize.define(
     "Church",
@@ -32,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       twitterHandle: Joi.string().uri().allow(""),
     });
     return schema.validate(church);
+  };
+
+  Church.paginate = function (req) {
+    return pagination(this, req);
   };
 
   return Church;

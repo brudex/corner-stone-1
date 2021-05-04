@@ -1,7 +1,7 @@
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
-const sendMail = require("../utils/sendMail");
 const jwt = require("jsonwebtoken");
+const sendMail = require("../utils/sendMail");
 const config = require("../config/config");
 const debug = require("debug")("corner-stone:account-controller");
 const User = user(sequelize, Sequelize);
@@ -42,28 +42,8 @@ Controller.forgotPassword = async (req, res) => {
     );
     return res.redirect("/forgotpassword");
   }
+  User.sendResetPasswordMail(email, req);
 
-  const token = await jwt.sign({ email }, config.jwt_secret);
-
-  const hostname =
-    process.env.NODE_ENV === "production"
-      ? `${req.protocol}://${req.hostname}`
-      : `${req.protocol}://${req.hostname}:${config.port}`;
-  const options = {
-    from: '"noreply"<test@senyotheart.com>',
-    to: email,
-    subject: "Corner Stone",
-    html: `<DOCTYPE html>
-        <html>
-          <body>          
-            <p>Hi there, you're receiving this mail because you initiated a password reset. <strong>If this wasn't you, please ignore</strong>.</p>
-            <p>Click on the link below to reset your password!</p>
-            <a href="${hostname}/resetpassword/${token}">Click here to reset your password</a>
-          </body>
-        </html>`,
-  };
-
-  sendMail(options);
   req.flash(
     "success",
     "We have sent you an email with password reset instructions."
