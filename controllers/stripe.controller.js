@@ -10,8 +10,8 @@ Controller.initiatePaymentIntent = async (req, res) => {
     const donation ={};
     donation.churchId = req.user.churchId;
     donation.userId= user.id;
-    donation.pageId = uuid.v4();
-    donation.amount =req.body.amount;
+    donation.pageId= uuid.v4();
+    donation.amount=req.body.amount;
     donation.paymentMode = req.body.paymentMode;
     donation.donationTypeId = req.body.donationType;
     donation.paymentStatus ="01";
