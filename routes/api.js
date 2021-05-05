@@ -53,6 +53,7 @@ router.get("/donationhistory",api_auth, donationController.donationHistory); //a
 router.get("/donationTypes", api_auth,  donationController.getChurchDonationTypes);
 router.post("/initiatePaymentIntent", api_auth,stripeController.initiatePaymentIntent); //call this endpoint to state a payment session it will return the url which has the payment form
 router.get("/paymentStatus/:pageId", api_auth,stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
-
+router.post("/users/change_password", api_auth, usersController.changePassword);
+//Todo return church contact info on login
 
 module.exports = router;

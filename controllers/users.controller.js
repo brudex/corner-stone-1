@@ -16,9 +16,27 @@ module.exports = Controller;
 //START VIEWS
 
 Controller.usersView = async (req, res, next) => {
-  const paginationResults = await User.paginate(req);
+  const paginationResults = await User.paginate(req, {
+    isSuperAdmin: { [Op.ne]: true },
+  });
+
   res.render("users/users", {
     title: "Users",
+    user: req.user,
+    ...paginationResults,
+  });
+};
+
+Controller.churchMembersView = async (req, res, next) => {
+  const { churchId } = req.user;
+  const paginationResults = await User.paginate(req, {
+    churchId,
+    isAdmin: { [Op.ne]: true },
+  });
+
+  res.render("users/church-members", {
+    title: "Church Members",
+    user: req.user,
     ...paginationResults,
   });
 };
@@ -29,7 +47,7 @@ Controller.addUserView = async (req, res) => {
     attributes: ["id", "name"],
   });
   debug(churches);
-  res.render("users/add-user", { title: "Add User", churches });
+  res.render("users/add-user", { title: "Add User", user: req.user, churches });
 };
 
 Controller.editUserView = async (req, res) => {
@@ -48,7 +66,12 @@ Controller.editUserView = async (req, res) => {
     return res.redirect("/users");
   }
   debug(churches);
-  res.render("users/edit-user", { title: "Edit User", churches, values: user });
+  res.render("users/edit-user", {
+    title: "Edit User",
+    user: req.user,
+    churches,
+    values: user,
+  });
 };
 
 //END VIEWS
@@ -217,4 +240,23 @@ Controller.resetPassword = async (req, res, next) => {
     status_code: "00",
     message: "We have sent an email with password reset instructions.",
   });
+};
+
+Controller.changePassword = async (req, res, next) => {
+  const { id } = req.user;
+
+  const { error } = User.validateChangePassword(req.body);
+  if (error)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "password change failed",
+        reason: error.details[0].message,
+      })
+    );
+
+  const hashedPassword = await User.hashPassword(req.body.password);
+  await User.update({ password: hashedPassword }, { where: { id } });
+
+  res.json({ status_code: "03", message: "password changed successfully" });
 };

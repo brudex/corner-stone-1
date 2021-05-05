@@ -6,7 +6,7 @@
       class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Dashboard</h2>
+        <h2 class="mb-0"><%=user.isSuperAdmin ? 'Super admin' : 'admin' %></h2>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -16,8 +16,8 @@
 
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/churches/add" class="btn btn-outline-secondary"
-          >Add Chuhrch</a
+        <a href="/churchcontent/add" class="btn btn-outline-secondary"
+          >Add Church Content</a
         >
       </div>
     </div>
@@ -36,21 +36,21 @@
   </div>
 
   <div class="row card-group-row mb-lg-8pt">
-    <div class="col-lg-6 col-md-12 card-group-row__col">
+    <div class="col-lg-4 col-md-12 card-group-row__col">
       <div class="card card-group-row__card p-relative o-hidden">
-        <a href="/churches">
+        <a href="/donations">
           <div class="card-body d-flex flex-row align-items-center">
             <div class="flex">
               <p class="card-title d-flex align-items-center">
-                <strong>Church</strong>
-                <span class="text-20 ml-8pt"></span>
+                <strong>Donations</strong>
+                <span class="text-20 ml-8pt">Today</span>
                 <i class="material-icons text-accent ml-4pt icon-16pt"
-                  >home_work</i
+                  >attach_money</i
                 >
               </p>
-              <span class="h2 m-0"><%=data.churchesCount %></span>
+              <span class="h2 m-0"><%=data.donations %></span>
             </div>
-            <i class="material-icons icon-32pt text-20 ml-8pt">home_work</i>
+            <i class="material-icons icon-32pt text-20 ml-8pt">attach_money</i>
           </div>
           <div class="progress" style="height: 3px">
             <div
@@ -65,21 +65,21 @@
         </a>
       </div>
     </div>
-    <div class="col-lg-6 col-md-12 card-group-row__col">
+    <div class="col-lg-4 col-md-12 card-group-row__col">
       <div class="card card-group-row__card p-relative o-hidden">
-        <a href="/users">
+        <a href="/churchmembers">
           <div class="card-body d-flex flex-row align-items-center">
             <div class="flex">
               <p class="card-title d-flex align-items-center">
-                <strong>Registered Users</strong>
+                <strong>Church Members</strong>
                 <span class="text-20 ml-8pt"></span>
                 <i class="material-icons text-primary ml-4pt icon-16pt"
-                  >contacts</i
+                  >people</i
                 >
               </p>
-              <span class="h2 m-0"><%=data.usersCount %></span>
+              <span class="h2 m-0"><%=data.membersCount %></span>
             </div>
-            <i class="material-icons icon-32pt text-20 ml-8pt">contacts</i>
+            <i class="material-icons icon-32pt text-20 ml-8pt">people</i>
           </div>
           <div class="progress" style="height: 3px">
             <div
@@ -94,28 +94,18 @@
         </a>
       </div>
     </div>
-    <!-- <div class="col-lg-6 col-md-12 card-group-row__col">
+    <div class="col-lg-4 col-md-12 card-group-row__col">
       <div class="card card-group-row__card">
         <div class="card-body d-flex flex-row align-items-center">
           <div class="card-title flex">
-            <strong>Churches</strong>
-            <div class="h2 m-0">133</div>
+            <strong>Appointments</strong>
+            <span class="text-20 ml-8pt">Today</span>
+            <div class="h2 m-0"><%=data.appointmentsCount %></div>
           </div>
-          <i class="material-icons icon-32pt text-20">home_work</i>
+          <i class="material-icons icon-32pt text-20">meeting_room</i>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-12 card-group-row__col">
-      <div class="card card-group-row__card">
-        <div class="card-body d-flex flex-row align-items-center">
-          <div class="card-title flex">
-            <strong>Registered Users</strong>
-            <div class="h2 m-0">13k</div>
-          </div>
-          <i class="material-icons icon-32pt text-20">contacts</i>
-        </div>
-      </div>
-    </div> -->
   </div>
 
   <div class="card mb-lg-32pt">
@@ -573,8 +563,8 @@
       </ul>
     </div>
     <!-- <div class="card-body bordet-top text-right">
-15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
-</div> -->
+  15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
+  </div> -->
   </div>
 </div>
 <%- include('./partials/drawer.ejs') %>

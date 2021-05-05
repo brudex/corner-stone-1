@@ -1,0 +1,128 @@
+<%- include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div
+      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+    >
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Devotional</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row" role="tablist">
+      <div class="col-auto">
+        <a href="/devotionals/add" class="btn btn-outline-secondary"
+          >Add Devotional</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container page__container page__container page-section">
+  <div class="page-separator">
+    <div class="page-separator__text">Overview</div>
+  </div>
+  <div class="row card-group-row mb-lg-8pt">
+    <% devotionals.forEach(devotional => {%>
+    <div class="col-sm-4 card-group-row__col">
+      <div
+        class="card card-lg overlay--primary-dodger-blue stack stack--1 card-group-row__card"
+      >
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <div class="flex">
+              <div class="d-flex align-items-center">
+                <div class="rounded mr-12pt z-0 o-hidden">
+                  <div class="overlay">
+                    <span class="overlay__content overlay__content-transparent">
+                      <span
+                        class="overlay__action d-flex flex-column text-center lh-1"
+                      >
+                        <small
+                          class="h6 small text-white mb-0"
+                          style="font-weight: 500"
+                          >80%</small
+                        >
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="card-title"><%=devotional.title %></div>
+                  <p class="flex text-50 lh-1 mb-0">
+                    <small
+                      ><%=new Date(devotional.createdAt).toDateString()
+                      %></small
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="/devotionals/edit/<%=devotional.id %>"
+              data-toggle="tooltip"
+              data-title="Edit Content"
+              data-placement="top"
+              data-boundary="window"
+              class="ml-4pt material-icons text-20 card-course__icon-favorite"
+              data-original-title=""
+              title=""
+              >edit</a
+            >
+          </div>
+
+          <p
+            class="mt-16pt text-70 flex"
+            style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 6;
+              -webkit-box-orient: vertical;
+            "
+          >
+            <%=devotional.contentData %>
+          </p>
+
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <!-- <div class="d-flex align-items-center mb-4pt">
+                <span class="material-icons icon-16pt text-50 mr-4pt"
+                  >access_time</span
+                >
+                <p class="flex text-50 lh-1 mb-0"><small>6 hours</small></p>
+              </div>
+              <div class="d-flex align-items-center mb-4pt">
+                <span class="material-icons icon-16pt text-50 mr-4pt"
+                  >play_circle_outline</span
+                >
+                <p class="flex text-50 lh-1 mb-0"><small>12 lessons</small></p>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="material-icons icon-16pt text-50 mr-4pt"
+                  >assessment</span
+                >
+                <p class="flex text-50 lh-1 mb-0"><small>Beginner</small></p>
+              </div> -->
+            </div>
+            <div class="col text-right">
+              <a href="#" class="btn btn-outline-secondary">Read more</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})%>
+  </div>
+</div>
+
+<%- include('../partials/drawer.ejs') %>

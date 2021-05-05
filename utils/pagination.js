@@ -1,4 +1,5 @@
-module.exports = async (model, req) => {
+const { Op } = require("sequelize");
+module.exports = async (model, req, condition = { id: { [Op.gt]: 0 } }) => {
   let page = 1;
   if (req.query.page) {
     page = Math.abs(parseInt(req.query.page));
@@ -13,12 +14,13 @@ module.exports = async (model, req) => {
   const offset = (page - 1) * limit;
 
   const data = await model.findAll({
+    where: condition,
     order: [["createdAt", "DESC"]],
     limit,
     offset,
   });
 
-  const total = await model.count();
+  const total = await model.count({ where: condition });
   const pages = Math.ceil(total / limit);
 
   for (let i = page; i > adjacentPagesLeft; i--) {

@@ -1,0 +1,288 @@
+<%- contentFor('drawer') %>
+<div class="mdk-drawer js-mdk-drawer" id="default-drawer">
+  <div class="mdk-drawer__content">
+    <div
+      class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
+      data-perfect-scrollbar
+    >
+      <!-- Sidebar Content -->
+      <div class="d-flex align-items-center navbar-height">
+        <form
+          action="index.html"
+          class="search-form search-form--black mx-16pt pr-0 pl-16pt"
+        >
+          <input type="text" class="form-control pl-0" placeholder="Search" />
+          <button class="btn" type="submit">
+            <i class="material-icons">search</i>
+          </button>
+        </form>
+      </div>
+      <a href="/" class="sidebar-brand">
+        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+          <span class="avatar-title rounded bg-primary"
+            ><img
+              src="/images/illustration/student/128/white.svg"
+              class="img-fluid"
+              alt="logo"
+          /></span>
+        </span>
+        <span>Corner Stone</span>
+      </a>
+      <div class="sidebar-heading">Applications</div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-button" href="/">
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >home</span
+            >
+            Home
+          </a>
+        </li>
+        <% if (user.isSuperAdmin) {%>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#student_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >home_work</span
+            >
+            Churches
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="student_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/churches">
+                <span class="sidebar-menu-text">View Churches</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/churches/add">
+                <span class="sidebar-menu-text">Add Church</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#instructor_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >people</span
+            >
+            Users
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="instructor_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/users">
+                <span class="sidebar-menu-text">View Users</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/users/add">
+                <span class="sidebar-menu-text">Add User</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <%}%> <% if (user.isAdmin) {%>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#church_content"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >dynamic_feed</span
+            >
+            Church Content
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="church_content">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/devotionals">
+                <span class="sidebar-menu-text"> Devotionals</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/devotionals/add">
+                <span class="sidebar-menu-text">Add Devotionals</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/daily-devotionals">
+                <span class="sidebar-menu-text">Daily Devotionals</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/daily-devotionals/add">
+                <span class="sidebar-menu-text">Add Daily Devotionals</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/sermons">
+                <span class="sidebar-menu-text">Sermons</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/sermons/add">
+                <span class="sidebar-menu-text">Add Sermon</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/videos">
+                <span class="sidebar-menu-text">Videos</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/videos/add">
+                <span class="sidebar-menu-text">Add Video</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#enterprise_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >event</span
+            >
+            Events
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul
+            class="sidebar-submenu collapse show sm-indent"
+            id="enterprise_menu"
+          >
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="leaves.html">
+                <span class="sidebar-menu-text">View Events</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="departments.html">
+                <span class="sidebar-menu-text">Add Event</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button"
+            data-toggle="collapse"
+            href="#productivity_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >meeting_room</span
+            >
+            Appointments
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="productivity_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="tasks-list.html">
+                <span class="sidebar-menu-text">View Appointments</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="kanban.html">
+                <span class="sidebar-menu-text">Add Appointment date</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button"
+            data-toggle="collapse"
+            href="#ecommerce_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >attach_money</span
+            >
+            Donations
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="ecommerce_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="ecommerce.html">
+                <span class="sidebar-menu-text">Donations</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="edit-product.html">
+                <span class="sidebar-menu-text">Add Donation type</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#instructor_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >people</span
+            >
+            Church Members
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="instructor_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/churchmembers">
+                <span class="sidebar-menu-text">View Members</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <%}%>
+      </ul>
+      <div class="sidebar-heading">Settings</div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button"
+            data-toggle="collapse"
+            href="#account_menu"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >account_box</span
+            >
+            Account
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="account_menu">
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="change-password.html">
+                <span class="sidebar-menu-text">Change Password</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="edit-account.html">
+                <span class="sidebar-menu-text">Edit Account</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- // END Sidebar Content -->
+    </div>
+  </div>
+</div>

@@ -87,6 +87,18 @@ module.exports = (sequelize, DataTypes) => {
     return schema.validate(passwords);
   };
 
+  User.validateChangePassword = function (passwords) {
+    const schema = Joi.object({
+      password: Joi.string().min(6).max(256).required().label("Password"),
+      confirmPassword: Joi.any()
+        .equal(Joi.ref("password"))
+        .required()
+        .label("Confirm password")
+        .messages({ "any.only": "passwords do not match" }),
+    });
+    return schema.validate(passwords);
+  };
+
   User.sendResetPasswordMail = async function (email, req) {
     const token = await jwt.sign({ email }, config.jwt_secret);
 
@@ -108,8 +120,8 @@ module.exports = (sequelize, DataTypes) => {
     sendMail(options);
   };
 
-  User.paginate = function (req) {
-    return pagination(this, req);
+  User.paginate = function (req, condition) {
+    return pagination(this, req, condition);
   };
   User.prototype.generateAuthToken = function () {
     return jwt.sign(

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       churchId: Joi.number().integer().positive().required(),
       devotionalContent: Joi.string().min(1).max(10000).required(),
       dateToShow: Joi.date().required(),
-      isDefault: Joi.boolean().required(),
+      isDefault: Joi.boolean(),
     });
     return schema.validate(devotional);
   };

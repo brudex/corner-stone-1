@@ -1,0 +1,112 @@
+<%- include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div
+      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+    >
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Sermons</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row" role="tablist">
+      <div class="col-auto">
+        <a href="/sermons/add" class="btn btn-outline-secondary">Add Sermon</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container page__container page__container page-section">
+  <div class="page-separator">
+    <div class="page-separator__text">Overview</div>
+  </div>
+  <div class="row card-group-row mb-lg-8pt">
+    <% sermons.forEach(sermon => {%>
+    <div class="col-sm-4 card-group-row__col">
+      <div
+        class="card card-lg overlay--primary-dodger-blue stack stack--1 card-group-row__card"
+      >
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <div class="flex">
+              <div class="d-flex align-items-center">
+                <div class="rounded mr-12pt z-0 o-hidden">
+                  <div class="overlay">
+                    <span class="overlay__content overlay__content-transparent">
+                      <span
+                        class="overlay__action d-flex flex-column text-center lh-1"
+                      >
+                        <small
+                          class="h6 small text-white mb-0"
+                          style="font-weight: 500"
+                          >80%</small
+                        >
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="card-title"><%=sermon.title %></div>
+                  <p class="flex text-50 lh-1 mb-0">
+                    <small
+                      ><%=new Date(sermon.createdAt).toDateString() %></small
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="/sermons/edit/<%=sermon.id %>"
+              data-toggle="tooltip"
+              data-title="Add Favorite"
+              data-placement="top"
+              data-boundary="window"
+              class="ml-4pt material-icons text-20 card-course__icon-favorite"
+              data-original-title=""
+              title=""
+              >edit</a
+            >
+          </div>
+          <img src="/images/sermon.jpg" height="150" alt="sermon" />
+          <p
+            class="mt-16pt text-70 flex"
+            style="
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 6;
+              -webkit-box-orient: vertical;
+            "
+          ></p>
+
+          <div class="row align-items-center">
+            <div class="col">
+              <audio controls style="width: 100%">
+                <source
+                  src="/uploads/sermons/<%=sermon.contentData%>"
+                  type="audio/mpeg"
+                />
+                <source
+                  src="/uploads/sermons/<%=sermon.contentData%>"
+                  type="audio/ogg"
+                />
+              </audio>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})%>
+  </div>
+</div>
+
+<%- include('../partials/drawer.ejs') %>
