@@ -348,6 +348,7 @@ Controller.getUserPlayList = async (req, res, next) => {
   res.json({ status_code: "00", data: playlist });
 };
 
+//Test route to be removed
 Controller.sendNotification = async (req, res, next) => {
   const { tokens, title, body } = req.body;
 
@@ -372,6 +373,54 @@ Controller.sendNotification = async (req, res, next) => {
     .then((response) => res.send(response))
     .catch((err) => {
       res.status(400).send("something went wrong");
+      debug(err);
+    });
+};
+
+Controller.sendNotificationView = async (req, res) => {
+  res.render("send-notification", {
+    title: "Send Notification",
+    user: req.user,
+  });
+};
+
+Controller.sendNotifications = async (req, res) => {
+  const { churchId } = req.user;
+  const { title, body } = req.body;
+
+  const users = await User.findAll({
+    where: { churchId },
+    attributes: ["fcm_token"],
+  });
+
+  const tokens = users.map((user) => user.fcm_token);
+  debug(tokens);
+
+  const notification = {
+    title,
+    body,
+  };
+
+  const notificationBody = {
+    notification,
+    registration_ids: tokens,
+  };
+
+  fetch("https://fcm.googleapis.com/fcm/send", {
+    method: "post",
+    headers: {
+      Authorization: config.firebase_cloud_api_key,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notificationBody),
+  })
+    .then((response) => {
+      req.flash("success", "notifications sent");
+      res.redirect("/send-notification");
+    })
+    .catch((err) => {
+      req.flash("error", "something went wrong");
+      res.redirect("/send-notification");
       debug(err);
     });
 };
