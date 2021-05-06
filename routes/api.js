@@ -15,7 +15,7 @@ const api_auth = require("../middlewares/api-auth");
 router.post("/users/login", usersController.login);
 router.post("/users/forgotten_password", usersController.resetPassword);
 router.post("/users/register", usersController.registerUser);
-//Todo return church contact info on login
+//Todo : BRIGHT PUT ALL ROUTES ON A SINGLE LINE FOR READABILITY SAKE , THIS IS NOT A PLACE FOR IMPLEMENTATION
 
 router.get("/churches", churchesController.getChurches);
 router.get("/church", api_auth, churchesController.getChurch);
@@ -42,67 +42,32 @@ router.get(
   api_auth,
   churchContentController.getDailyDevotionals
 );
-router.get(
-  "/churchcontent/:contentType",
-  api_auth,
-  churchContentController.getChurchContent
-); //fetch church content for homepage based on content type
-router.post(
-  "/churchContent/playlist/add",
-  api_auth,
-  churchContentController.addToUserPlayList
-); //add the jwt middleware to identify the user
+router.get("/churchcontent/:contentType",api_auth,churchContentController.getChurchContent); //fetch church content for homepage based on content type
+router.post("/churchContent/playlist/add",api_auth,churchContentController.addToUserPlayList); //add the jwt middleware to identify the user
 
 /**************Events*************/
 router.get("/events", api_auth, eventsController.getUpcomingEvents);
 router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the jwt middleware to identify the user
-// <<<<<<< HEAD
-router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
-router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
-router.get(
-  "/donationTypes",
-  api_auth,
-  donationController.getChurchDonationTypes
-);
-// =======
+
 
 /************Booking appointment*****/
 // >>>>>>> 833d1541cf19f95336d4e7e992ecfecfc6b99403
 router.post("/appointment/set", api_auth, appointmentController.setAppointment);
 router.post("/bookappointment", churchesController.bookAppointment); //add the jwt middleware to identify the user
-router.post(
-  "/getavailabletimesbydate",
-  churchesController.getAvailableAppointmentTimes
-); //add the jwt middleware to identify the user
-router.get(
-  "/appointment/:date",
-  api_auth,
-  appointmentController.getAppointmentTimes
-);
+router.post("/getavailabletimesbydate",churchesController.getAvailableAppointmentTimes); //add the jwt middleware to identify the user
+router.get("/appointment/:date",api_auth,appointmentController.getAppointmentTimes);
 
 /*************Donation and Payment Initiation***************/
-router.get("/getdonationtypes", donationController.getChurchDonationTypes);
+router.get("/getdonationtypes", donationController.getChurchDonationTypes);//todo this and below which one is sed
+router.get("/donationTypes",api_auth,donationController.getChurchDonationTypes); //
 router.get("/donationhistory", api_auth, donationController.donationHistory); //add the jwt middleware to identify the user
-router.get(
-  "/donationTypes",
-  api_auth,
-  donationController.getChurchDonationTypes
-);
-router.post(
-  "/initiatePaymentIntent",
-  api_auth,
-  stripeController.initiatePaymentIntent
-); //call this endpoint to state a payment session it will return the url which has the payment form
+router.post("/initiatePaymentIntent",api_auth,stripeController.initiatePaymentIntent); //call this endpoint to state a payment session it will return the url which has the payment form
 router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
 
 /*****************Users endpoint*****************/
 router.get("/users/getdetails", api_auth, usersController.getUserDetails);
 router.get("/users/getUserplaylist", api_auth, usersController.getUserPlayList);
-router.post(
-  "/users/upload_profile_picture",
-  api_auth,
-  usersController.uploadProfilePicture
-);
+router.post("/users/upload_profile_picture",api_auth,usersController.uploadProfilePicture);
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
