@@ -106,4 +106,7 @@ router.post(
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
+//test route
+
+router.post("/users/sendnotification", usersController.sendNotification);
 module.exports = router;

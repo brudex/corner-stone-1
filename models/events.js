@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       churchId: DataTypes.STRING,
       title: DataTypes.STRING,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       eventVenue: DataTypes.STRING,
       eventDate: DataTypes.DATE,
       eventTime: DataTypes.STRING,

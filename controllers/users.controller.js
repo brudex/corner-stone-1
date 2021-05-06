@@ -14,9 +14,11 @@ const multer = require("multer");
 const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
+const { default: fetch } = require("node-fetch");
 
 //Image upload config
 const { allowImagesOnly, storage } = require("../utils/image_upload");
+const config = require("../config/config");
 const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 5 },
@@ -180,6 +182,11 @@ Controller.registerUser = async (req, res, next) => {
       createError(400, { ...failed, reason: error.details[0].message })
     );
 
+  if (!req.body.fcm_token)
+    return next(
+      createError(400, { ...failed, reason: "fcm is a required field" })
+    );
+
   //check if email exists
   const userExist = await User.findByEmail(email);
   if (userExist)
@@ -339,4 +346,32 @@ Controller.getUserPlayList = async (req, res, next) => {
     where: { [Op.or]: userplaylist },
   });
   res.json({ status_code: "00", data: playlist });
+};
+
+Controller.sendNotification = async (req, res, next) => {
+  const { tokens, title, body } = req.body;
+
+  const notification = {
+    title,
+    body,
+  };
+
+  const notificationBody = {
+    notification,
+    registration_ids: tokens,
+  };
+
+  fetch("https://fcm.googleapis.com/fcm/send", {
+    method: "post",
+    headers: {
+      Authorization: config.firebase_cloud_api_key,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notificationBody),
+  })
+    .then((response) => res.send(response))
+    .catch((err) => {
+      res.status(400).send("something went wrong");
+      debug(err);
+    });
 };

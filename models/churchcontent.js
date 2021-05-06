@@ -6,10 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       churchId: DataTypes.INTEGER, // churchId from church model
       title: DataTypes.STRING,
       contentType: DataTypes.STRING, //audio sermon, devotional text, videolinks
-      // videoUrl: DataTypes.STRING,
-      // audioLink: DataTypes.STRING,
-      // contentText: DataTypes.STRING,//devotional text
-      contentData: DataTypes.STRING, // using contentData field to store content regardless of type.
+      contentData: DataTypes.TEXT, // using contentData field to store content regardless of type.
     },
     {
       tableName: "ChurchContent",

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "DailyDevotional",
     {
       churchId: DataTypes.STRING,
-      devotionalContent: DataTypes.STRING,
+      devotionalContent: DataTypes.TEXT,
       dateToShow: DataTypes.DATE,
       isDefault: DataTypes.BOOLEAN,
     },
