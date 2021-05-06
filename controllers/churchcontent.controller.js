@@ -28,6 +28,7 @@ Controller.sermonView = async (req, res) => {
     sermons,
   });
 };
+
 Controller.dailyDevotionalView = async (req, res) => {
   const { churchId } = req.user;
   const dailyDevotionals = await DailyDevotional.findAll({
@@ -124,11 +125,15 @@ Controller.editDailyDevotional = async (req, res) => {
   if (req.body.isDefault) {
     await DailyDevotional.update(
       { isDefault: false },
-      { where: { isDefault: true } }
+      { where: { isDefault: true, churchId } }
     );
   }
 
   const devotional = await DailyDevotional.findOne({ churchId, id });
+  if (!devotional) {
+    req.flash("error", "daily devotional not found!");
+    return res.redirect(`/daily-devotionals/edit/${id}`);
+  }
 
   for (const [key, value] of Object.entries(req.body)) {
     devotional[key] = value;
@@ -139,6 +144,7 @@ Controller.editDailyDevotional = async (req, res) => {
   req.flash("success", "Daily Devotional updated successfully");
   res.redirect("/daily-devotionals");
 };
+
 Controller.devotionalView = async (req, res) => {
   const { churchId } = req.user;
   const devotionals = await ChurchContent.findAll({
@@ -151,6 +157,7 @@ Controller.devotionalView = async (req, res) => {
     devotionals,
   });
 };
+
 Controller.addDevotionalView = async (req, res) => {
   res.render("devotionals/add-devotional", {
     title: "Add Devotionals",
@@ -205,6 +212,16 @@ Controller.editDevotional = async (req, res) => {
     req.flash("error", error.details[0].message);
     return res.redirect(`/devotionals/edit/${id}`);
   }
+
+  const dailyDevotional = await ChurchContent.findOne({
+    where: { id, churchId },
+  });
+
+  if (!dailyDevotional) {
+    req.flash("error", "devotional not found!");
+    return res.redirect(`/devotionals/edit/${id}`);
+  }
+
   await ChurchContent.update(
     { contentData: req.body.contentData, title: req.body.title },
     { where: { churchId, id } }
@@ -333,7 +350,6 @@ Controller.addToUserPlayList = async (req, res, next) => {
 
   res.json({ status: "00", message: "playlist updated successfully" });
 };
-
 //Test controllers to be deleted
 Controller.addChurchContent = async (req, res, next) => {
   const { error } = ChurchContent.validateContent(req.body);

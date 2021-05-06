@@ -260,3 +260,20 @@ Controller.changePassword = async (req, res, next) => {
 
   res.json({ status_code: "03", message: "password changed successfully" });
 };
+
+Controller.getUserDetails = async (req, res, next) => {
+  const { id } = req.user;
+  const user = await User.findOne({
+    where: { id },
+    attributes: ["firstName", "lastName", "email", "churchId"],
+  });
+  if (!user)
+    return next(
+      createError(404, {
+        status_code: "03",
+        message: "Request Failed",
+        reason: "User not found",
+      })
+    );
+  res.json({ status_code: "00", data: user });
+};

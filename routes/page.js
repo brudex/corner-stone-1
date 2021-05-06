@@ -8,6 +8,7 @@ const indexController = require("../controllers/index.controller");
 const accountController = require("../controllers/account.controller");
 const churchController = require("../controllers/church.controller");
 const usersController = require("../controllers/users.controller");
+const eventsController = require("../controllers/events.controller");
 const churchContentController = require("../controllers/churchcontent.controller");
 
 /*****Page Routes*********************/
@@ -58,6 +59,18 @@ router.get(
   "/daily-devotionals/edit/:id",
   [auth, admin],
   churchContentController.editDailyDevotionalView
+);
+router.get("/events", [auth, admin], eventsController.getUpcomingEventsView);
+router.get("/events/add", [auth, admin], eventsController.addEventView);
+router.get("/events/edit/:id", [auth, admin], eventsController.editEventView);
+router.get("/events/delete/:id", [auth, admin], eventsController.deleteEvent);
+
+router.post("/events/add", [auth, admin], eventsController.addEvent);
+router.post("/events/edit/:id", [auth, admin], eventsController.editEvent);
+router.post(
+  "/events/edit/image/:id",
+  [auth, admin],
+  eventsController.editEventImage
 );
 
 router.post(

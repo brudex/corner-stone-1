@@ -49,7 +49,7 @@ router.get("/getmyplaylist", api_auth, churchContentController.getUserPlayList);
 router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the jwt middleware to identify the user
 router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
 router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
-
+router.get("/users/getdetails", api_auth, usersController.getUserDetails);
 router.get(
   "/donationTypes",
   api_auth,

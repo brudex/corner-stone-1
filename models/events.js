@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       eventVenue: DataTypes.STRING,
-      eventDate: DataTypes.STRING,
+      eventDate: DataTypes.DATE,
       eventTime: DataTypes.STRING,
       imageBanner: DataTypes.STRING,
     },
