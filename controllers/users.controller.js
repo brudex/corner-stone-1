@@ -4,11 +4,24 @@ const user = require("../models/user");
 const User = user(sequelize, Sequelize);
 const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
+const churchcontent = require("../models/churchcontent");
+const ChurchContent = churchcontent(sequelize, Sequelize);
+const user_playlist = require("../models/user_playlist");
+const UserPlaylist = user_playlist(sequelize, Sequelize);
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const multer = require("multer");
 const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
+
+//Image upload config
+const { allowImagesOnly, storage } = require("../utils/image_upload");
+const upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: allowImagesOnly,
+}).single("user-image");
 
 const Controller = {};
 module.exports = Controller;
@@ -258,7 +271,7 @@ Controller.changePassword = async (req, res, next) => {
   const hashedPassword = await User.hashPassword(req.body.password);
   await User.update({ password: hashedPassword }, { where: { id } });
 
-  res.json({ status_code: "03", message: "password changed successfully" });
+  res.json({ status_code: "00", message: "password changed successfully" });
 };
 
 Controller.getUserDetails = async (req, res, next) => {
@@ -276,4 +289,54 @@ Controller.getUserDetails = async (req, res, next) => {
       })
     );
   res.json({ status_code: "00", data: user });
+};
+
+Controller.uploadProfilePicture = async (req, res, next) => {
+  const { churchId, id } = req.user;
+
+  await upload(req, res, async (err) => {
+    if (err)
+      return next(
+        createError(400, {
+          status_code: "03",
+          message: "Image Upload Failed",
+          reason: err,
+        })
+      );
+
+    const user = await User.findOne({ where: { id, churchId } });
+    if (!user)
+      return next(
+        createError(400, {
+          status_code: "03",
+          message: "User not found",
+          reason: err,
+        })
+      );
+    user.image = req.file.filename;
+    await user.save();
+
+    const imageUrl = `${req.protocol}://${req.headers.host}/uploads/${req.file.filename}`;
+    res.json({ status_code: "00", imageUrl });
+  });
+};
+
+Controller.getUserPlayList = async (req, res, next) => {
+  const { id } = req.user;
+  const userplaylistIds = await UserPlaylist.findAll({
+    where: { userId: id },
+    attributes: ["churchContentId"],
+    raw: true,
+  });
+
+  debug(userplaylistIds);
+
+  const userplaylist = userplaylistIds.map((list) => {
+    return { id: list.churchContentId };
+  });
+
+  const playlist = await ChurchContent.findAll({
+    where: { [Op.or]: userplaylist },
+  });
+  res.json({ status_code: "00", data: playlist });
 };

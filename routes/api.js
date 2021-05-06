@@ -52,7 +52,6 @@ router.post(
   api_auth,
   churchContentController.addToUserPlayList
 ); //add the jwt middleware to identify the user
-router.get("/getmyplaylist", api_auth, churchContentController.getUserPlayList); //add the jwt middleware to identify the user
 
 /**************Events*************/
 router.get("/events", api_auth, eventsController.getUpcomingEvents);
@@ -60,7 +59,6 @@ router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the 
 // <<<<<<< HEAD
 router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
 router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
-router.get("/users/getdetails", api_auth, usersController.getUserDetails);
 router.get(
   "/donationTypes",
   api_auth,
@@ -96,6 +94,15 @@ router.post(
   stripeController.initiatePaymentIntent
 ); //call this endpoint to state a payment session it will return the url which has the payment form
 router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
+
+/*****************Users endpoint*****************/
+router.get("/users/getdetails", api_auth, usersController.getUserDetails);
+router.get("/users/getUserplaylist", api_auth, usersController.getUserPlayList);
+router.post(
+  "/users/upload_profile_picture",
+  api_auth,
+  usersController.uploadProfilePicture
+);
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 

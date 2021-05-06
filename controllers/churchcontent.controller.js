@@ -314,13 +314,6 @@ Controller.getDailyDevotionals = async (req, res) => {
   res.json({ status: "00", data: dailyDevotional });
 };
 
-Controller.getUserPlayList = async (req, res, next) => {
-  const { id: userId } = req.user;
-  const playlist = await UserPlayList.findAll({ userId });
-
-  res.json({ status_code: "00", data: playlist });
-};
-
 Controller.addToUserPlayList = async (req, res, next) => {
   const { id: userId } = req.user;
   const { churchContentId, title } = req.body;
