@@ -1,4 +1,6 @@
 const Joi = require("joi");
+const pagination = require("../utils/pagination");
+
 module.exports = (sequelize, DataTypes) => {
   const ChurchDonation = sequelize.define(
     "ChurchDonation",
@@ -10,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       paymentMode: DataTypes.STRING, //stripe,paypal
       donationTypeId: DataTypes.INTEGER, // Donation Type ID
       paymentStatus: DataTypes.STRING, // 00=success,01=pending,03=failed,
-      statusMessage: DataTypes.STRING
-     },
+      statusMessage: DataTypes.STRING,
+    },
     {
       tableName: "ChurchDonation",
       classMethods: {
@@ -20,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+  ChurchDonation.paginate = function (req, condition) {
+    return pagination(this, req, condition);
+  };
 
   return ChurchDonation;
 };

@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "Church",
       classMethods: {
-        associate: (models) => {},
+        associate: (models) => {
+          Church.hasMany(models.user);
+        },
       },
     }
   );

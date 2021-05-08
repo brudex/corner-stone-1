@@ -38,7 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "User",
       classMethods: {
-        associate: (models) => {},
+        associate: (models) => {
+          User.belongsTo(models.church);
+        },
       },
     }
   );
