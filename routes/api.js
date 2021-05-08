@@ -22,8 +22,7 @@ router.get("/church", api_auth, churchesController.getChurch);
 
 /**************Church Content***********/
 //for the home page pull daily devotional, featured audio and featured videos
-router.get(
-  "/featuredContent",
+router.get("/featuredContent",
   api_auth,
   churchContentController.getFeaturedContent
 ); //For mobile home page

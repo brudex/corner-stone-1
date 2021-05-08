@@ -8,14 +8,12 @@ const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
 const initializePassport = require("./config/passport");
-var MemoryStore = require("memorystore")(session);
+const MemoryStore = require("memorystore")(session);
 require("dotenv").config();
-
-var pageRoutes = require("./routes/page");
+const pageRoutes = require("./routes/page");
 const apiRoutes = require("./routes/api");
 const config = require("./config/config");
-
-var app = express();
+const app = express();
 
 initializePassport(passport);
 
@@ -23,7 +21,6 @@ initializePassport(passport);
 app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 app.set("view engine", "ejs");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
