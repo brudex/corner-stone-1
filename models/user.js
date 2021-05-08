@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       email: { type: DataTypes.STRING, unique: true, allowNull: false },
+      fcm_token: { type: DataTypes.TEXT },
       churchId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -56,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       lastName: Joi.string().min(1).max(256).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
+      fcm_token: Joi.string().max(256),
       password: Joi.string()
         .min(6)
         .max(256)

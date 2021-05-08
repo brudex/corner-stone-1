@@ -70,4 +70,7 @@ router.post("/users/upload_profile_picture",api_auth,usersController.uploadProfi
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
+//test route
+
+router.post("/users/sendnotification", usersController.sendNotification);
 module.exports = router;

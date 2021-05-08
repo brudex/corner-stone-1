@@ -115,5 +115,15 @@ router.post("/churches/edit/image/:id", churchController.editChurchImage);
 /***************Payment Url*****************/
 router.get("/paymentPage/:pageId", stripeController.paymentPage);
 
-
+/************* Push Notification */
+router.get(
+  "/send-notification",
+  [auth, admin],
+  usersController.sendNotificationView
+);
+router.post(
+  "/send-notification",
+  [auth, admin],
+  usersController.sendNotifications
+);
 module.exports = router;

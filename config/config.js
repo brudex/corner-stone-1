@@ -15,7 +15,10 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
-    stripe_apiKey: process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    stripe_apiKey:
+      process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
+    firebase_cloud_api_key:
+      "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
 
   test: {
@@ -30,7 +33,10 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
-    stripe_apiKey: process.env.SESSION_SECRET ||"sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    stripe_apiKey:
+      process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
+    firebase_cloud_api_key:
+      "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
 
   production: {
@@ -45,7 +51,10 @@ const config = {
     dbpass: process.env.DBPASS || "Pass123@$$123",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
-    stripe_apiKey: process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    stripe_apiKey:
+      process.env.SESSION_SECRET || "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
+    firebase_cloud_api_key:
+      "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
 };
 
