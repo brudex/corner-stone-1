@@ -22,25 +22,10 @@ router.get("/church", api_auth, churchesController.getChurch);
 
 /**************Church Content***********/
 //for the home page pull daily devotional, featured audio and featured videos
-router.get("/featuredContent",
-  api_auth,
-  churchContentController.getFeaturedContent
-); //For mobile home page
-router.get(
-  "/churchcontent/search/:id",
-  api_auth,
-  churchContentController.getChurchContentById
-);
-router.get(
-  "/churchcontent/search",
-  api_auth,
-  churchContentController.searchChurchContent
-);
-router.get(
-  "/churchcontent/dailydevotional",
-  api_auth,
-  churchContentController.getDailyDevotionals
-);
+router.get("/featuredContent",api_auth,churchContentController.getFeaturedContent); //For mobile home page
+router.get( "/churchcontent/search/:id", api_auth,churchContentController.getChurchContentById);
+router.get("/churchcontent/search",api_auth,churchContentController.searchChurchContent);
+router.get("/churchcontent/dailydevotional",api_auth,churchContentController.getDailyDevotionals);
 router.get("/churchcontent/:contentType",api_auth,churchContentController.getChurchContent); //fetch church content for homepage based on content type
 router.post("/churchContent/playlist/add",api_auth,churchContentController.addToUserPlayList); //add the jwt middleware to identify the user
 
