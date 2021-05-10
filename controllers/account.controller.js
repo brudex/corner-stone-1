@@ -1,6 +1,7 @@
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
 const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 const sendMail = require("../utils/sendMail");
 const config = require("../config/config");
 const debug = require("debug")("corner-stone:account-controller");
@@ -87,6 +88,77 @@ Controller.resetPassword = async (req, res) => {
 
   req.flash("success", "password reset successful");
   res.redirect(`/resetpassword/${token}`);
+};
+
+Controller.changePasswordView = (req, res) => {
+  const { user } = req;
+  res.render("account/change-password", { title: "Change Password", user });
+};
+
+Controller.changePassword = async (req, res) => {
+  const { churchId, id } = req.user;
+  const { password } = req.body;
+
+  const { error } = User.validateChangePassword(req.body);
+  if (error) {
+    req.flash("error", "passwords do not match");
+    return res.redirect("/account/change-password");
+  }
+
+  const hashedPassword = await User.hashPassword(password);
+  await User.update({ password: hashedPassword }, { where: { churchId, id } });
+
+  req.flash("success", "Password Change Succesful");
+  res.redirect("/account/change-password");
+};
+
+Controller.editAccountView = (req, res) => {
+  const { user } = req;
+  res.render("account/edit-account", {
+    title: "Edit Account",
+    values: user,
+    user,
+  });
+};
+
+Controller.editAccount = async (req, res) => {
+  const { id } = req.user;
+  const { firstName, lastName, email } = req.body;
+
+  const schema = Joi.object({
+    firstName: Joi.string().min(1).max(256).required(),
+    lastName: Joi.string().min(1).max(256).required(),
+    email: Joi.string().email().required(),
+  });
+  const { error } = schema.validate(req.body);
+  if (error) {
+    req.flash("error", error.details[0].message);
+    return res.redirect("/account/edit-account");
+  }
+
+  const user = await User.findOne({ where: { id } });
+
+  if (!user) {
+    req.flash("error", "User not found!");
+    return res.redirect("/account/edit-account");
+  }
+
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.email = email;
+
+  await user.save();
+
+  req.session.passport.user.firstName = firstName;
+  req.session.passport.user.lastName = lastName;
+  req.session.passport.user.email = email;
+  req.session.save(function (err) {
+    req.flash("error", "Something went wrong");
+    debug(err);
+  });
+
+  req.flash("success", "Account details updated succesfully");
+  res.redirect("/account/edit-account");
 };
 
 module.exports = Controller;

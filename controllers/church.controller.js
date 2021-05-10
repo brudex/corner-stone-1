@@ -58,26 +58,27 @@ Controller.addChurch = async (req, res, next) => {
   const page = "church/add-church";
 
   await upload(req, res, async (err) => {
+    const { user } = req;
     const { name, email, phone } = req.body;
     if (err) {
       req.flash("error", err);
-      return res.render(page, { title: "Add Church", values: req.body });
+      return res.render(page, { title: "Add Church", values: req.body, user });
     }
     const { error } = Church.validate(req.body);
     if (error) {
       req.flash("error", error.details[0].message);
-      return res.render(page, { title: "Add Church", values: req.body });
+      return res.render(page, { title: "Add Church", values: req.body, user });
     }
     const churchExists = await Church.findOne({
       where: { [Op.or]: [{ name }, { email }, { phone }] },
     });
     if (churchExists) {
       req.flash("error", "Church already exist");
-      return res.render(page, { title: "Add Church", values: req.body });
+      return res.render(page, { title: "Add Church", values: req.body, user });
     }
     await Church.create({ ...req.body, image: req.file.filename });
     req.flash("success", "Church added successfully");
-    return res.render(page, { title: "Add Church" });
+    return res.redirect("/churches");
   });
 };
 
@@ -105,21 +106,23 @@ Controller.editChurchImage = async (req, res) => {
 
 Controller.editChurch = async (req, res) => {
   const page = "church/edit-church";
+  const { user } = req;
   const { id } = req.params;
   const { name, email, phone } = req.body;
 
   const { error } = Church.validate(req.body);
   if (error) {
     req.flash("error", error.details[0].message);
-    return res.render(page, { title: "Edit Church", values: req.body });
+    return res.render(page, { title: "Edit Church", values: req.body, user });
   }
 
   const churchExists = await Church.findOne({
     where: { id: { [Op.ne]: id }, [Op.or]: [{ name }, { email }, { phone }] },
   });
+
   if (churchExists) {
     req.flash("error", "Church already exist");
-    return res.render(page, { title: "Edit Church", values: req.body });
+    return res.render(page, { title: "Edit Church", values: req.body, user });
   }
 
   const church = await Church.findOne({ where: { id } });

@@ -1,0 +1,183 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Add Appointment date</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Add Appointment date</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-6">
+      <div class="page-separator">
+        <div class="page-separator__text">Appointment date</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Select the date you wish to make available for appointment
+      </p>
+
+      <div class="card card-body mb-0">
+        <label class="form-label">Calendar</label>
+        <input
+          id="date"
+          type="hidden"
+          data-toggle="flatpickr"
+          data-flatpickr-inline="true"
+          value="<%=date%>"
+        />
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="page-separator">
+        <div class="page-separator__text">Appointment Time</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Add appointment time for the selected date. Multiple times can be added
+      </p>
+      <p>
+        <span class="material-icons text-info mr-1"> report_problem </span>Click
+        on a selected time to remove.
+      </p>
+      <div class="flex" style="max-width: 100%">
+        <div class="form-group">
+          <label class="form-label" for="flatpickrSample05"
+            >Add time for appointment</label
+          >
+          <input
+            id="flatpickrSample05"
+            type="text"
+            class="form-control"
+            placeholder="Select a time"
+            data-toggle="flatpickr"
+            data-flatpickr-enable-time="true"
+            data-flatpickr-no-calendar="true"
+            data-flatpickr-alt-format="H:i"
+            data-flatpickr-date-format="H:i"
+            value="00:00"
+          />
+        </div>
+        <!-- Times container -->
+        <div id="times"></div>
+        <!-- Message container -->
+        <div id="msg"></div>
+        <button onclick="addTime()" id="add" class="btn btn-info mt-3">
+          Add time
+        </button>
+
+        <button
+          onclick="saveAppointment();"
+          id="save"
+          class="btn btn-primary mt-3"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>
+<script>
+  var times = [];
+  const timeInput = $("#flatpickrSample05");
+  const dateInput = $("#date");
+  const timesContainer = $("#times");
+  const msgContainer = $("#msg");
+  const saveBtn = $("#save");
+  const addBtn = $("#add");
+
+  const addTime = () => {
+    //check if times array already contains selected time... update array if not
+    if (!times.includes(timeInput.val())) {
+      times.push(timeInput.val());
+      updateTimes();
+    }
+  };
+
+  const updateTimes = () => {
+    timesContainer.html("");
+    msgContainer.html("");
+    times.forEach((time) => {
+      timesContainer.append(
+        `<span class="badge badge-secondary p-3 mx-1" onclick="removeTime(this.innerHTML)" style="cursor: pointer;">${time}</span>`
+      );
+    });
+  };
+
+  const removeTime = (timeToRemove) => {
+    console.log(timeToRemove);
+    times = times.filter((time) => time !== timeToRemove);
+    updateTimes();
+  };
+
+  const saveAppointment = () => {
+    const data = { date: dateInput.val(), times };
+    if (!validateAddAppointment()) return;
+
+    saveBtn.addClass("is-loading");
+    saveBtn.attr("disabled", "disabled");
+    addBtn.attr("disabled", "disabled");
+
+    console.log(data);
+
+    var jqxhr = $.ajax({
+      method: "POST",
+      url: "/appointments/add-appointment-date",
+      data,
+    })
+      .done(function () {
+        alert("success");
+      })
+      .fail(function () {
+        alert("error");
+      })
+      .always(function () {
+        alert("complete");
+      });
+
+    // Perform other work here ...
+
+    // Set another completion function for the request above
+    jqxhr.always(function () {
+      saveBtn.removeClass("is-loading");
+      saveBtn.removeAttr("disabled");
+      addBtn.removeAttr("disabled");
+    });
+  };
+
+  const validateAddAppointment = () => {
+    if (times.length === 0) {
+      msgContainer.html(`<div class="alert alert-accent" role="alert">
+                                    <div class="d-flex flex-wrap align-items-start">
+                                        <div class="mr-8pt">
+                                            <i class="material-icons">access_time</i>
+                                        </div>
+                                        <div class="flex" style="min-width: 180px">
+                                            <small class="text-black-100">
+                                                <strong>Error!</strong> Please add a time for the selected appointment date.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>`);
+      return false;
+    }
+    return true;
+  };
+</script>

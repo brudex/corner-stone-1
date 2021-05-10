@@ -348,6 +348,42 @@ Controller.getUserPlayList = async (req, res, next) => {
   res.json({ status_code: "00", data: playlist });
 };
 
+Controller.getUserPicture = async (req, res, next) => {
+  const { id } = req.user;
+  const user = await User.findOne({ where: { id }, attributes: ["image"] });
+
+  if (!user.image)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "request failed",
+        reason: "Image not found",
+      })
+    );
+
+  const imageUrl = `${req.protocol}://${req.headers.host}/uploads/${user.image}`;
+
+  res.json({ status_code: "00", data: imageUrl });
+};
+
+Controller.editUserDetails = async (req, res, next) => {
+  const { id } = req.user;
+  const { firstName, lastName, email } = req.body;
+
+  const { error } = User.validateEditUser(req.body);
+  if (error)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "Request Failed",
+        reason: error.details[0].message,
+      })
+    );
+
+  await User.update({ firstName, lastName, email }, { where: { id } });
+  res.json({ status_code: "00", message: "User Details updated Successfully" });
+};
+
 //Test route to be removed
 Controller.sendNotification = async (req, res, next) => {
   const { tokens, title, body } = req.body;

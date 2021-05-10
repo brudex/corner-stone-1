@@ -6,17 +6,22 @@ include('../partials/response-message.ejs') %>
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Users</h2>
+        <h2 class="mb-0">Donation types</h2>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item">Donation types</li>
         </ol>
       </div>
     </div>
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/users/add" class="btn btn-outline-secondary">Add User</a>
+        <a
+          href="#add-donation-type"
+          rel="modal:open"
+          class="btn btn-outline-secondary"
+          >Add Donation type</a
+        >
       </div>
     </div>
   </div>
@@ -29,7 +34,7 @@ include('../partials/response-message.ejs') %>
 <!-- Page Content -->
 <div class="container page__container page-section">
   <div class="page-separator">
-    <div class="page-separator__text">Users</div>
+    <div class="page-separator__text">Donation types</div>
   </div>
 
   <div class="card mb-0">
@@ -64,24 +69,6 @@ include('../partials/response-message.ejs') %>
                 >name</a
               >
             </th>
-
-            <th style="width: 120px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-activity"
-                >Email</a
-              >
-            </th>
-            <th style="width: 120px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-activity"
-                >User type</a
-              >
-            </th>
-
             <th class="text-center" style="width: 48px">
               <a
                 href="javascript:void(0)"
@@ -90,11 +77,10 @@ include('../partials/response-message.ejs') %>
                 >Actions</a
               >
             </th>
-            <th style="width: 24px" class="pl-0"></th>
           </tr>
         </thead>
         <tbody class="list" id="staff">
-          <% data.forEach(user => {%>
+          <% data.forEach(donationType => {%>
           <tr>
             <td>
               <div
@@ -105,7 +91,7 @@ include('../partials/response-message.ejs') %>
                   <div class="d-flex flex-column">
                     <p class="mb-0">
                       <strong class="js-lists-values-employee-name"
-                        ><%=user.firstName + ' ' + user.lastName %></strong
+                        ><%=donationType.donationType %></strong
                       >
                     </p>
                     <!-- <small class="js-lists-values-employee-email text-50"
@@ -115,36 +101,50 @@ include('../partials/response-message.ejs') %>
                 </div>
               </div>
             </td>
-            <td>
-              <div class="d-flex align-items-center"><%=user.email %></div>
-            </td>
-
-            <td>
-              <div class="d-flex align-items-center">
-                <%=user.isAdmin ? 'Admin' : 'Church member' %>
-              </div>
-            </td>
 
             <td class="text-center js-lists-values-projects small">
+              <!-- EDIT DONATION TYPE... -->
+              <div
+                id="edit-donation-type"
+                class="modal"
+                style="overflow: visible; height: 200px"
+              >
+                <h3>Edit donation type.</h3>
+                <form
+                  action="/donations/edit/<%=donationType.id %>"
+                  method="post"
+                >
+                  <div class="form-group">
+                    <label class="form-label" for="title"
+                      >Donation name*:</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="donationType"
+                      name="donationType"
+                      value="<%=donationType.donationType%>"
+                      placeholder="Enter donation name"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary mt-3 float-right"
+                  >
+                    Save
+                  </button>
+                </form>
+              </div>
               <a
                 type="button"
                 class="btn btn-warning"
-                href="/users/edit/<%=user.id %>"
+                href="#edit-donation-type"
+                rel="modal:open"
               >
                 <i class="material-icons">edit</i>
+                Edit
               </a>
-              <a
-                type="button"
-                class="btn btn-danger"
-                href="/users/delete/<%=user.id %>"
-              >
-                <i class="material-icons">delete</i>
-              </a>
-            </td>
-            <td class="text-right pl-0">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
             </td>
           </tr>
           <% })%> <% if (data.length === 0) {%>
@@ -164,4 +164,30 @@ include('../partials/response-message.ejs') %>
           </div> -->
   </div>
 </div>
+
+<!-- ADD DONATION TYPE MODAL... -->
+<div
+  id="add-donation-type"
+  class="modal"
+  style="overflow: visible; height: 200px"
+>
+  <h3>Add donation type.</h3>
+  <form action="/donations/add" method="post">
+    <div class="form-group">
+      <label class="form-label" for="title">Donation name*:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="donationType"
+        name="donationType"
+        value="<% if(typeof values !== 'undefined') {%><%=values.donationType%><%}%>"
+        placeholder="Enter donation name"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3 float-right">Add</button>
+  </form>
+</div>
+
+<!-- Link to open the modal -->
 <%- include('../partials/drawer.ejs') %>

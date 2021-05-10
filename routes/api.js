@@ -50,7 +50,6 @@ router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the 
 
 
 /************Booking appointment*****/
-// >>>>>>> 833d1541cf19f95336d4e7e992ecfecfc6b99403
 router.post("/appointment/set", api_auth, appointmentController.setAppointment);
 router.post("/bookappointment", churchesController.bookAppointment); //add the jwt middleware to identify the user
 router.post("/getavailabletimesbydate",churchesController.getAvailableAppointmentTimes); //add the jwt middleware to identify the user
@@ -65,12 +64,14 @@ router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); 
 
 /*****************Users endpoint*****************/
 router.get("/users/getdetails", api_auth, usersController.getUserDetails);
+router.get("/users/getprofilepicture",api_auth,usersController.getUserPicture);
 router.get("/users/getUserplaylist", api_auth, usersController.getUserPlayList);
 router.post("/users/upload_profile_picture",api_auth,usersController.uploadProfilePicture);
+
+router.post("/users/edit_user_details",api_auth,usersController.editUserDetails);
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
 //test route
-
 router.post("/users/sendnotification", usersController.sendNotification);
 module.exports = router;

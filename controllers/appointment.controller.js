@@ -7,9 +7,62 @@ const appointmentTime = require("../models/appointment_available_times");
 const AppointmentTime = appointmentTime(sequelize, Sequelize);
 const dateFns = require("date-fns");
 const createError = require("http-errors");
+const debug = require("debug")("corner-stone:appointment-controller");
 
 const Controller = {};
 module.exports = Controller;
+
+Controller.addAppointmentDateView = async (req, res, next) => {
+  const { user } = req;
+  const { churchId } = user;
+  let date = dateFns.format(new Date(), "yyyy-MM-dd");
+  if (req.query.date)
+    date = dateFns.format(new Date(req.query.date), "yyyy-MM-dd");
+
+  debug(date);
+  const appointmentDate = await AppointmentDate.findOne({
+    where: { appointmentDate: date, churchId },
+    attributes: ["id"],
+  });
+  debug(date);
+
+  if (!appointmentDate) {
+    req.flash("info", "No appointments found for selected date");
+    return res.render("appointments/add-appointment-date", {
+      title: "Add Apointment Date",
+      user,
+      date,
+    });
+  }
+
+  const appointmentTimes = await AppointmentTime.findAll({
+    where: { appointmentDateId: appointmentDate.id },
+  });
+
+  debug(appointmentTimes);
+
+  res.render("appointments/add-appointment-date", {
+    title: "Add Apointment Date",
+    user,
+    date,
+  });
+};
+
+// Controller.addAppointmentDate = async (req, res) => {
+//   const { date, times } = req.body;
+//   const {churchId} = req.body
+
+//   const appointmentDate = await AppointmentDate.create({
+//     appointmentDate: date,
+//     churchId
+//   });
+//   debug(appointmentDate);
+
+//   times.forEach
+
+//   res.send("ok");
+// };
+
 Controller.setAppointment = async (req, res, next) => {
   const { churchId, id: userId } = req.user;
   const { appointmentTimeId, appointmentReason } = req.body;

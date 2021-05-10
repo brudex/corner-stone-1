@@ -6,17 +6,19 @@ include('../partials/response-message.ejs') %>
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Users</h2>
+        <h2 class="mb-0">Donations</h2>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item">Donations</li>
         </ol>
       </div>
     </div>
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/users/add" class="btn btn-outline-secondary">Add User</a>
+        <a href="/donations/add" class="btn btn-outline-secondary"
+          >Add Donation type</a
+        >
       </div>
     </div>
   </div>
@@ -29,7 +31,7 @@ include('../partials/response-message.ejs') %>
 <!-- Page Content -->
 <div class="container page__container page-section">
   <div class="page-separator">
-    <div class="page-separator__text">Users</div>
+    <div class="page-separator__text">Donations</div>
   </div>
 
   <div class="card mb-0">
@@ -61,7 +63,7 @@ include('../partials/response-message.ejs') %>
                 href="javascript:void(0)"
                 class="sort"
                 data-sort="js-lists-values-employee-name"
-                >name</a
+                >Member</a
               >
             </th>
 
@@ -70,7 +72,7 @@ include('../partials/response-message.ejs') %>
                 href="javascript:void(0)"
                 class="sort"
                 data-sort="js-lists-values-activity"
-                >Email</a
+                >Amount</a
               >
             </th>
             <th style="width: 120px">
@@ -78,23 +80,13 @@ include('../partials/response-message.ejs') %>
                 href="javascript:void(0)"
                 class="sort"
                 data-sort="js-lists-values-activity"
-                >User type</a
+                >donation type</a
               >
             </th>
-
-            <th class="text-center" style="width: 48px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-projects"
-                >Actions</a
-              >
-            </th>
-            <th style="width: 24px" class="pl-0"></th>
           </tr>
         </thead>
         <tbody class="list" id="staff">
-          <% data.forEach(user => {%>
+          <% data.forEach(donation => {%>
           <tr>
             <td>
               <div
@@ -105,7 +97,8 @@ include('../partials/response-message.ejs') %>
                   <div class="d-flex flex-column">
                     <p class="mb-0">
                       <strong class="js-lists-values-employee-name"
-                        ><%=user.firstName + ' ' + user.lastName %></strong
+                        ><%=donation.userId.firstName + ' ' +
+                        donation.userId.lastName %></strong
                       >
                     </p>
                     <!-- <small class="js-lists-values-employee-email text-50"
@@ -116,31 +109,31 @@ include('../partials/response-message.ejs') %>
               </div>
             </td>
             <td>
-              <div class="d-flex align-items-center"><%=user.email %></div>
+              <div class="d-flex align-items-center"><%=donation.amount %></div>
             </td>
 
             <td>
               <div class="d-flex align-items-center">
-                <%=user.isAdmin ? 'Admin' : 'Church member' %>
+                <%=donation.donationTypeId.donationType%>
               </div>
             </td>
 
-            <td class="text-center js-lists-values-projects small">
+            <!-- <td class="text-center js-lists-values-projects small">
               <a
                 type="button"
                 class="btn btn-warning"
-                href="/users/edit/<%=user.id %>"
+                href="/donations/edit/<%=donation.id %>"
               >
                 <i class="material-icons">edit</i>
               </a>
               <a
                 type="button"
                 class="btn btn-danger"
-                href="/users/delete/<%=user.id %>"
+                href="/donations/delete/<%=donation.id %>"
               >
                 <i class="material-icons">delete</i>
               </a>
-            </td>
+            </td> -->
             <td class="text-right pl-0">
               <a href="" class="text-50"
                 ><i class="material-icons">more_vert</i></a
