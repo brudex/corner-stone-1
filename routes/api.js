@@ -97,11 +97,21 @@ router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); 
 
 /*****************Users endpoint*****************/
 router.get("/users/getdetails", api_auth, usersController.getUserDetails);
+router.get(
+  "/users/getprofilepicture",
+  api_auth,
+  usersController.getUserPicture
+);
 router.get("/users/getUserplaylist", api_auth, usersController.getUserPlayList);
 router.post(
   "/users/upload_profile_picture",
   api_auth,
   usersController.uploadProfilePicture
+);
+router.post(
+  "/users/edit_user_details",
+  api_auth,
+  usersController.editUserDetails
 );
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login

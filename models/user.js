@@ -71,6 +71,15 @@ module.exports = (sequelize, DataTypes) => {
     return schema.tailor(requestType).validate(user);
   };
 
+  User.validateEditUser = function (user) {
+    const schema = Joi.object({
+      firstName: Joi.string().min(1).max(256).required(),
+      lastName: Joi.string().min(1).max(256).required(),
+      email: Joi.string().email().required(),
+    });
+    return schema.validate(user);
+  };
+
   User.validateDetails = function (userDetails) {
     const schema = Joi.object({
       email: Joi.string().email().required(),
