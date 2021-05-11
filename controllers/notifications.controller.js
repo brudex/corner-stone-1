@@ -103,14 +103,26 @@ Controller.superAdminSendNotifications = async (req, res) => {
     });
 };
 
-Controller.getChurchNotificationsView = async (req, res, next) => {
+Controller.getChurchNotificationsHistory = async (req, res, next) => {
   const { churchId } = req.user;
-  const notifications = await Notifications.findAll({ where: { churchId } });
+  const paginationResults = await Notifications.paginate(req, { churchId });
 
   res.render("notifications/notifications", {
     title: "Notifications",
     user: req.user,
-    notifications,
+    ...paginationResults,
+  });
+};
+
+Controller.getAllNotificationsHistory = async (req, res, next) => {
+  const paginationResults = await Notifications.paginate(req, {
+    churchId: null,
+  });
+
+  res.render("notifications/notifications", {
+    title: "Notifications",
+    user: req.user,
+    ...paginationResults,
   });
 };
 

@@ -35,12 +35,7 @@ include('../partials/response-message.ejs') %>
   </div>
 
   <div class="card mb-0">
-    <div
-      class="table-responsive"
-      data-toggle="lists"
-      data-lists-sort-by="js-lists-values-employee-name"
-      data-lists-values='["js-lists-values-employee-name", "js-lists-values-employer-name", "js-lists-values-projects", "js-lists-values-activity", "js-lists-values-earnings"]'
-    >
+    <div class="table-responsive">
       <div class="card-header">
         <form class="form-inline">
           <label class="mr-sm-2 form-label" for="inlineFormFilterBy"
@@ -48,8 +43,8 @@ include('../partials/response-message.ejs') %>
           >
           <input
             type="text"
-            class="form-control search mb-2 mr-sm-2 mb-sm-0"
-            id="inlineFormFilterBy"
+            class="form-control search mb-2 mr-sm-2 mb-sm-0 tablesearch-input"
+            data-tablesearch-table="#data-table"
             placeholder="Search ..."
           />
 
@@ -76,44 +71,16 @@ include('../partials/response-message.ejs') %>
         </form>
       </div>
 
-      <table class="table mb-0 thead-border-top-0 table-nowrap">
+      <table
+        class="table mb-0 thead-border-top-0 table-nowrap tablesort tablesearch-table"
+        id="data-table"
+      >
         <thead>
           <tr>
-            <th style="width: 150px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-employee-name"
-                >Church</a
-              >
-            </th>
-
-            <th style="width: 120px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-activity"
-                >Email</a
-              >
-            </th>
-            <th style="width: 120px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-activity"
-                >Phone</a
-              >
-            </th>
-
-            <th style="width: 150px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-employer-name"
-                >Address</a
-              >
-            </th>
-
+            <th style="width: 150px" data-tablesort-type="string">Church</th>
+            <th style="width: 120px" data-tablesort-type="string">Email</th>
+            <th style="width: 120px" data-tablesort-type="string">Phone</th>
+            <th style="width: 150px" data-tablesort-type="string">Address</th>
             <th class="text-center" style="width: 48px">
               <a
                 href="javascript:void(0)"
@@ -125,7 +92,7 @@ include('../partials/response-message.ejs') %>
             <th style="width: 24px" class="pl-0"></th>
           </tr>
         </thead>
-        <tbody class="list" id="staff">
+        <tbody>
           <% data.forEach(church => {%>
           <tr>
             <td>

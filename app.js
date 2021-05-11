@@ -65,7 +65,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   if (req.path === "/api") return res.json(err);
   res.render(`errors/${err.status || 500}`, {
-    title: "404",
+    title: err.status || 500,
     layout: "blank-layout",
   });
 });

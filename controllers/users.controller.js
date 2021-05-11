@@ -14,6 +14,7 @@ const multer = require("multer");
 const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
+const _ = require("lodash");
 
 //Image upload config
 const { allowImagesOnly, storage } = require("../utils/image_upload");
@@ -32,6 +33,25 @@ Controller.usersView = async (req, res, next) => {
   const paginationResults = await User.paginate(req, {
     isSuperAdmin: { [Op.ne]: true },
   });
+
+  paginationResults.data = JSON.parse(JSON.stringify(paginationResults.data));
+
+  const userIds = paginationResults.data.map((data) => data.churchId);
+
+  const churches = await Church.findAll({
+    where: { id: { [Op.in]: userIds } },
+    attributes: ["id", "name"],
+    raw: true,
+  });
+
+  paginationResults.data.forEach((user) => {
+    const userChurch = churches.filter(
+      (church) => church.id === user.churchId
+    )[0];
+    user.church = userChurch.name;
+  });
+
+  debug(paginationResults.data);
 
   res.render("users/users", {
     title: "Users",

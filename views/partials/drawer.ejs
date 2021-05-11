@@ -266,11 +266,19 @@
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
           <ul class="sidebar-submenu collapse sm-indent" id="notifications">
+            <% if (user.isSuperAdmin) {%>
             <li class="sidebar-menu-item">
-              <a class="sidebar-menu-button" href="/notifications">
+              <a class="sidebar-menu-button" href="/notifications/super-admin">
                 <span class="sidebar-menu-text">View Notifications</span>
               </a>
             </li>
+            <%}%> <% if (user.isAdmin) {%>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/notifications/church">
+                <span class="sidebar-menu-text">View Notifications</span>
+              </a>
+            </li>
+            <%}%>
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
@@ -282,7 +290,7 @@
           </ul>
         </li>
       </ul>
-      <div class="sidebar-heading">Settings</div>
+      <!-- <div class="sidebar-heading">Settings</div>
       <ul class="sidebar-menu">
         <li class="sidebar-menu-item">
           <a
@@ -319,7 +327,7 @@
             Log out
           </a>
         </li>
-      </ul>
+      </ul> -->
       <!-- // END Sidebar Content -->
     </div>
   </div>

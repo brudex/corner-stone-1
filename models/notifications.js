@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const pagination = require("../utils/pagination");
 module.exports = (sequelize, DataTypes) => {
   const Notifications = sequelize.define(
     "Events",
@@ -29,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       description: Joi.string().min(1).max(10000).required(),
     });
     return schema.tailor(type).validate(event);
+  };
+
+  Notifications.paginate = function (req, condition) {
+    return pagination(this, req, condition);
   };
 
   return Notifications;

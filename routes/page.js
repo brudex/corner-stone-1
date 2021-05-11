@@ -176,6 +176,16 @@ router.get("/paymentPage/:pageId", stripeController.paymentPage);
 
 /************* Push Notification */
 router.get(
+  "/notifications/super-admin",
+  [auth, superAdmin],
+  notificationsController.getAllNotificationsHistory
+);
+router.get(
+  "/notifications/church",
+  [auth, admin],
+  notificationsController.getChurchNotificationsHistory
+);
+router.get(
   "/notifications/send-notification",
   [auth, admin],
   notificationsController.sendNotificationView
