@@ -176,17 +176,17 @@ router.get("/paymentPage/:pageId", stripeController.paymentPage);
 
 /************* Push Notification */
 router.get(
-  "/send-notification",
+  "/notifications/send-notification",
   [auth, admin],
   notificationsController.sendNotificationView
 );
 router.post(
-  "/send-notification",
+  "/notifications/send-by-church",
   [auth, admin],
   notificationsController.sendNotifications
 );
 router.post(
-  "/super-admin-send-notification",
+  "/notifications/send-by-superadmin",
   [auth, superAdmin],
   notificationsController.superAdminSendNotifications
 );

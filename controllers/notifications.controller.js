@@ -15,7 +15,7 @@ const Controller = {};
 module.exports = Controller;
 
 Controller.sendNotificationView = async (req, res) => {
-  res.render("send-notification", {
+  res.render("notifications/send-notification", {
     title: "Send Notification",
     user: req.user,
   });
@@ -56,11 +56,11 @@ Controller.sendNotifications = async (req, res) => {
     .then(async (response) => {
       await Notifications.create({ ...req.body, churchId });
       req.flash("success", "notifications sent");
-      res.redirect("/send-notification");
+      res.redirect("/notifications/send-notification");
     })
     .catch((err) => {
       req.flash("error", "something went wrong");
-      res.redirect("/send-notification");
+      res.redirect("/notification/send-notification");
       debug(err);
     });
 };
@@ -94,11 +94,11 @@ Controller.superAdminSendNotifications = async (req, res) => {
     .then(async (response) => {
       await Notifications.create(req.body);
       req.flash("success", "notifications sent");
-      res.redirect("/send-notification");
+      res.redirect("/notifications/send-notification");
     })
     .catch((err) => {
       req.flash("error", "something went wrong");
-      res.redirect("/send-notification");
+      res.redirect("/notifications/send-notification");
       debug(err);
     });
 };
