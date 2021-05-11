@@ -53,13 +53,22 @@ module.exports = (sequelize, DataTypes) => {
     return await this.findOne({ raw, where: { email } });
   };
 
-  User.validateUser = function (user, requestType = "create") {
+  User.validateUser = function (
+    user,
+    { requestType = "create", userType = "member" }
+  ) {
     const schema = Joi.object({
       firstName: Joi.string().min(1).max(256).required(),
       lastName: Joi.string().min(1).max(256).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
-      fcm_token: Joi.string().max(256),
+      fcm_token: Joi.string()
+        .max(256)
+        .alter({
+          member: (schema) => schema.required(),
+          admin: (schema) => schema.forbidden(),
+        })
+        .required(),
       password: Joi.string()
         .min(6)
         .max(256)
@@ -68,14 +77,13 @@ module.exports = (sequelize, DataTypes) => {
           update: (schema) => schema.forbidden(),
         }),
     });
-    return schema.tailor(requestType).validate(user);
+    return schema.tailor(requestType).tailor(userType).validate(user);
   };
 
   User.validateEditUser = function (user) {
     const schema = Joi.object({
       firstName: Joi.string().min(1).max(256).required(),
       lastName: Joi.string().min(1).max(256).required(),
-      email: Joi.string().email().required(),
     });
     return schema.validate(user);
   };
@@ -103,7 +111,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.validateChangePassword = function (passwords) {
     const schema = Joi.object({
-      password: Joi.string().min(6).max(256).required().label("Password"),
+      oldPassword: Joi.string().min(6).max(256).required(),
+      password: Joi.string().min(6).max(256).required(),
       confirmPassword: Joi.any()
         .equal(Joi.ref("password"))
         .required()

@@ -14,11 +14,9 @@ const multer = require("multer");
 const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
-const { default: fetch } = require("node-fetch");
 
 //Image upload config
 const { allowImagesOnly, storage } = require("../utils/image_upload");
-const config = require("../config/config");
 const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 5 },
@@ -104,21 +102,35 @@ Controller.addUser = async (req, res) => {
     length: 10,
     numbers: true,
   });
-  const { error } = User.validateUser({ ...req.body, password });
+  const { error } = User.validateUser(
+    { ...req.body, password },
+    { userType: "admin" }
+  );
   if (error) {
     req.flash("error", error.details[0].message);
-    return res.render(page, { title: "Add User", values: req.body, churches });
+    return res.render(page, {
+      title: "Add User",
+      values: req.body,
+      churches,
+      user: req.user,
+    });
   }
 
   const userExists = await User.findOne({ where: { email } });
   if (userExists) {
     req.flash("error", "Email already exist");
-    return res.render(page, { title: "Add User", values: req.body, churches });
+    return res.render(page, {
+      title: "Add User",
+      values: req.body,
+      churches,
+      user: req.user,
+    });
   }
   const hashedPassword = await User.hashPassword(password);
   await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+
   req.flash("success", "User added successfully");
-  return res.render(page, { title: "Add User", churches });
+  res.render(page, { title: "Add User", churches, user: req.user });
 };
 
 Controller.editUser = async (req, res) => {
@@ -138,6 +150,7 @@ Controller.editUser = async (req, res) => {
       title: "Edit User",
       values: { ...req.body, id },
       churches,
+      user: req.user,
     });
   }
 
@@ -150,6 +163,7 @@ Controller.editUser = async (req, res) => {
       title: "Edit User",
       values: { ...req.body, id },
       churches,
+      user: req.user,
     });
   }
 
@@ -163,6 +177,7 @@ Controller.editUser = async (req, res) => {
     title: "Edit User",
     churches,
     values: user,
+    user: req.user,
   });
 };
 
@@ -176,7 +191,7 @@ Controller.deleteUser = async (req, res) => {
 Controller.registerUser = async (req, res, next) => {
   const failed = { status_code: "03", message: "Registration failed" };
   const { email, password } = req.body;
-  const { error } = User.validateUser(req.body);
+  const { error } = User.validateUser(req.body, {});
   if (error)
     return next(
       createError(400, { ...failed, reason: error.details[0].message })
@@ -206,7 +221,7 @@ Controller.registerUser = async (req, res, next) => {
 };
 
 Controller.login = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, fcm_token } = req.body;
   const failed = { status_code: "03", message: "login failed" };
 
   const { error } = User.validateDetails(req.body);
@@ -230,6 +245,9 @@ Controller.login = async (req, res, next) => {
     );
 
   const token = user.generateAuthToken();
+
+  //update fcm token
+  await User.update({ fcm_token }, { where: { email } });
 
   res
     .header("Authorization", `Bearer ${token}`)
@@ -264,6 +282,8 @@ Controller.resetPassword = async (req, res, next) => {
 
 Controller.changePassword = async (req, res, next) => {
   const { id } = req.user;
+  const { password, oldPassword } = req.body;
+  const failed = { status_code: "03", message: "login failed" };
 
   const { error } = User.validateChangePassword(req.body);
   if (error)
@@ -275,7 +295,15 @@ Controller.changePassword = async (req, res, next) => {
       })
     );
 
-  const hashedPassword = await User.hashPassword(req.body.password);
+  const user = await User.findOne({ where: { id }, attributes: ["password"] });
+
+  const isValidPassword = await bcrypt.compare(oldPassword, user.password);
+  if (!isValidPassword)
+    return next(
+      createError(400, { ...failed, reason: "Invalid old password" })
+    );
+
+  const hashedPassword = await User.hashPassword(password);
   await User.update({ password: hashedPassword }, { where: { id } });
 
   res.json({ status_code: "00", message: "password changed successfully" });
@@ -368,7 +396,7 @@ Controller.getUserPicture = async (req, res, next) => {
 
 Controller.editUserDetails = async (req, res, next) => {
   const { id } = req.user;
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName } = req.body;
 
   const { error } = User.validateEditUser(req.body);
   if (error)
@@ -380,83 +408,6 @@ Controller.editUserDetails = async (req, res, next) => {
       })
     );
 
-  await User.update({ firstName, lastName, email }, { where: { id } });
+  await User.update({ firstName, lastName }, { where: { id } });
   res.json({ status_code: "00", message: "User Details updated Successfully" });
-};
-
-//Test route to be removed
-Controller.sendNotification = async (req, res, next) => {
-  const { tokens, title, body } = req.body;
-
-  const notification = {
-    title,
-    body,
-  };
-
-  const notificationBody = {
-    notification,
-    registration_ids: tokens,
-  };
-
-  fetch("https://fcm.googleapis.com/fcm/send", {
-    method: "post",
-    headers: {
-      Authorization: config.firebase_cloud_api_key,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(notificationBody),
-  })
-    .then((response) => res.send(response))
-    .catch((err) => {
-      res.status(400).send("something went wrong");
-      debug(err);
-    });
-};
-
-Controller.sendNotificationView = async (req, res) => {
-  res.render("send-notification", {
-    title: "Send Notification",
-    user: req.user,
-  });
-};
-
-Controller.sendNotifications = async (req, res) => {
-  const { churchId } = req.user;
-  const { title, body } = req.body;
-
-  const users = await User.findAll({
-    where: { churchId },
-    attributes: ["fcm_token"],
-  });
-
-  const tokens = users.map((user) => user.fcm_token);
-  debug(tokens);
-
-  const notification = {
-    title,
-    body,
-  };
-
-  const notificationBody = {
-    notification,
-    registration_ids: tokens,
-  };
-
-  fetch("https://fcm.googleapis.com/fcm/send", {
-    method: "post",
-    headers: {
-      Authorization: config.firebase_cloud_api_key,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(notificationBody),
-  })
-    .then((response) => {
-      req.flash("success", "notifications sent");
-      res.redirect("/send-notification");
-    })
-    .catch((err) => {
-      req.flash("error", "something went wrong");
-      res.redirect("/send-notification");
-      debug(err);
-    });
 };

@@ -13,6 +13,7 @@ const eventsController = require("../controllers/events.controller");
 const churchContentController = require("../controllers/churchcontent.controller");
 const donationController = require("../controllers/donation.controller");
 const appointmentController = require("../controllers/appointment.controller");
+const notificationsController = require("../controllers/notifications.controller");
 
 /*****Page Routes*********************/
 
@@ -154,13 +155,21 @@ router.post(
     failureFlash: true,
   })
 );
-router.post("/users/add", usersController.addUser);
-router.post("/users/edit/:id", usersController.editUser);
+router.post("/users/add", [auth, superAdmin], usersController.addUser);
+router.post("/users/edit/:id", [auth, superAdmin], usersController.editUser);
 router.post("/forgotpassword", accountController.forgotPassword);
 router.post("/resetpassword", accountController.resetPassword);
-router.post("/addchurch", auth, churchController.addChurch);
-router.post("/churches/edit/:id", churchController.editChurch);
-router.post("/churches/edit/image/:id", churchController.editChurchImage);
+router.post("/addchurch", [auth, superAdmin], churchController.addChurch);
+router.post(
+  "/churches/edit/:id",
+  [auth, superAdmin],
+  churchController.editChurch
+);
+router.post(
+  "/churches/edit/image/:id",
+  [auth, superAdmin],
+  churchController.editChurchImage
+);
 
 /***************Payment Url*****************/
 router.get("/paymentPage/:pageId", stripeController.paymentPage);
@@ -169,11 +178,16 @@ router.get("/paymentPage/:pageId", stripeController.paymentPage);
 router.get(
   "/send-notification",
   [auth, admin],
-  usersController.sendNotificationView
+  notificationsController.sendNotificationView
 );
 router.post(
   "/send-notification",
   [auth, admin],
-  usersController.sendNotifications
+  notificationsController.sendNotifications
+);
+router.post(
+  "/super-admin-send-notification",
+  [auth, superAdmin],
+  notificationsController.superAdminSendNotifications
 );
 module.exports = router;

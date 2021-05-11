@@ -39,7 +39,10 @@ include('./partials/response-message.ejs') %>
     </div>
     <div class="col-lg-8 d-flex align-items-center">
       <div class="flex" style="max-width: 100%">
-        <form action="/send-notification" method="post">
+        <form
+          action="<%=user.isAdmin ? '/send-notification' : '/super-admin-send-notification'%>"
+          method="post"
+        >
           <div class="form-group">
             <label class="form-label" for="title">Title*:</label>
             <input

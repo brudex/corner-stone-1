@@ -8,6 +8,7 @@ const eventsController = require("../controllers/events.controller");
 const donationController = require("../controllers/donation.controller");
 const appointmentController = require("../controllers/appointment.controller");
 const stripeController = require("../controllers/stripe.controller");
+const notificationsController = require("../controllers/notifications.controller");
 //Middlewares
 const api_auth = require("../middlewares/api-auth");
 
@@ -116,7 +117,12 @@ router.post(
 router.post("/users/change_password", api_auth, usersController.changePassword);
 //Todo return church contact info on login
 
-//test route
+/***************** Notifications ********************/
 
-router.post("/users/sendnotification", usersController.sendNotification);
+router.get(
+  "/notifications/getusernotifications",
+  api_auth,
+  notificationsController.getUserNotifications
+);
+
 module.exports = router;
