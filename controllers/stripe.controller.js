@@ -16,6 +16,7 @@ Controller.initiatePaymentIntent = async (req, res) => {
     donation.donationTypeId = req.body.donationType;
     donation.paymentStatus ="01";
     donation.statusMessage = "pending";
+    donation.settlementStatus = "PENDING";
     db.ChurchDonation.create(donation);
     res.json({ status: "00", paymentUrl : "/paymentPage/"+donation.pageId,reference:donation.pageId });
 };
@@ -23,33 +24,62 @@ Controller.initiatePaymentIntent = async (req, res) => {
 Controller.paymentPage = async (req, res) => {
     db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
         .then(function (donation) {
-            if(donation){
+            if(donation && donation.paymentStatus==="01"){
               // Create a PaymentIntent with the order amount and currency
-                const intent={
-                    amount: 1500,
-                    currency: "usd"
-                };
-                console.log('The intent is >>>',intent);
-              stripe.paymentIntents.create(intent).then(function (paymentIntent) {
-                  const page = "payment-page";
-                  let buff = new Buffer(paymentIntent.client_secret);
-                  const clientSecret= buff.toString('base64');
-                  return res.render( "payment-page", { clientSecret:clientSecret ,layout: "payment-layout",title:"Pay with Card"});
-              }).catch(err=>{
-                  console.log(err);
-                 return res.render("payment-error",{layout:"payment-layout"})
-              });
+                if(donation.paymentMode==="stripe"){
+                    return renderStripePayment(donation,res)
+                }else{
+                    return renderPaypalPayment(donation,res)
+                }
             }else{
                 return res.render("payment-not-found",{layout:"payment-layout"});
             }
         })
 };
 
+function renderStripePayment(donation,res){
+    // Create a PaymentIntent with the order amount and currency
+    const intent={
+        amount: 1500, //todo calculate payment
+        currency: "usd"
+    };
+    console.log('The intent is >>>',intent);
+    stripe.paymentIntents.create(intent).then(function (paymentIntent) {
+        let buff = new Buffer(paymentIntent.client_secret);
+        const clientSecret= buff.toString('base64');
+        return res.render( "payment-page", {paymentMode:donation.paymentMode, clientSecret:clientSecret,stripePublicKey:config.stripe_publicKey ,layout: "payment-layout",title:"Pay with Card"});
+    }).catch(err=>{
+        console.log(err);
+        return res.render("payment-error",{layout:"payment-layout"})
+    });
+}
+
+function renderPaypalPayment(donation,res){
+
+    const amount=1500; //todo calculate amount
+    return res.render( "payment-page", { paymentMode:donation.paymentMode, payPalClientId:config.paypal_client_id,layout: "payment-layout",title:"Pay with Paypal",amount:amount});
+}
+
+Controller.setPaymentStatus = function (req,res){
+    db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
+        .then(function (donation) {
+            if(donation && donation.paymentStatus==="01"){
+                donation.responseText = JSON.stringify(req.body);
+                if(donation.paymentMode==="stripe"){
+                    donation.paymentStatus ="00" ;///todo check stripe payload
+                }else{
+                    //todo check paypal payload
+                }
+                donation.save();
+            }
+        })
+};
+
+
 Controller.paymentStatus = async (req, res) => {
     db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
         .then(function (donation) {
             if(donation){
-
                return  res.json({status:donation.paymentStatus, message:donation.statusMessage})
             }else{
                 return res.status(404).json({status:"404",message:"Not Found"})

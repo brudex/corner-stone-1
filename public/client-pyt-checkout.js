@@ -1,7 +1,6 @@
 // A reference to Stripe.js initialized with a fake API key.
 // Sign in to see examples pre-filled with your key.
 var stripe = Stripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
-
 // Disable the button until we have Stripe set up on the page
 document.querySelector("button").disabled = true;
 (function () {

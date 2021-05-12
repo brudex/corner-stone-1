@@ -61,6 +61,7 @@ router.get("/donationTypes",api_auth,donationController.getChurchDonationTypes);
 router.get("/donationhistory", api_auth, donationController.donationHistory); //add the jwt middleware to identify the user
 router.post("/initiatePaymentIntent",api_auth,stripeController.initiatePaymentIntent); //call this endpoint to state a payment session it will return the url which has the payment form
 router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
+router.get("/setPaymentStatus/:pageId", api_auth, stripeController.setPaymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
 
 /*****************Users endpoint*****************/
 router.get("/users/getdetails", api_auth, usersController.getUserDetails);
