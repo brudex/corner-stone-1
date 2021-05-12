@@ -87,16 +87,26 @@ router.get(
   donationController.donationTypesView
 );
 router.get(
+  "/appointments",
+  [auth, admin],
+  appointmentController.appointmentsView
+);
+router.get(
+  "/appointments/available-dates",
+  [auth, admin],
+  appointmentController.availableAppointmentsView
+);
+router.get(
   "/appointments/add-appointment-date",
   [auth, admin],
   appointmentController.addAppointmentDateView
 );
 
-// router.post(
-//   "/appointments/add-appointment-date",
-//   [auth, admin],
-//   appointmentController.addAppointmentDate
-// );
+router.post(
+  "/appointments/add-appointment-date",
+  [auth, admin],
+  appointmentController.addAppointmentDate
+);
 
 router.post(
   "/account/edit-account",
