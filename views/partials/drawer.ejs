@@ -251,18 +251,46 @@
             </li>
           </ul>
         </li>
+        <%}%>
         <li class="sidebar-menu-item">
-          <a class="sidebar-menu-button" href="/send-notification">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
+            href="#notifications"
+          >
             <span
               class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
               >send</span
             >
-            Send Notification
+            Notifications
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="notifications">
+            <% if (user.isSuperAdmin) {%>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/notifications/super-admin">
+                <span class="sidebar-menu-text">View Notifications</span>
+              </a>
+            </li>
+            <%}%> <% if (user.isAdmin) {%>
+            <li class="sidebar-menu-item">
+              <a class="sidebar-menu-button" href="/notifications/church">
+                <span class="sidebar-menu-text">View Notifications</span>
+              </a>
+            </li>
+            <%}%>
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/notifications/send-notification"
+              >
+                <span class="sidebar-menu-text">Send Notifications</span>
+              </a>
+            </li>
+          </ul>
         </li>
-        <%}%>
       </ul>
-      <div class="sidebar-heading">Settings</div>
+      <!-- <div class="sidebar-heading">Settings</div>
       <ul class="sidebar-menu">
         <li class="sidebar-menu-item">
           <a
@@ -299,7 +327,7 @@
             Log out
           </a>
         </li>
-      </ul>
+      </ul> -->
       <!-- // END Sidebar Content -->
     </div>
   </div>

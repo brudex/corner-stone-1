@@ -14,11 +14,6 @@ include('../partials/response-message.ejs') %>
         </ol>
       </div>
     </div>
-    <!-- <div class="row" role="tablist">
-      <div class="col-auto">
-        <a href="/users/add" class="btn btn-outline-secondary">Add User</a>
-      </div>
-    </div> -->
   </div>
 </div>
 
@@ -81,16 +76,6 @@ include('../partials/response-message.ejs') %>
                 >User type</a
               >
             </th>
-
-            <!-- <th class="text-center" style="width: 48px">
-              <a
-                href="javascript:void(0)"
-                class="sort"
-                data-sort="js-lists-values-projects"
-                >Actions</a
-              >
-            </th>
-            <th style="width: 24px" class="pl-0"></th> -->
           </tr>
         </thead>
         <tbody class="list" id="staff">
@@ -108,9 +93,6 @@ include('../partials/response-message.ejs') %>
                         ><%=member.firstName + ' ' + member.lastName %></strong
                       >
                     </p>
-                    <!-- <small class="js-lists-values-employee-email text-50"
-                      >lorna_kirlin@nora.biz</small
-                    > -->
                   </div>
                 </div>
               </div>
@@ -124,28 +106,6 @@ include('../partials/response-message.ejs') %>
                 <%=member.isAdmin ? 'Admin' : 'Church member' %>
               </div>
             </td>
-
-            <!-- <td class="text-center js-lists-values-projects small">
-              <a
-                type="button"
-                class="btn btn-warning"
-                href="/users/edit/<%=member.id %>"
-              >
-                <i class="material-icons">edit</i>
-              </a>
-              <a
-                type="button"
-                class="btn btn-danger"
-                href="/users/delete/<%=member.id %>"
-              >
-                <i class="material-icons">delete</i>
-              </a>
-            </td> -->
-            <!-- <td class="text-right pl-0">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td> -->
           </tr>
           <% })%> <% if (data.length === 0) {%>
           <tr>
@@ -158,10 +118,6 @@ include('../partials/response-message.ejs') %>
       </table>
     </div>
     <%- include('../partials/pagination.ejs') %>
-
-    <!-- <div class="card-body bordet-top text-right">
-          15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
-          </div> -->
   </div>
 </div>
 <%- include('../partials/drawer.ejs') %>

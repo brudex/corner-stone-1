@@ -1,5 +1,5 @@
-<%- include('./partials/navbar.ejs') %> <%-
-include('./partials/response-message.ejs') %>
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
@@ -39,7 +39,10 @@ include('./partials/response-message.ejs') %>
     </div>
     <div class="col-lg-8 d-flex align-items-center">
       <div class="flex" style="max-width: 100%">
-        <form action="/send-notification" method="post">
+        <form
+          action="<%=user.isAdmin ? '/notifications/send-by-church' : '/notifications/send-by-superadmin'%>"
+          method="post"
+        >
           <div class="form-group">
             <label class="form-label" for="title">Title*:</label>
             <input
@@ -71,4 +74,4 @@ include('./partials/response-message.ejs') %>
     </div>
   </div>
 </div>
-<%- include('./partials/drawer.ejs') %>
+<%- include('../partials/drawer.ejs') %>

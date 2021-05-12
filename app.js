@@ -48,7 +48,8 @@ app.use("/api", apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  if (req.path === "/api") return next(createError(404));
+  res.render("errors/404", { title: "404", layout: "blank-layout" });
 });
 
 // error handler
@@ -59,7 +60,11 @@ app.use(function (err, req, res, next) {
   // render the error page
   console.log(err);
   res.status(err.status || 500);
-  res.json(err);
+  if (req.path === "/api") return res.json(err);
+  res.render(`errors/${err.status || 500}`, {
+    title: err.status || 500,
+    layout: "blank-layout",
+  });
 });
 
 module.exports = app;
