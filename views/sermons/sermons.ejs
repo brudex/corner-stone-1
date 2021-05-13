@@ -66,18 +66,18 @@ include('../partials/response-message.ejs') %>
             </div>
 
             <a
-              href="/sermons/edit/<%=sermon.id %>"
+              href="/sermons/delete/<%=sermon.id %>"
               data-toggle="tooltip"
-              data-title="Add Favorite"
+              data-title="Delete sermon"
               data-placement="top"
               data-boundary="window"
-              class="ml-4pt material-icons text-20 card-course__icon-favorite"
+              class="ml-4pt material-icons text-20 card-course__icon-favorite text-danger"
               data-original-title=""
               title=""
-              >edit</a
+              >delete</a
             >
           </div>
-          <img src="/images/sermon.jpg" height="150" alt="sermon" />
+          <!-- <img src="/images/sermon.jpg" height="150" alt="sermon" /> -->
           <p
             class="mt-16pt text-70 flex"
             style="
@@ -108,6 +108,7 @@ include('../partials/response-message.ejs') %>
     </div>
     <%})%>
   </div>
+  <%- include('../partials/pagination.ejs') %>
 </div>
 
 <%- include('../partials/drawer.ejs') %>

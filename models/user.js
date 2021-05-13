@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       email: { type: DataTypes.STRING, unique: true, allowNull: false },
       fcm_token: { type: DataTypes.TEXT },
       churchId: {
@@ -60,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     const schema = Joi.object({
       firstName: Joi.string().min(1).max(256).required(),
       lastName: Joi.string().min(1).max(256).required(),
+      phone: Joi.string().min(10).max(15).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
       fcm_token: Joi.string()

@@ -7,26 +7,86 @@ const userPlayList = require("../models/user_playlist");
 const UserPlayList = userPlayList(sequelize, Sequelize);
 const featuredContent = require("../models/featuredcontent");
 const FeaturedContent = featuredContent(sequelize, Sequelize);
+const multer = require("multer");
 const Op = Sequelize.Op;
 const createError = require("http-errors");
 const db = require("../models");
 const dateFns = require("date-fns");
 const _ = require("lodash");
 const debug = require("debug")("corner-stone:churchcontent");
+//utils
+const { allowAudiosOnly, storage } = require("../utils/image_upload");
+const Joi = require("joi");
+const upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 100 },
+  fileFilter: allowAudiosOnly,
+}).single("sermon-audio");
 
 const Controller = {};
 module.exports = Controller;
 
 Controller.sermonView = async (req, res) => {
-  const sermons = await ChurchContent.findAll({
-    where: { contentType: "sermon" },
-    order: [["createdAt", "DESC"]],
+  const { churchId } = req.user;
+  const paginationResults = await ChurchContent.paginate(req, {
+    contentType: "sermon",
+    churchId,
   });
+
+  const sermons = paginationResults.data;
   res.render("sermons/sermons", {
     title: "Sermons",
     user: req.user,
     sermons,
+    ...paginationResults,
   });
+};
+
+Controller.addSermonView = async (req, res) => {
+  res.render("sermons/add-sermon", { title: "Add Sermon", user: req.user });
+};
+
+Controller.addSermon = async (req, res) => {
+  const { churchId } = req.user;
+  await upload(req, res, async (err) => {
+    const { title } = req.body;
+    if (err) {
+      return res.status(400).send(err);
+    }
+
+    const schema = Joi.object({
+      title: Joi.string().min(1).max(256).required(),
+    });
+    const { error } = schema.validate({ title });
+    if (error) {
+      return res.status(400).send(error.details[0].message);
+    }
+
+    const sermonExists = await ChurchContent.findOne({
+      where: { title, churchId, contentType: "sermon" },
+    });
+    if (sermonExists) {
+      return res.status(400).send("Sermon already exist");
+    }
+
+    await ChurchContent.create({
+      title,
+      contentData: req.file.filename,
+      contentType: "sermon",
+      churchId,
+    });
+
+    res.send("Sermon added successfully");
+  });
+};
+
+Controller.deleteSermon = async (req, res) => {
+  const { churchId } = req.user;
+  const { id } = req.params;
+
+  await ChurchContent.destroy({ where: { churchId, id } });
+  req.flash("Sermon deleted successfully");
+  res.redirect("/sermons/sermons");
 };
 
 Controller.dailyDevotionalView = async (req, res) => {

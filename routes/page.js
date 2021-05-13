@@ -46,6 +46,16 @@ router.get("/users/delete/:id", [auth, superAdmin], usersController.deleteUser);
 router.get("/churchmembers", [auth, admin], usersController.churchMembersView);
 router.get("/sermons", [auth, admin], churchContentController.sermonView);
 router.get(
+  "/sermons/add",
+  [auth, admin],
+  churchContentController.addSermonView
+);
+router.get(
+  "/sermons/delete/:id",
+  [auth, admin],
+  churchContentController.deleteSermon
+);
+router.get(
   "/devotionals",
   [auth, admin],
   churchContentController.devotionalView
@@ -101,7 +111,7 @@ router.get(
   [auth, admin],
   appointmentController.addAppointmentDateView
 );
-
+router.post("/sermons/add", [auth, admin], churchContentController.addSermon);
 router.post(
   "/appointments/add-appointment-date",
   [auth, admin],
