@@ -5,7 +5,8 @@
 <%}%>
 <div class="page-section">
     <div class="container page__container">
-        <form id="payment-form1" class="col-md-8 p-0 mx-auto">
+        <form id="payment-form" class="col-md-8 p-0 mx-auto">
+            <input type="hidden" id="pageId" value="<%=pageId%>">
             <% if(paymentMode==="stripe"){%>
                <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
             <%}%>
@@ -45,7 +46,7 @@
                             </div>
                         </div>
 
-                    <%} else if(paymentMode==="stripe"){%>
+                    <%} else if(paymentMode==="paypal"){%>
                             <div id="paypal">
 
                                 <div id="paypal-element">
@@ -64,6 +65,26 @@
         </form>
     </div>
 </div>
+<script>
+    var setPaymentStatus = function (success, data) {
+        var pageId =  document.querySelector("#pageId").value;
+        var payload = {};
+        if(success===true){
+            payload.status="00";
+        }else{
+            payload.status="03";
+        }
+        payload.data=data;
+        jQuery.post( "/api/setPaymentStatus/"+pageId,payload, function(response) {
+            alert( "success" );
+        }).done(function() {
+            alert( "second success" );
+        })
+        .fail(function() {
+            alert( "error" );
+        });
+    }
+</script>
 <%if(paymentMode==="paypal"){%>
 <script>
     paypal.Buttons({
@@ -79,6 +100,7 @@
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 alert('Transaction completed by ' + details.payer.name.given_name);
+                setPaymentStatus(true,details);
             });
         }
     }).render('#paypal-button-container'); // Display payment options on your web page
@@ -113,7 +135,6 @@
             var card = elements.create("card", { style: style });
             // Stripe injects an iframe into the DOM
             card.mount("#card-element");
-
             card.on("change", function (event) {
                 // Disable the Pay button if there are no card details in the Element
                 document.querySelector("button").disabled = event.empty;
@@ -134,7 +155,6 @@
                 console.log('The decrypted client secret >>',decrypted);
                 return decrypted;
             }
-
         }());
 
         // Calls stripe.confirmCardPayment
@@ -152,23 +172,26 @@
                     if (result.error) {
                         // Show error to your customer
                         showError(result.error.message);
+                        setPaymentStatus(false,result);
                     } else {
                         // The payment succeeded!
-                        orderComplete(result.paymentIntent.id);
+                        orderComplete(result);
+                        setPaymentStatus(true,result);
                     }
                 });
         };
 
         /* ------- UI helpers ------- */
         // Shows a success message when the payment is complete
-        var orderComplete = function(paymentIntentId) {
+        var orderComplete = function(result) {
+            console.log("Order completed successfully ",result.paymentIntent.id);
             loading(false);
-            document
-                .querySelector(".result-message a")
-                .setAttribute(
-                    "href",
-                    "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-                );
+            // document
+            //     .querySelector(".result-message a")
+            //     .setAttribute(
+            //         "href",
+            //         "https://dashboard.stripe.com/test/payments/" + paymentIntentId
+            //     );
             document.querySelector(".result-message").classList.remove("hidden");
             document.querySelector("button").disabled = true;
         };

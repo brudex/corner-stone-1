@@ -26,10 +26,12 @@ Controller.paymentPage = async (req, res) => {
         .then(function (donation) {
             if(donation && donation.paymentStatus==="01"){
               // Create a PaymentIntent with the order amount and currency
-                if(donation.paymentMode==="stripe"){
-                    return renderStripePayment(donation,res)
-                }else{
+                if(donation.paymentMode==="paypal"){
+                    donation.paymentMode='paypal';
                     return renderPaypalPayment(donation,res)
+                }else{
+                    donation.paymentMode='stripe';
+                    return renderStripePayment(donation,res)
                 }
             }else{
                 return res.render("payment-not-found",{layout:"payment-layout"});
@@ -47,7 +49,7 @@ function renderStripePayment(donation,res){
     stripe.paymentIntents.create(intent).then(function (paymentIntent) {
         let buff = new Buffer(paymentIntent.client_secret);
         const clientSecret= buff.toString('base64');
-        return res.render( "payment-page", {paymentMode:donation.paymentMode, clientSecret:clientSecret,stripePublicKey:config.stripe_publicKey ,layout: "payment-layout",title:"Pay with Card"});
+        return res.render( "payment-page", {paymentMode:donation.paymentMode,pageId:donation.pageId, clientSecret:clientSecret,stripePublicKey:config.stripe_publicKey ,layout: "payment-layout",title:"Pay with Card"});
     }).catch(err=>{
         console.log(err);
         return res.render("payment-error",{layout:"payment-layout"})
@@ -56,20 +58,19 @@ function renderStripePayment(donation,res){
 
 function renderPaypalPayment(donation,res){
     const amount=1500; //todo calculate amount
-    return res.render( "payment-page", { paymentMode:donation.paymentMode, payPalClientId:config.paypal_client_id,layout: "payment-layout",title:"Pay with Paypal",amount:amount});
+    return res.render( "payment-page", { paymentMode:donation.paymentMode,pageId:donation.pageId,payPalClientId:config.paypal_client_id,layout: "payment-layout",title:"Pay with PayPal",amount:amount});
 }
 
 Controller.setPaymentStatus = function (req,res){
     db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
         .then(function (donation) {
-            if(donation && donation.paymentStatus==="01"){
-                donation.responseText = JSON.stringify(req.body);
-                if(donation.paymentMode==="stripe"){
-                    donation.paymentStatus ="00" ;///todo check stripe payload
-                }else{
-                    //todo check paypal payload
-                }
+            if(donation && donation.paymentStatus==="01"){ //todo change to time base not more than 5 mins of creation
+                donation.responseText = JSON.stringify(req.body.data);
+                donation.paymentStatus =req.body.status;
                 donation.save();
+                res.json({status:"00",message:"Payment status updated"})
+            }else{
+                res.status(404).json({status:"404",message:"Not found"})
             }
         })
 };

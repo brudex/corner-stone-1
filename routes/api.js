@@ -57,7 +57,6 @@ router.post(
 /**************Events*************/
 router.get("/events", api_auth, eventsController.getUpcomingEvents);
 router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the jwt middleware to identify the user
-// <<<<<<< HEAD
 router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
 router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
 router.get(
@@ -65,7 +64,7 @@ router.get(
   api_auth,
   donationController.getChurchDonationTypes
 );
-// =======
+
 
 /************Booking appointment*****/
 // >>>>>>> 833d1541cf19f95336d4e7e992ecfecfc6b99403
@@ -93,8 +92,10 @@ router.post(
   "/initiatePaymentIntent",
   api_auth,
   stripeController.initiatePaymentIntent
-); //call this endpoint to state a payment session it will return the url which has the payment form
-router.get("/paymentStatus/:pageId", api_auth, stripeController.paymentStatus); //call this endpoint to state a payment session it will return the url which has the payment form
+); //call this endpoint to start a payment session it will return the url which has the payment form
+router.get("/paymentStatus/:pageId", stripeController.paymentStatus); //call this endpoint status of payment has the payment form
+router.post("/setPaymentStatus/:pageId", stripeController.setPaymentStatus); //set payment status
+
 
 /*****************Users endpoint*****************/
 router.get("/users/getdetails", api_auth, usersController.getUserDetails);
