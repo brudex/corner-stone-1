@@ -34,7 +34,7 @@ Controller.paymentPage = async (req, res) => {
                     return renderStripePayment(donation,res)
                 }
             }else{
-                return res.render("payment-not-found",{layout:"payment-layout"});
+                return res.render("payment-not-found",{layout:"payment-layout",title:"Payment Error"});
             }
         })
 };
@@ -52,7 +52,7 @@ function renderStripePayment(donation,res){
         return res.render( "payment-page", {paymentMode:donation.paymentMode,pageId:donation.pageId, clientSecret:clientSecret,stripePublicKey:config.stripe_publicKey ,layout: "payment-layout",title:"Pay with Card"});
     }).catch(err=>{
         console.log(err);
-        return res.render("payment-error",{layout:"payment-layout"})
+        return res.render("payment-error",{layout:"payment-layout",title:"Payment Error"})
     });
 }
 
@@ -64,9 +64,19 @@ function renderPaypalPayment(donation,res){
 Controller.setPaymentStatus = function (req,res){
     db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
         .then(function (donation) {
+            console.log('Payment status payload >>>',req.body);
             if(donation && donation.paymentStatus==="01"){ //todo change to time base not more than 5 mins of creation
-                donation.responseText = JSON.stringify(req.body.data);
+                donation.responseText = req.body.data;
                 donation.paymentStatus =req.body.status;
+                donation.statusMessage = req.body.statusMessage;
+                if(donation.paymentMode==='stripe' && donation.paymentStatus==="00"){
+                    const paymentDetails = JSON.parse(req.body.data);
+                    donation.paymentReference = paymentDetails.paymentIntent.id;
+                }
+                if(donation.paymentMode==='paypal' && donation.paymentStatus==="00"){
+                    const paymentDetails = JSON.parse(req.body.data);
+                    donation.paymentReference = "";
+                }
                 donation.save();
                 res.json({status:"00",message:"Payment status updated"})
             }else{

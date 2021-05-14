@@ -34,10 +34,10 @@
                         <div id="stripe">
                             <div id="card-element"><!--Stripe.js injects the Card Element--></div>
                             <p id="card-error" role="alert"></p>
-                            <p class="result-message hidden">
-                                Payment succeeded, see the result in your
-                                <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-                            </p>
+<!--                            <p class="result-message hidden">-->
+<!--                                Payment succeeded, see the result in your-->
+<!--                                <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.-->
+<!--                            </p>-->
                             <div class="list-group-item text-center">
                                 <button type="submit" id="submit" class="btn btn-primary">
                                     <div class="spinner hidden" id="spinner"></div>
@@ -57,10 +57,7 @@
                                 </div>
                             </div>
                     <%}%>
-
                 </div>
-
-
             </div>
         </form>
     </div>
@@ -71,19 +68,46 @@
         var payload = {};
         if(success===true){
             payload.status="00";
+            payload.statusMessage="Success";
         }else{
             payload.status="03";
+            payload.statusMessage="Failed";
         }
-        payload.data=data;
-        jQuery.post( "/api/setPaymentStatus/"+pageId,payload, function(response) {
-            alert( "success" );
-        }).done(function() {
-            alert( "second success" );
-        })
+        payload.data= JSON.stringify(data);
+        console.log("Payload sent to server <<<",payload);
+        jQuery.post( "/api/setPaymentStatus/"+pageId, payload, function(response) {
+            loading(false);
+            window.swal({
+                    title: "Payment Successful",
+                    text:  response.message,
+                    type: "success",
+                },
+                function () {
+                    window.location.replace("http://www.w3schools.com"); //todo redirect to success page and let flutter detect url change
+                });
+        },'json')
         .fail(function() {
-            alert( "error" );
+            loading(false);
+            window.swal("Failed", "", "error");
         });
     }
+    var showAlertWithCallback = function(title,message,alertType){
+        window.swal({
+                title: title,
+                text: message,
+                type: alertType,
+                showCancelButton: true,
+                confirmButtonClass: "btn-md btn-danger",
+                cancelButtonClass: "btn-md btn-default ",
+                cancelButtonText: "Try again",
+                confirmButtonText: "Cancel Payment",
+                closeOnConfirm: true
+            },
+            function () {
+                window.location.replace("http://www.w3schools.com");
+            });
+    }
+
 </script>
 <%if(paymentMode==="paypal"){%>
 <script>
@@ -131,7 +155,6 @@
                     iconColor: "#fa755a"
                 }
             };
-
             var card = elements.create("card", { style: style });
             // Stripe injects an iframe into the DOM
             card.mount("#card-element");
@@ -172,11 +195,9 @@
                     if (result.error) {
                         // Show error to your customer
                         showError(result.error.message);
-                        setPaymentStatus(false,result);
                     } else {
                         // The payment succeeded!
                         orderComplete(result);
-                        setPaymentStatus(true,result);
                     }
                 });
         };
@@ -184,25 +205,18 @@
         /* ------- UI helpers ------- */
         // Shows a success message when the payment is complete
         var orderComplete = function(result) {
-            console.log("Order completed successfully ",result.paymentIntent.id);
-            loading(false);
-            // document
-            //     .querySelector(".result-message a")
-            //     .setAttribute(
-            //         "href",
-            //         "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-            //     );
-            document.querySelector(".result-message").classList.remove("hidden");
+            setPaymentStatus(true,result);
             document.querySelector("button").disabled = true;
         };
         // Show the customer the error from Stripe if their card fails to charge
         var showError = function(errorMsgText) {
             loading(false);
-            var errorMsg = document.querySelector("#card-error");
-            errorMsg.textContent = errorMsgText;
-            setTimeout(function() {
-                errorMsg.textContent = "";
-            }, 4000);
+            showAlertWithCallback("Error", errorMsgText, "error")
+            //var errorMsg = document.querySelector("#card-error");
+            // errorMsg.textContent = errorMsgText;
+            // setTimeout(function() {
+            //     errorMsg.textContent = "";
+            // }, 4000);
         };
 
         // Show a spinner on payment submission

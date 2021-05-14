@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       paymentStatus: DataTypes.STRING, // 00=success,01=pending,03=failed,
       statusMessage: DataTypes.STRING,
       settlementStatus: DataTypes.STRING, //PENDING, COMPLETED
+      paymentReference: DataTypes.STRING, //PENDING, COMPLETED
       responseText: DataTypes.TEXT
     },
     {
