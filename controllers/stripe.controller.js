@@ -55,7 +55,6 @@ function renderStripePayment(donation,res){
 }
 
 function renderPaypalPayment(donation,res){
-
     const amount=1500; //todo calculate amount
     return res.render( "payment-page", { paymentMode:donation.paymentMode, payPalClientId:config.paypal_client_id,layout: "payment-layout",title:"Pay with Paypal",amount:amount});
 }
