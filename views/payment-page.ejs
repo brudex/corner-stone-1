@@ -6,23 +6,26 @@
 <div class="page-section1">
     <div class="row">
         <div class="col-sm-10 offset-sm-1 col-md-10 offset-md-1">
-            <form id="payment-form" class="col-md-12 col-sm-12 col-lg-12 p-0 mx-auto">
+            <form id="payment-form1" class="col-md-12 col-sm-12 col-lg-12 p-0 mx-auto">
                 <input type="hidden" id="pageId" value="<%=pageId%>">
                 <% if(paymentMode==="stripe"){%>
                 <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
                 <%}%>
                 <div class="list-group list-group-form mb-0">
                     <div class="list-group-item">
-                        <fieldset aria-labelledby="label-type" class="m-0 form-group">
-                            <div class="form-row align-items-center">
-                                <div role="group" aria-labelledby="label-type" class="col-md-9">
-                                    <div role="group" class="btn-group btn-group-toggle text-center" data-toggle="buttons">
-                                        <div class="col-6"> <img src="/images/icon/visa_payment2.png" alt="visa"></div>
-                                        <div class="col-6">  <img src="/images/icon/mastercard_payment1.png" alt="master"></div>
+                        <% if(paymentMode==="stripe"){%>
+                            <fieldset aria-labelledby="label-type" class="m-0 form-group">
+                                <div class="form-row align-items-center">
+                                    <div role="group" aria-labelledby="label-type" class="col-md-9">
+                                        <div role="group" class="btn-group btn-group-toggle text-center" data-toggle="buttons">
+                                            <div class="col-6"> <img src="/images/icon/visa_payment2.png" alt="visa"></div>
+                                            <div class="col-6">  <img src="/images/icon/mastercard_payment1.png" alt="master"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        <%}%>
+
                     </div>
                     <div>
                         <% if(paymentMode==="stripe") {%>
@@ -43,11 +46,9 @@
 
                         <%} else if(paymentMode==="paypal"){%>
                             <div id="paypal">
-
                                 <div id="paypal-element">
                                     <div id="paypal-button-container"></div>
                                 </div>
-
                                 <div class="list-group-item text-center">
                                 </div>
                             </div>
@@ -56,9 +57,9 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-1 "></div>
+        <div class="col-sm-1 ">
 
-
+        </div>
     </div>
 </div>
 <script>
