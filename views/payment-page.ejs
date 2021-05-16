@@ -83,7 +83,7 @@
                     type: "success",
                 },
                 function () {
-                    window.location.replace("http://www.w3schools.com"); //todo redirect to success page and let flutter detect url change
+                        window.location.replace("/paymentResult/success");
                 });
         },'json')
         .fail(function() {
@@ -104,7 +104,7 @@
                 closeOnConfirm: true
             },
             function () {
-                window.location.replace("http://www.w3schools.com");
+                window.location.replace("/paymentResult/failed");
             });
     }
 

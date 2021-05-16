@@ -173,6 +173,7 @@ router.post(
 
 /***************Payment Url*****************/
 router.get("/paymentPage/:pageId", stripeController.paymentPage);
+router.get("/paymentResult/:status", stripeController.paymentResult);
 
 /************* Push Notification */
 router.get(

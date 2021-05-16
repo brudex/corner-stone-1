@@ -39,6 +39,14 @@ Controller.paymentPage = async (req, res) => {
         })
 };
 
+Controller.paymentResult = async (req, res) => {
+    if(req.params.status==="success"){
+        return res.render("payment-status",{layout:"payment-layout",title:"Payment Success",status:"success"});
+    }else{
+        return res.render("payment-status",{layout:"payment-layout",title:"Payment Failed",status:"failed"});
+    }
+};
+
 function renderStripePayment(donation,res){
     // Create a PaymentIntent with the order amount and currency
     const intent={
