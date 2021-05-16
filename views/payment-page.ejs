@@ -3,50 +3,45 @@
 <%}else{%>
     <script src="https://js.stripe.com/v3/"></script>
 <%}%>
-<div class="page-section">
-    <div class="container page__container">
-        <form id="payment-form" class="col-md-8 p-0 mx-auto">
-            <input type="hidden" id="pageId" value="<%=pageId%>">
-            <% if(paymentMode==="stripe"){%>
-               <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
-            <%}%>
-            <div class="list-group list-group-form mb-0">
-                <div class="list-group-item">
-                    <fieldset aria-labelledby="label-type" class="m-0 form-group">
-                        <div class="form-row align-items-center">
-                            <label for="payment_cc" id="label-type" class="col-md-3 col-form-label form-label">Payment type</label>
-                            <div role="group" aria-labelledby="label-type" class="col-md-9">
-                                <div role="group" class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <a href="#stripe" class="btn btn-outline-secondary active" data-toggle="tab">
-                                        <input type="radio" id="payment_cc" name="payment_type" value="cc" checked="" aria-checked="true" data-toggle="tab"> Debit or credit card
-                                    </a>
-                                    <a href="#paypal" class="btn btn-outline-secondary" data-toggle="tab">
-                                        <input type="radio" id="payment_pp" name="payment_type" value="pp" aria-checked="true"> PayPal
-                                    </a>
+<div class="page-section1">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 col-md-10 offset-md-1">
+            <form id="payment-form" class="col-md-12 col-sm-12 col-lg-12 p-0 mx-auto">
+                <input type="hidden" id="pageId" value="<%=pageId%>">
+                <% if(paymentMode==="stripe"){%>
+                <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
+                <%}%>
+                <div class="list-group list-group-form mb-0">
+                    <div class="list-group-item">
+                        <fieldset aria-labelledby="label-type" class="m-0 form-group">
+                            <div class="form-row align-items-center">
+                                <div role="group" aria-labelledby="label-type" class="col-md-9">
+                                    <div role="group" class="btn-group btn-group-toggle text-center" data-toggle="buttons">
+                                        <div class="col-6"> <img src="/images/icon/visa_payment2.png" alt="visa"></div>
+                                        <div class="col-6">  <img src="/images/icon/mastercard_payment1.png" alt="master"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </div>
-                <div>
-                    <% if(paymentMode==="stripe") {%>
-
-                        <div id="stripe">
-                            <div id="card-element"><!--Stripe.js injects the Card Element--></div>
-                            <p id="card-error" role="alert"></p>
-<!--                            <p class="result-message hidden">-->
-<!--                                Payment succeeded, see the result in your-->
-<!--                                <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.-->
-<!--                            </p>-->
-                            <div class="list-group-item text-center">
-                                <button type="submit" id="submit" class="btn btn-primary">
-                                    <div class="spinner hidden" id="spinner"></div>
-                                    <span id="button-text">Pay now</span>
-                                </button>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <% if(paymentMode==="stripe") {%>
+                            <div id="stripe">
+                                <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                                <p id="card-error" role="alert"></p>
+                                <!--                            <p class="result-message hidden">-->
+                                <!--                                Payment succeeded, see the result in your-->
+                                <!--                                <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.-->
+                                <!--                            </p>-->
+                                <div class="list-group-item text-center">
+                                    <button type="submit" id="submit" class="btn btn-primary">
+                                        <div class="spinner hidden" id="spinner"></div>
+                                        <span id="button-text">Pay now</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                    <%} else if(paymentMode==="paypal"){%>
+                        <%} else if(paymentMode==="paypal"){%>
                             <div id="paypal">
 
                                 <div id="paypal-element">
@@ -56,10 +51,14 @@
                                 <div class="list-group-item text-center">
                                 </div>
                             </div>
-                    <%}%>
+                        <%}%>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-sm-1 "></div>
+
+
     </div>
 </div>
 <script>
@@ -97,8 +96,8 @@
                 text: message,
                 type: alertType,
                 showCancelButton: true,
-                confirmButtonClass: "btn-md btn-danger",
-                cancelButtonClass: "btn-md btn-default ",
+                confirmButtonClass: "btn btn-danger btn-sm",
+                cancelButtonClass: "btn btn-primary btn-sm ",
                 cancelButtonText: "Try again",
                 confirmButtonText: "Cancel Payment",
                 closeOnConfirm: true
@@ -107,7 +106,6 @@
                 window.location.replace("/paymentResult/failed");
             });
     }
-
 </script>
 <%if(paymentMode==="paypal"){%>
 <script>
