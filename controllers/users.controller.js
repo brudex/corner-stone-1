@@ -17,7 +17,7 @@ const debug = require("debug")("corner-stone:userscontroller");
 const _ = require("lodash");
 
 //Image upload config
-const { allowImagesOnly, storage } = require("../utils/image_upload");
+const { allowImagesOnly, storage } = require("../utils/upload");
 const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 5 },

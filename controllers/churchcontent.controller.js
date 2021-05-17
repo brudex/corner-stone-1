@@ -1,3 +1,4 @@
+const { unlink } = require("fs");
 const { sequelize, Sequelize } = require("../models/index");
 const churchContent = require("../models/churchcontent");
 const ChurchContent = churchContent(sequelize, Sequelize);
@@ -14,8 +15,13 @@ const db = require("../models");
 const dateFns = require("date-fns");
 const _ = require("lodash");
 const debug = require("debug")("corner-stone:churchcontent");
+const cloudinary = require("cloudinary").v2;
 //utils
-const { allowAudiosOnly, storage } = require("../utils/image_upload");
+const {
+  allowAudiosOnly,
+  storage,
+  allowVidoesOnly,
+} = require("../utils/upload");
 const Joi = require("joi");
 const upload = multer({
   storage,
@@ -23,9 +29,105 @@ const upload = multer({
   fileFilter: allowAudiosOnly,
 }).single("sermon-audio");
 
+cloudinary.config({
+  cloud_name: "perple",
+  api_key: "616251437221118",
+  api_secret: "BjztMn3K0XgsrqtUxpEqqDlVjJo",
+});
+
+const uploadVideo = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 1024 },
+  fileFilter: allowVidoesOnly,
+}).single("video-file");
+
 const Controller = {};
 module.exports = Controller;
 
+Controller.videosView = async (req, res) => {
+  const { churchId } = req.user;
+  const paginationResults = await ChurchContent.paginate(req, {
+    contentType: "video",
+    churchId,
+  });
+
+  const videos = paginationResults.data;
+
+  res.render("videos/videos", {
+    title: "Videos",
+    user: req.user,
+    videos,
+    ...paginationResults,
+  });
+};
+Controller.addVideoView = async (req, res) => {
+  // let authorized = false;
+  // const code = req.query.code;
+  // const CLIENT_ID = OAuth2Data.web.client_id;
+  // const CLIENT_SECRET = OAuth2Data.web.client_secret;
+  // const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
+
+  // const oAuth2Client = new google.auth.OAuth2(
+  //   CLIENT_ID,
+  //   CLIENT_SECRET,
+  //   REDIRECT_URL
+  // );
+
+  // const SCOPES =
+  //   "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile";
+
+  res.render("videos/add-videos", {
+    title: "Add Video",
+    user: req.user,
+  });
+};
+
+Controller.addVideo = async (req, res) => {
+  const { churchId } = req.user;
+
+  uploadVideo(req, res, async (err) => {
+    const { title } = req.body;
+
+    if (err) {
+      debug(err);
+      return res.status(400).send("An error occured");
+    }
+
+    const { error } = ChurchContent.validateVideoContent({
+      title,
+      churchId,
+      contentType: "video",
+    });
+    if (error) return res.status(400).send(error.details[0].message);
+
+    cloudinary.uploader.upload_large(
+      req.file.path,
+      {
+        resource_type: "video",
+        timeout: 600000,
+      },
+      async function (error, result) {
+        unlink(req.file.path, (err) => {
+          if (err) throw err;
+          debug("successfully deleted file");
+        });
+        if (error) {
+          debug(error);
+          return res.status(400).send("An error occurred!");
+        }
+        debug(result);
+        await ChurchContent.create({
+          title,
+          churchId,
+          contentType: "video",
+          contentData: result.secure_url,
+        });
+
+        res.send("Video uploaded successfully");
+      }
+    );
+  });
+};
 Controller.sermonView = async (req, res) => {
   const { churchId } = req.user;
   const paginationResults = await ChurchContent.paginate(req, {
@@ -410,4 +512,28 @@ Controller.addChurchContent = async (req, res, next) => {
 
   const newContent = await ChurchContent.create(req.body);
   res.send(newContent);
+};
+
+Controller.getRecentContent = async (req, res, next) => {
+  const { churchId } = req.user;
+  let { limit, contentType } = req.query;
+  limit = parseInt(limit);
+
+  let recentContent;
+
+  if (contentType === "all") {
+    recentContent = await ChurchContent.findAll({
+      order: [["createdAt", "DESC"]],
+      limit: limit || 20,
+      where: { churchId },
+    });
+  } else {
+    recentContent = await ChurchContent.findAll({
+      order: [["createdAt", "DESC"]],
+      limit: limit || 20,
+      where: { contentType, churchId },
+    });
+  }
+
+  res.json({ status_code: "00", data: recentContent });
 };

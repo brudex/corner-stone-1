@@ -1,0 +1,64 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div
+      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+    >
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Videos</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row" role="tablist">
+      <div class="col-auto">
+        <a href="/videos/add" class="btn btn-outline-secondary">Add Video</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container page__container page__container page-section">
+  <div class="page-separator">
+    <div class="page-separator__text">Overview</div>
+  </div>
+  <div class="row card-group-row mb-lg-8pt">
+    <% videos.forEach(video => {%>
+    <div class="col-lg-4 card-group-row__col">
+      <div
+        class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+        title=""
+        data-domfactory-upgraded="overlay"
+      >
+        <video controls height="200" width="100%" style="object-fit: cover">
+          <source src="<%=video.contentData%>" type="video/mp4" />
+          <source src="<%=video.contentData%>" type="video/ogg" />
+          <source src="<%=video.contentData%>" type="video/mpeg" />
+          Your Browser does not suppport this video format
+        </video>
+
+        <div class="card-body flex">
+          <div class="d-flex">
+            <div class="flex">
+              <a class="card-title" href=""><%=video.title%></a>
+              <small class="text-50 font-weight-bold mb-4pt"
+                ><%=new Date(video.createdAt).toDateString()%></small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%})%>
+  </div>
+  <%- include('../partials/pagination.ejs') %>
+</div>
+
+<%- include('../partials/drawer.ejs') %>

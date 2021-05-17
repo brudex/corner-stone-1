@@ -32,5 +32,13 @@ module.exports = (sequelize, DataTypes) => {
   ChurchContent.paginate = function (req, condition) {
     return pagination(this, req, condition);
   };
+  ChurchContent.validateVideoContent = function (video) {
+    const schema = Joi.object({
+      churchId: Joi.number().positive().integer().required(),
+      title: Joi.string().min(1).max(256).required(),
+      contentType: Joi.string().valid("video"),
+    });
+    return schema.validate(video);
+  };
   return ChurchContent;
 };

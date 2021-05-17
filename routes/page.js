@@ -85,6 +85,7 @@ router.get(
   [auth, admin],
   churchContentController.editDailyDevotionalView
 );
+router.get("/videos/add", [auth, admin], churchContentController.addVideoView);
 router.get("/donations", [auth, admin], donationController.getDonationsView);
 router.get("/events", [auth, admin], eventsController.getUpcomingEventsView);
 router.get("/events/add", [auth, admin], eventsController.addEventView);
@@ -111,6 +112,8 @@ router.get(
   [auth, admin],
   appointmentController.addAppointmentDateView
 );
+router.get("/videos", [auth, admin], churchContentController.videosView);
+router.post("/videos/add", [auth, admin], churchContentController.addVideo);
 router.post("/sermons/add", [auth, admin], churchContentController.addSermon);
 router.post(
   "/appointments/add-appointment-date",

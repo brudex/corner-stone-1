@@ -27,6 +27,17 @@ module.exports.allowAudiosOnly = function (req, file, cb) {
   return extnameIsALlowed ? cb(null, true) : cb("file type not supported");
 };
 
+module.exports.allowVidoesOnly = function (req, file, cb) {
+  const allowedTypes = /mp4|mkv|webm|ogg|/;
+
+  const extnameIsALlowed = allowedTypes.test(
+    path.extname(file.originalname).toLocaleLowerCase()
+  );
+  // const mimetypeIsAllowed = allowedTypes.test(file.mimetype);
+
+  return extnameIsALlowed ? cb(null, true) : cb("file type not supported");
+};
+
 module.exports.storage = multer.diskStorage({
   destination: "./public/uploads",
   filename: (req, file, cb) => {
