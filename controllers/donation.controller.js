@@ -2,13 +2,63 @@ const db = require("../models");
 const DonationTypes = db.ChurchDonationType;
 const Donations = db.ChurchDonation;
 const Users = db.User;
+const Church = db.Church;
+const { sequelize } = require("../models/index");
 const dateFns = require("date-fns");
 const _ = require("lodash");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const Joi = require("joi");
 
 const Controller = {};
 module.exports = Controller;
+
+Controller.getDonationsByMonth = async (req, res) => {
+  // const donationsByMonth = await Donations.findAll({
+  //   group: [sequelize.fn("date_trunc", "month", sequelize.col("createdAt"))],
+  // });
+  // res.send(donationsByMonth);
+};
+
+Controller.getDonationsByChurchView = async (req, res) => {
+  //Group donations by church
+  let donationsByChurch = await Donations.findAll({
+    attributes: [
+      "churchId",
+      [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
+    ],
+    group: ["churchId"],
+  });
+
+  donationsByChurch = JSON.parse(JSON.stringify(donationsByChurch));
+
+  //Get churches
+  const churchIds = donationsByChurch.map((donations) =>
+    parseInt(donations.churchId)
+  );
+  console.log(churchIds);
+  const churches = await Church.findAll({ where: { id: churchIds } });
+  console.log(churches);
+
+  //update donations
+  donationsByChurch.forEach((donations) => {
+    churches.forEach((church) => {
+      if (church.id.toString() === donations.churchId.toString())
+        donations.church = church.name;
+    });
+    donations.total_amount = parseInt(donations.total_amount).toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits: 2,
+      }
+    );
+  });
+
+  res.render("donations/donations-by-church", {
+    title: "Donations",
+    user: req.user,
+    donations: donationsByChurch,
+  });
+};
 
 Controller.getDonationsView = async (req, res) => {
   const { user } = req;

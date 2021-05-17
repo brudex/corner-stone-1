@@ -93,6 +93,15 @@ router.get("/events/edit/:id", [auth, admin], eventsController.editEventView);
 router.get("/events/delete/:id", [auth, admin], eventsController.deleteEvent);
 router.get("/donations", [auth, admin], donationController.getDonationsView);
 router.get(
+  "/donationsByChurch",
+  [auth, superAdmin],
+  donationController.getDonationsByChurchView
+);
+// router.get(
+//   "/donations/donationsByMonth",
+//   donationController.getDonationsByMonth
+// );
+router.get(
   "/donations/types",
   [auth, admin],
   donationController.donationTypesView

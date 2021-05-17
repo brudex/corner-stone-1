@@ -1,0 +1,81 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Donations</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Donations</li>
+        </ol>
+      </div>
+    </div>
+    <div class="row" role="tablist">
+      <div class="col-auto"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+<div class="container page__container page-section">
+  <div class="page-separator">
+    <div class="page-separator__text">Donations</div>
+  </div>
+
+  <div class="card mb-0">
+    <div class="table-responsive p-3">
+      <table
+        class="table mb-0 thead-border-top-0 table-nowrap tablesort tablesearch-table"
+        id="data-table"
+      >
+        <thead>
+          <tr>
+            <th style="width: 150px" data-tablesort-type="string">church</th>
+            <th style="width: 120px" data-tablesort-type="string">
+              GHC total Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% donations.forEach(donation => {%>
+          <tr>
+            <td>
+              <div class="d-flex align-items-center"><%=donation.church %></div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=donation.total_amount %>
+              </div>
+            </td>
+          </tr>
+          <% })%> <% if (donations.length === 0) {%>
+          <tr>
+            <td colspan="5">
+              <div class="text-center">No rows</div>
+            </td>
+          </tr>
+          <%}%>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div class="card-body bordet-top text-right">
+          15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
+          </div> -->
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>
+
+<script>
+  $(document).ready(function () {
+    $("#data-table").DataTable();
+  });
+</script>

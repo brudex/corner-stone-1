@@ -24,12 +24,13 @@ Controller.getUpcomingEvents = async (req, res) => {
   const events = await Events.findAll({
     where: { churchId, eventDate: { [Op.gte]: new Date() } },
     order: [["createdAt", "DESC"]],
+    raw: true,
   });
 
-  events.forEach(
-    (event) =>
-      (event.imageBanner = `${req.headers.host}/uploads/${event.imageBanner}`)
-  );
+  events.forEach((event) => {
+    event.eventDate = new Date(event.eventDate).toDateString();
+    event.imageBanner = `${req.headers.host}/uploads/${event.imageBanner}`;
+  });
 
   res.json({ status: "00", data: events }); ///data is array of events
 };

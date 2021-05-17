@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>Pay with card</title>
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex" />
     <link
-            href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
-            rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+      rel="stylesheet"
     />
     <!-- Preloader -->
     <link type="text/css" href="/vendor/spinkit.css" rel="stylesheet" />
 
     <!-- Perfect Scrollbar -->
-    <link
+    <!-- <link
             type="text/css"
             href="/vendor/perfect-scrollbar.css"
             rel="stylesheet"
-    />
+    /> -->
     <!-- Material Design Icons -->
     <link type="text/css" href="/css/material-icons.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
@@ -36,30 +36,25 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
     <script src="/base64_util.js" defer></script>
     <script src="/client-pyt-checkout.js" defer></script>
-</head>
+  </head>
 
-<body class="layout-sticky-subnav layout-default">
-
-
-<!-- Header Layout -->
-<div class="mdk-header-layout js-mdk-header-layout">
-    <!-- Header Layout Content -->
-    <div class="mdk-header-layout__content page-content justify-content-center">
+  <body style="width: 100%">
+    <!-- Header Layout -->
+    <div class="mdk-header-layout js-mdk-header-layout">
+      <!-- Header Layout Content -->
+      <div
+        class="mdk-header-layout__content page-content justify-content-center"
+      >
         <div class="pt-32pt pt-sm-64pt pb-32pt">
-            <div class="container page__container">
-                <%- body %>
-            </div>
+          <div><%- body %></div>
         </div>
+      </div>
+      <!-- // END Header Layout Content -->
     </div>
-</div>
-<!-- // END Header Layout Content -->
-</div>
-<!-- // END Header Layout -->
-<!-- jQuery -->
-<script src="/vendor/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="/vendor/bootstrap.min.js"></script>
-
-</body>
+    <!-- // END Header Layout -->
+    <!-- jQuery -->
+    <script src="/vendor/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendor/bootstrap.min.js"></script>
+  </body>
 </html>
-
