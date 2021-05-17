@@ -9,7 +9,7 @@
             <form id="payment-form1" class="col-md-12 col-sm-12 col-lg-12 p-0 mx-auto">
                 <input type="hidden" id="pageId" value="<%=pageId%>">
                 <% if(paymentMode==="stripe"){%>
-                <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
+                     <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
                 <%}%>
                 <div class="list-group list-group-form mb-0">
                     <div class="list-group-item">
@@ -25,7 +25,6 @@
                                 </div>
                             </fieldset>
                         <%}%>
-
                     </div>
                     <div>
                         <% if(paymentMode==="stripe") {%>

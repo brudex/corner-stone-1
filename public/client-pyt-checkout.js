@@ -10,6 +10,7 @@ document.querySelector("button").disabled = true;
       color: "#32325d",
       fontFamily: 'Arial, sans-serif',
       fontSmoothing: "antialiased",
+
       fontSize: "16px",
       "::placeholder": {
         color: "#32325d"
