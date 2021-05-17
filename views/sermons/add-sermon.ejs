@@ -1,0 +1,150 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Add sermon</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/sermons">Sermons</a></li>
+          <li class="breadcrumb-item">Add sermon</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">Add sermon</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Enter sermon title and upload the audio file to add a sermon
+      </p>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form id="sermon-form">
+          <div class="form-group">
+            <label class="form-label" for="title">title*:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              value="<% if(typeof values !== 'undefined') {%><%=values.title%><%}%>"
+              placeholder="Enter sermon title"
+              required
+            />
+          </div>
+
+          <div class="form-group m-0">
+            <label class="form-label" for="exampleInputPassword1"
+              >Audio file*</label
+            >
+            <div class="custom-file">
+              <input
+                type="file"
+                id="file"
+                class="custom-file-input"
+                name="sermon-audio"
+                required
+              />
+              <label for="file" class="custom-file-label"
+                >Select audio file</label
+              >
+            </div>
+          </div>
+          <div
+            class="form-group mt-2"
+            id="progressContainer"
+            style="visibility: hidden"
+          >
+            <label class="form-label" for="exampleInputPassword1"
+              >Uploading file*</label
+            >
+            <div class="progress mb-16pt">
+              <div
+                id="progress"
+                class="progress-bar progress-bar-striped bg-secondary"
+                role="progressbar"
+                style="width: 0%"
+                aria-valuenow="50"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+          <div id="msg" style="visibility: collapse">
+            <div class="alert alert-info" id="alert" role="alert">
+              <div class="d-flex flex-wrap align-items-start">
+                <div class="mr-8pt">
+                  <i class="material-icons">info</i>
+                </div>
+                <div class="flex" style="min-width: 180px">
+                  <small id="alert-msg" class="text-black-100"> </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>
+
+<script>
+  const form = document.getElementById("sermon-form");
+
+  form.addEventListener("submit", uploadForm);
+
+  function uploadForm(e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/sermons/add", true);
+    xhr.upload.addEventListener("progress", (e) => {
+      $("#progressContainer").css("visibility", "visible");
+      $("#progress").css("width", `0%`);
+      const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;
+      $("#progress").css("width", `${percent}%`);
+
+      console.log(percent);
+    });
+    // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+    xhr.onerror = function (e) {
+      $("#progressContainer").css("visibility", "visible");
+      $("#progress").css("width", `0%`);
+      $("#msg").css("visibility", "visible");
+      $("#alert-msg").text("An error Occurred");
+    };
+    xhr.onload = function () {
+      $("#progressContainer").css("visibility", "hidden");
+      $("#progress").css("width", `0%`);
+      $("#msg").css("visibility", "visible");
+      $("#alert-msg").text(this.responseText);
+      form[0].reset();
+      //   console.log(this.statusText);
+      //   console.log(this.response);
+      //   console.log(this.responseText);
+    };
+
+    xhr.send(new FormData(form));
+  }
+</script>

@@ -89,6 +89,15 @@
             </li>
           </ul>
         </li>
+        <li class="sidebar-menu-item">
+          <a class="sidebar-menu-button" href="/donationsByChurch">
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >attach_money</span
+            >
+            Donations
+          </a>
+        </li>
         <%}%> <% if (user.isAdmin) {%>
         <li class="sidebar-menu-item">
           <a
@@ -192,6 +201,14 @@
             <li class="sidebar-menu-item">
               <a class="sidebar-menu-button" href="/appointments/">
                 <span class="sidebar-menu-text">View Appointments</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/appointments/available-dates"
+              >
+                <span class="sidebar-menu-text">View Available times</span>
               </a>
             </li>
             <li class="sidebar-menu-item">

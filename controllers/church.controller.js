@@ -5,7 +5,7 @@ const Op = Sequelize.Op;
 const debug = require("debug")("corner-stone:church-controller");
 const multer = require("multer");
 //utils
-const { allowImagesOnly, storage } = require("../utils/image_upload");
+const { allowImagesOnly, storage } = require("../utils/upload");
 const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 5 },

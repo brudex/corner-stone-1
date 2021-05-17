@@ -26,7 +26,7 @@ include('../partials/response-message.ejs') %>
 
 <div class="container page__container page-section">
   <div class="row mb-32pt">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
       <div class="page-separator">
         <div class="page-separator__text">Appointment date</div>
       </div>
@@ -45,16 +45,12 @@ include('../partials/response-message.ejs') %>
         />
       </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-8">
       <div class="page-separator">
         <div class="page-separator__text">Appointment Time</div>
       </div>
       <p class="card-subtitle text-70 mb-16pt mb-lg-0">
         Add appointment time for the selected date. Multiple times can be added
-      </p>
-      <p>
-        <span class="material-icons text-info mr-1"> report_problem </span>Click
-        on a selected time to remove.
       </p>
       <div class="flex" style="max-width: 100%">
         <div class="form-group">
@@ -77,7 +73,20 @@ include('../partials/response-message.ejs') %>
         <!-- Times container -->
         <div id="times"></div>
         <!-- Message container -->
-        <div id="msg"></div>
+        <div id="msg" style="visibility: collapse">
+          <div class="alert alert-info" id="alert" role="alert">
+            <div class="d-flex flex-wrap align-items-start">
+              <div class="mr-8pt">
+                <i class="material-icons">info</i>
+              </div>
+              <div class="flex" style="min-width: 180px">
+                <small id="alert-msg" class="text-black-100">
+                  <strong>Error!</strong> Please add a time for the appointment.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
         <button onclick="addTime()" id="add" class="btn btn-info mt-3">
           Add time
         </button>
@@ -94,7 +103,7 @@ include('../partials/response-message.ejs') %>
   </div>
 </div>
 <%- include('../partials/drawer.ejs') %>
-<script>
+<!-- <script>
   var times = [];
   const timeInput = $("#flatpickrSample05");
   const dateInput = $("#date");
@@ -134,14 +143,8 @@ include('../partials/response-message.ejs') %>
     saveBtn.addClass("is-loading");
     saveBtn.attr("disabled", "disabled");
     addBtn.attr("disabled", "disabled");
-
     console.log(data);
-
-    var jqxhr = $.ajax({
-      method: "POST",
-      url: "/appointments/add-appointment-date",
-      data,
-    })
+    var jqxhr = $.ajax("example.php")
       .done(function () {
         alert("success");
       })
@@ -171,7 +174,7 @@ include('../partials/response-message.ejs') %>
                                         </div>
                                         <div class="flex" style="min-width: 180px">
                                             <small class="text-black-100">
-                                                <strong>Error!</strong> Please add a time for the selected appointment date.
+                                                <strong>Error!</strong> Please add a time for the appointment.
                                             </small>
                                         </div>
                                     </div>
@@ -179,5 +182,145 @@ include('../partials/response-message.ejs') %>
       return false;
     }
     return true;
+  };
+</script> -->
+
+<script>
+  var times = [];
+  const timeInput = $("#flatpickrSample05");
+  const dateInput = $("#date");
+  const timesContainer = $("#times");
+  const msgContainer = $("#msg");
+  const alertContainer = $("#alert");
+  const alertmsg = $("#alert-msg");
+  const saveBtn = $("#save");
+  const addBtn = $("#add");
+
+  const addTime = () => {
+    //limit number of appointments added for a selected day to
+    if (times.length >= 8) {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text(
+        "Sorry, you cannot add anymore appointment times for today."
+      );
+      return;
+    }
+    //check if times array already contains selected time... update array if not
+    if (!times.find(({ time }) => time === timeInput.val())) {
+      times.push({ time: timeInput.val(), allowedAppointments: 1 });
+      updateTimes();
+    } else {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text("Selected time added already");
+    }
+  };
+
+  const updateTimes = () => {
+    timesContainer.html("");
+    msgContainer.css("visibility", "hidden");
+    times.forEach(({ time, allowedAppointments }) => {
+      timesContainer.append(
+        `
+        <div class="p-1 px-2 d-flex card flex-row justify-content-around align-items-center">
+          <div class="form-group">
+            <label class="form-label" for="eventname" style="font-size: 10px;"
+              >Time:</label
+            >
+            <div
+            class="badge badge-info"
+            style="font-size:20px; height: 35px"
+            >
+            ${time}
+            </div>
+          </div>
+          <div class="form-group ml-3 w-100">
+            <label class="form-label" for="eventname" style="font-size: 10px;"
+              >No. allowed appointments*:</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="${time}" 
+              min="1"             
+              name="allowedAppointments"
+              value="${allowedAppointments}"
+              onchange="updateAllowedAppointmentTimes(this.id, this.value);"
+              placeholder="Enter Number of allowed appointments"
+              required
+            />
+          </div>
+          <div class="form-group ml-3 mt-4">
+            <button id="delete-${time}" type="button" class="btn btn-accent" onclick="removeTime(this.id)">
+              <i class="material-icons">delete</i>
+              </button>
+          </div>
+        </div>
+        `
+      );
+    });
+  };
+
+  const removeTime = (timeToRemove) => {
+    timeToRemove = timeToRemove.split("-")[1];
+    times = times.filter((time) => time.time !== timeToRemove);
+    updateTimes();
+  };
+
+  const validateAddAppointment = () => {
+    if (times.length === 0) {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text("Please add an appointment time for the selected date");
+      return false;
+    }
+    return true;
+  };
+
+  const updateAllowedAppointmentTimes = (time, allowedAppointments) => {
+    console.log(time);
+    console.log(allowedAppointments);
+
+    times.forEach((addedTime) => {
+      if (addedTime.time === time)
+        addedTime.allowedAppointments = allowedAppointments;
+    });
+
+    console.log(times);
+  };
+
+  const saveAppointment = () => {
+    // const data = { date: dateInput.val(), times }
+
+    if (!validateAddAppointment()) return;
+
+    $.ajax({
+      url: "/appointments/add-appointment-date",
+      method: "post",
+      data: { date: dateInput.val(), times: JSON.stringify(times) },
+      beforeSend: () => {
+        saveBtn.addClass("is-loading");
+        saveBtn.html("Loading...");
+        saveBtn.attr("disabled", "disabled");
+        addBtn.attr("disabled", "disabled");
+      },
+    })
+      .done(function () {
+        timesContainer.html("");
+        msgContainer.css("visibility", "visible");
+        alertmsg.text("Appointment date added succesfully");
+      })
+      .fail(function () {
+        msgContainer.css("visibility", "visible");
+        alertmsg.text("Something went wrong");
+      })
+      .always(function () {
+        saveBtn.html("Save");
+        saveBtn.removeClass("is-loading");
+        saveBtn.removeAttr("disabled");
+        addBtn.removeAttr("disabled");
+      });
+
+    // Perform other work here ...
+
+    // Set another completion function for the request above
   };
 </script>

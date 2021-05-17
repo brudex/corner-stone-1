@@ -1,5 +1,5 @@
 <% if(paymentMode==="paypal"){%>
-<script src="https://www.paypal.com/sdk/js?client-id=AUdpMlR3WKvxCWfC2EgXPTlFdvuAmgb8W7_RK013om3OdYn8Z4KKVuucK2l4kbWBtSqVu-TLIJvzgs_8&disable-funding=card"> </script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AUdpMlR3WKvxCWfC2EgXPTlFdvuAmgb8W7_RK013om3OdYn8Z4KKVuucK2l4kbWBtSqVu-TLIJvzgs_8&disable-funding=card"> </script>
 <%}else{%>
     <script src="https://js.stripe.com/v3/"></script>
 <%}%>
@@ -9,7 +9,7 @@
             <form id="payment-form1" class="col-md-12 col-sm-12 col-lg-12 p-0 mx-auto">
                 <input type="hidden" id="pageId" value="<%=pageId%>">
                 <% if(paymentMode==="stripe"){%>
-                     <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
+                <input type="hidden" id="clientSecret" value="<%=clientSecret%>">
                 <%}%>
                 <div class="list-group list-group-form mb-0">
                     <div class="list-group-item">
@@ -82,13 +82,13 @@
                     type: "success",
                 },
                 function () {
-                        window.location.replace("/paymentResult/success");
+                    window.location.replace("/paymentResult/success");
                 });
         },'json')
-        .fail(function() {
-            loading(false);
-            window.swal("Failed", "", "error");
-        });
+            .fail(function() {
+                loading(false);
+                window.swal("Failed", "", "error");
+            });
     }
     var showAlertWithCallback = function(title,message,alertType){
         window.swal({
@@ -108,127 +108,194 @@
     }
 </script>
 <%if(paymentMode==="paypal"){%>
-<script>
-    paypal.Buttons({
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: '0.01'
-                    }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert('Transaction completed by ' + details.payer.name.given_name);
-                setPaymentStatus(true,details);
-            });
-        }
-    }).render('#paypal-button-container'); // Display payment options on your web page
-</script>
-<%}%>
-<%if(paymentMode==="stripe"){%>
     <script>
-        // A reference to Stripe.js initialized with a fake API key.
-        // Sign in to see examples pre-filled with your key.
-        var stripe = Stripe("<%=stripePublicKey%>");
-        // Disable the button until we have Stripe set up on the page
-        document.querySelector("button").disabled = true;
-        (function () {
-            var elements = stripe.elements();
-            var style = {
-                base: {
-                    color: "#32325d",
-                    fontFamily: 'Arial, sans-serif',
-                    fontSmoothing: "antialiased",
-                    fontSize: "16px",
-                    "::placeholder": {
-                        color: "#32325d"
-                    }
-                },
-                invalid: {
-                    fontFamily: 'Arial, sans-serif',
-                    color: "#fa755a",
-                    iconColor: "#fa755a"
-                }
-            };
-            var card = elements.create("card", { style: style });
-            // Stripe injects an iframe into the DOM
-            card.mount("#card-element");
-            card.on("change", function (event) {
-                // Disable the Pay button if there are no card details in the Element
-                document.querySelector("button").disabled = event.empty;
-                document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
-            });
-
-            var form = document.getElementById("payment-form");
-            form.addEventListener("submit", function(event) {
-                event.preventDefault();
-                // Complete payment when the submit button is clicked
-                var clientSecret = getClientSecret();
-                payWithCard(stripe, card, clientSecret);
-            });
-
-            function getClientSecret(){
-                var clientSecret =  document.querySelector("#clientSecret").value;
-                var decrypted = window.Base64.decode(clientSecret);
-                console.log('The decrypted client secret >>',decrypted);
-                return decrypted;
-            }
-        }());
-
-        // Calls stripe.confirmCardPayment
-        // If the card requires authentication Stripe shows a pop-up modal to
-        // prompt the user to enter authentication details without leaving your page.
-        var payWithCard = function(stripe, card, clientSecret) {
-            loading(true);
-            stripe
-                .confirmCardPayment(clientSecret, {
-                    payment_method: {
-                        card: card
-                    }
-                })
-                .then(function(result) {
-                    if (result.error) {
-                        // Show error to your customer
-                        showError(result.error.message);
-                    } else {
-                        // The payment succeeded!
-                        orderComplete(result);
-                    }
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01'
+                        }
+                    }]
                 });
-        };
-
-        /* ------- UI helpers ------- */
-        // Shows a success message when the payment is complete
-        var orderComplete = function(result) {
-            setPaymentStatus(true,result);
-            document.querySelector("button").disabled = true;
-        };
-        // Show the customer the error from Stripe if their card fails to charge
-        var showError = function(errorMsgText) {
-            loading(false);
-            showAlertWithCallback("Error", errorMsgText, "error")
-            //var errorMsg = document.querySelector("#card-error");
-            // errorMsg.textContent = errorMsgText;
-            // setTimeout(function() {
-            //     errorMsg.textContent = "";
-            // }, 4000);
-        };
-
-        // Show a spinner on payment submission
-        var loading = function(isLoading) {
-            if (isLoading) {
-                // Disable the button and show a spinner
-                document.querySelector("button").disabled = true;
-                document.querySelector("#spinner").classList.remove("hidden");
-                document.querySelector("#button-text").classList.add("hidden");
-            } else {
-                document.querySelector("button").disabled = false;
-                document.querySelector("#spinner").classList.add("hidden");
-                document.querySelector("#button-text").classList.remove("hidden");
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    alert('Transaction completed by ' + details.payer.name.given_name);
+                    setPaymentStatus(true,details);
+                });
             }
-        };
+        }).render('#paypal-button-container'); // Display payment options on your web page
     </script>
 <%}%>
+<%if(paymentMode==="stripe"){%>
+<script>
+    // A reference to Stripe.js initialized with a fake API key.
+    // Sign in to see examples pre-filled with your key.
+    var stripe = Stripe("<%=stripePublicKey%>");
+    // Disable the button until we have Stripe set up on the page
+    document.querySelector("button").disabled = true;
+    (function () {
+        var elements = stripe.elements();
+        var style = {
+            base: {
+                color: "#32325d",
+                fontFamily: 'Arial, sans-serif',
+                fontSmoothing: "antialiased",
+                fontSize: "16px",
+                "::placeholder": {
+                    color: "#32325d"
+                }
+            },
+            invalid: {
+                fontFamily: 'Arial, sans-serif',
+                color: "#fa755a",
+                iconColor: "#fa755a"
+            }
+        };
+        var card = elements.create("card", { style: style });
+        // Stripe injects an iframe into the DOM
+        card.mount("#card-element");
+        card.on("change", function (event) {
+            // Disable the Pay button if there are no card details in the Element
+            document.querySelector("button").disabled = event.empty;
+            document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+        });
+
+        var form = document.getElementById("payment-form");
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            // Complete payment when the submit button is clicked
+            var clientSecret = getClientSecret();
+            payWithCard(stripe, card, clientSecret);
+        });
+
+        function getClientSecret(){
+            var clientSecret =  document.querySelector("#clientSecret").value;
+            var decrypted = window.Base64.decode(clientSecret);
+            console.log('The decrypted client secret >>',decrypted);
+            return decrypted;
+        }
+    }());
+
+    // Calls stripe.confirmCardPayment
+    // If the card requires authentication Stripe shows a pop-up modal to
+    // prompt the user to enter authentication details without leaving your page.
+    var payWithCard = function(stripe, card, clientSecret) {
+        loading(true);
+        stripe
+            .confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card
+                }
+            })
+            .then(function(result) {
+                if (result.error) {
+                    // Show error to your customer
+                    showError(result.error.message);
+                } else {
+                    // The payment succeeded!
+                    orderComplete(result);
+                }
+            });
+    };
+
+    /* ------- UI helpers ------- */
+    // Shows a success message when the payment is complete
+    var orderComplete = function(result) {
+        setPaymentStatus(true,result);
+        document.querySelector("button").disabled = true;
+    };
+    // Show the customer the error from Stripe if their card fails to charge
+    var showError = function(errorMsgText) {
+        loading(false);
+        showAlertWithCallback("Error", errorMsgText, "error")
+        //var errorMsg = document.querySelector("#card-error");
+        // errorMsg.textContent = errorMsgText;
+        // setTimeout(function() {
+        //     errorMsg.textContent = "";
+        // }, 4000);
+    };
+
+    // Show a spinner on payment submission
+    var loading = function(isLoading) {
+        if (isLoading) {
+            // Disable the button and show a spinner
+            document.querySelector("button").disabled = true;
+            document.querySelector("#spinner").classList.remove("hidden");
+            document.querySelector("#button-text").classList.add("hidden");
+        } else {
+            document.querySelector("button").disabled = false;
+            document.querySelector("#spinner").classList.add("hidden");
+            document.querySelector("#button-text").classList.remove("hidden");
+        }
+    };
+</script>
+<%}%>
+=======
+<div class="d-flex align-items-center justify-content-center">
+    <div class="page-section">
+        <div class="container page__container">
+            <form id="payment-form1" class="p-0">
+                <input type="hidden" id="clientSecret" value="<%=clientSecret%>" />
+                <div class="list-group list-group-form mb-0">
+                    <div class="list-group-item">
+                        <fieldset aria-labelledby="label-type" class="m-0 form-group">
+                            <div class="form-row align-items-center">
+                                <label
+                                        for="payment_cc"
+                                        id="label-type"
+                                        class="col-md-3 col-form-label form-label"
+                                >Payment type</label
+                                >
+                                <div role="group" aria-labelledby="label-type" class="col-md-9">
+                                    <div
+                                            role="group"
+                                            class="btn-group btn-group-toggle"
+                                            data-toggle="buttons"
+                                    >
+                                        <label class="btn btn-outline-secondary active">
+                                            <input
+                                                    type="radio"
+                                                    id="payment_cc"
+                                                    name="payment_type"
+                                                    value="cc"
+                                                    checked=""
+                                                    aria-checked="true"
+                                            />
+                                            Debit or credit card
+                                        </label>
+                                        <label class="btn btn-outline-secondary">
+                                            <input
+                                                    type="radio"
+                                                    id="payment_pp"
+                                                    name="payment_type"
+                                                    value="pp"
+                                                    aria-checked="true"
+                                            />
+                                            PayPal
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+                    <p id="card-error" role="alert"></p>
+                    <p class="result-message hidden">
+                        Payment succeeded, see the result in your
+                        <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to
+                        pay again.
+                    </p>
+                    <div class="list-group-item text-center">
+                        <button type="submit" id="submit" class="btn btn-primary">
+                            <div class="spinner hidden" id="spinner"></div>
+                            <span id="button-text">Pay now</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

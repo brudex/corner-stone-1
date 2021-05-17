@@ -29,6 +29,11 @@ router.get(
   churchContentController.getFeaturedContent
 ); //For mobile home page
 router.get(
+  "/churchcontent/recent",
+  api_auth,
+  churchContentController.getRecentContent
+);
+router.get(
   "/churchcontent/search/:id",
   api_auth,
   churchContentController.getChurchContentById

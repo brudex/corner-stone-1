@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const pagination = require("../utils/pagination");
 module.exports = (sequelize, DataTypes) => {
   const ChurchContent = sequelize.define(
     "ChurchContent",
@@ -27,6 +28,17 @@ module.exports = (sequelize, DataTypes) => {
   ChurchContent.createSermonUrl = function (content, req) {
     if (content.contentType === "sermon")
       content.contentData = `${req.protocol}://${req.headers.host}/uploads/sermons/${content.contentData}`;
+  };
+  ChurchContent.paginate = function (req, condition) {
+    return pagination(this, req, condition);
+  };
+  ChurchContent.validateVideoContent = function (video) {
+    const schema = Joi.object({
+      churchId: Joi.number().positive().integer().required(),
+      title: Joi.string().min(1).max(256).required(),
+      contentType: Joi.string().valid("video"),
+    });
+    return schema.validate(video);
   };
   return ChurchContent;
 };

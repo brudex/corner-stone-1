@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "AppointmentDate",
     {
       churchId: DataTypes.INTEGER,
-      appointmentDate: DataTypes.DATE,
+      appointmentDate: DataTypes.DATEONLY,
     },
     {
       tableName: "AppointmentDate",
