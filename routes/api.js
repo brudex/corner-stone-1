@@ -63,7 +63,7 @@ router.post(
 router.get("/events", api_auth, eventsController.getUpcomingEvents);
 router.get("/getupcomingevents", eventsController.getUpcomingEvents); //add the jwt middleware to identify the user
 router.get("/getdonationtypes", donationController.getChurchDonationTypes); //add the jwt middleware to identify the user
-router.get("/donationhistory", donationController.donationHistory); //add the jwt middleware to identify the user
+router.get("/donationhistory",api_auth, donationController.donationHistory); //add the jwt middleware to identify the user
 router.get(
   "/donationTypes",
   api_auth,

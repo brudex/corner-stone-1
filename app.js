@@ -9,6 +9,7 @@ const flash = require("express-flash");
 const passport = require("passport");
 const initializePassport = require("./config/passport");
 const MemoryStore = require("memorystore")(session);
+require("express-async-errors"); // Handle Async errors
 require("dotenv").config();
 const pageRoutes = require("./routes/page");
 const apiRoutes = require("./routes/api");
@@ -48,19 +49,21 @@ app.use("/api", apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  if (req.path === "/api") return next(createError(404));
+  console.log(req.path);
+  if (/\/api/.test(req.path)) return next(createError(404));
   res.render("errors/404", { title: "404", layout: "blank-layout" });
 });
 
 // error handler
 app.use(function (err, req, res, next) {
+  console.log("req.path is ", req.path);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   // render the error page
   console.log(err);
   res.status(err.status || 500);
-  if (req.path === "/api") return res.json(err);
+  if (/\/api/.test(req.path)) return res.json(err);
   res.render(`errors/${err.status || 500}`, {
     title: err.status || 500,
     layout: "blank-layout",
