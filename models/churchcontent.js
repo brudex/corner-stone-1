@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   ChurchContent.createSermonUrl = function (content, req) {
     if (content.contentType === "sermon")
-      content.contentData = `${req.protocol}://${req.headers.host}/uploads/sermons/${content.contentData}`;
+      content.contentData = `${req.protocol}://${req.headers.host}/uploads/${content.contentData}`;
+    content.audioThumbnail = `${req.protocol}://${req.headers.host}/uploads/${content.audioThumbnail}`;
   };
   ChurchContent.paginate = function (req, condition) {
     return pagination(this, req, condition);

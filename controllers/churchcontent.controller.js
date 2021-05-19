@@ -426,12 +426,10 @@ Controller.searchChurchContent = async (req, res) => {
       ChurchContent.createSermonUrl(content, req);
   });
 
-  //get the users church and search in that church
-  //Query church content and return the results
   res.json({
     status: "00",
     data: content,
-  }); ///data is array of search results
+  });
 };
 
 Controller.getChurchContentById = async (req, res) => {
@@ -509,14 +507,6 @@ Controller.addToUserPlayList = async (req, res, next) => {
 
   res.json({ status: "00", message: "playlist updated successfully" });
 };
-//Test controllers to be deleted
-Controller.addChurchContent = async (req, res, next) => {
-  const { error } = ChurchContent.validateContent(req.body);
-  if (error) return next(createError(400, error.details[0].message));
-
-  const newContent = await ChurchContent.create(req.body);
-  res.send(newContent);
-};
 
 Controller.getRecentContent = async (req, res, next) => {
   const { churchId } = req.user;
@@ -538,6 +528,10 @@ Controller.getRecentContent = async (req, res, next) => {
       where: { contentType, churchId },
     });
   }
+
+  recentContent.forEach((content) =>
+    ChurchContent.createSermonUrl(content, req)
+  );
 
   res.json({ status_code: "00", data: recentContent });
 };
