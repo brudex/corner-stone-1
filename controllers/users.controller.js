@@ -216,21 +216,15 @@ Controller.registerUser = async (req, res, next) => {
   const { email, password } = req.body;
   const { error } = User.validateUser(req.body, {});
   if (error)
-    return next(
-      createError(400, { ...failed, reason: error.details[0].message })
-    );
+    return res.status(400).json({ ...failed, reason: error.details[0].message });
 
   if (!req.body.fcm_token)
-    return next(
-      createError(400, { ...failed, reason: "fcm is a required field" })
-    );
+    return res.status(400).json({...failed, reason: "fcm is a required field" });
 
   //check if email exists
   const userExist = await User.findByEmail(email);
   if (userExist)
-    return next(
-      createError(400, { ...failed, reason: "Email already exists" })
-    );
+    return res.status(400).json( { ...failed, reason: "Email already exists" });
 
   //Hash password
   const hashedPassword = await User.hashPassword(password);
@@ -263,9 +257,7 @@ Controller.login = async (req, res, next) => {
 
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword)
-    return next(
-      createError(400, { ...failed, reason: "Invalid email or password" })
-    );
+    return res.status(400).json({ ...failed, reason: "Invalid email or password" });
 
   const token = user.generateAuthToken();
 
