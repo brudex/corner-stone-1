@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const pagination = require("../utils/pagination");
 module.exports = (sequelize, DataTypes) => {
   const DailyDevotional = sequelize.define(
     "DailyDevotional",
@@ -25,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     return schema.validate(devotional);
   };
-
+  DailyDevotional.paginate = function (req, condition) {
+    return pagination(this, req, condition);
+  };
   return DailyDevotional;
 };

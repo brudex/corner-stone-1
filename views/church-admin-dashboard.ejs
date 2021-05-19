@@ -1,10 +1,23 @@
 <%- include('./partials/navbar.ejs') %>
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div
-      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+      class="
+        flex
+        d-flex
+        flex-column flex-sm-row
+        align-items-center
+        mb-24pt mb-md-0
+      "
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0"><%=user.isSuperAdmin ? 'Super admin' : 'admin' %></h2>
@@ -17,8 +30,8 @@
 
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/churchcontent/add" class="btn btn-outline-secondary"
-          >Add Church Content</a
+        <a href="/daily-devotionals/add" class="btn btn-outline-secondary"
+          >Add Daily Devotional</a
         >
       </div>
     </div>

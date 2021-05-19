@@ -3,7 +3,14 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -11,7 +18,10 @@ include('../partials/response-message.ejs') %>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item">
-            <a href="/">Home</a>
+            <a
+              href="<%= user.isSuperAdmin ? '/notifications/super-admin' : '/notifications/church'%>"
+              >Notifications</a
+            >
           </li>
           <li class="breadcrumb-item">Send notification</li>
         </ol>

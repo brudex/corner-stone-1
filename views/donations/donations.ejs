@@ -2,7 +2,14 @@
 include('../partials/response-message.ejs') %>
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -16,8 +23,8 @@ include('../partials/response-message.ejs') %>
     </div>
     <div class="row" role="tablist">
       <div class="col-auto">
-        <a href="/donations/add" class="btn btn-outline-secondary"
-          >Add Donation type</a
+        <a href="/donations/types" class="btn btn-outline-secondary"
+          >Donation types</a
         >
       </div>
     </div>
@@ -134,11 +141,6 @@ include('../partials/response-message.ejs') %>
                 <i class="material-icons">delete</i>
               </a>
             </td> -->
-            <td class="text-right pl-0">
-              <a href="" class="text-50"
-                ><i class="material-icons">more_vert</i></a
-              >
-            </td>
           </tr>
           <% })%> <% if (data.length === 0) {%>
           <tr>

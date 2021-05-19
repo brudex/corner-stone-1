@@ -2,7 +2,14 @@
 include('../partials/response-message.ejs') %>
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -105,11 +112,11 @@ include('../partials/response-message.ejs') %>
             <td class="text-center js-lists-values-projects small">
               <!-- EDIT DONATION TYPE... -->
               <div
-                id="edit-donation-type"
+                id="edit-donation-type<%=donationType.id%>"
                 class="modal"
                 style="overflow: visible; height: 200px"
               >
-                <h3>Edit donation type.</h3>
+                <h3>Edit donation type for id <%=donationType.id%>.</h3>
                 <form
                   action="/donations/edit/<%=donationType.id %>"
                   method="post"
@@ -139,7 +146,7 @@ include('../partials/response-message.ejs') %>
               <a
                 type="button"
                 class="btn btn-warning"
-                href="#edit-donation-type"
+                href="#edit-donation-type<%=donationType.id%>"
                 rel="modal:open"
               >
                 <i class="material-icons">edit</i>

@@ -3,7 +3,14 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -71,6 +78,18 @@ include('../partials/response-message.ejs') %>
               name="email"
               value="<% if(typeof values !== 'undefined') {%><%=values.email%><%}%>"
               placeholder="Enter email address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Phone*</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="tel"
+              name="phone"
+              value="<% if(typeof values !== 'undefined') {%><%=values.phone%><%}%>"
+              placeholder="Enter phone number"
               required
             />
           </div>
