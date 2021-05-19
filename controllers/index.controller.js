@@ -33,21 +33,24 @@ Controller.index = async (req, res) => {
 Controller.churchAdminView = async (req, res) => {
   let appointmentsCount;
   const { churchId } = req.user;
+
   const donations = await Donation.sum("amount", {
     where: { churchId, createdAt: dateFns.format(new Date(), "yyyy-MM-dd") },
   });
+
   const membersCount = await User.count({
     where: { churchId, isAdmin: { [Op.ne]: true } },
   });
+
   const appointmentDate = await AppointmentDay.findOne({
     where: {
       churchId,
       appointmentDate: dateFns.format(new Date(), "yyyy-MM-dd"),
     },
   });
+
   if (!appointmentDate) {
     appointmentsCount = 0;
-    debug("it is zero at date");
   } else {
     const appointmentTimeIds = await AppointmentTime.findAll({
       raw: true,
@@ -55,17 +58,15 @@ Controller.churchAdminView = async (req, res) => {
       attributes: ["id"],
     });
     if (appointmentTimeIds.length === 0) {
-      debug("it is zero at time");
       appointmentsCount = 0;
     } else {
       debug(appointmentTimeIds);
       appointmentsCount = await Appointment.count({
         where: { [Op.or]: [...appointmentTimeIds] },
       });
-      debug("after counting");
-      debug(appointmentsCount);
     }
   }
+
   res.render("church-admin-dashboard", {
     title: "Express",
     user: req.user,

@@ -11,6 +11,8 @@ const stripeController = require("../controllers/stripe.controller");
 const notificationsController = require("../controllers/notifications.controller");
 //Middlewares
 const api_auth = require("../middlewares/api-auth");
+const admin = require("../middlewares/admin");
+const auth = require("../middlewares/auth");
 
 /************Account and Registration***********/
 router.post("/users/login", usersController.login);
@@ -87,6 +89,11 @@ router.get(
 );
 
 /*************Donation and Payment Initiation***************/
+router.get(
+  "/donations/donationsByMonth",
+  [auth, admin],
+  donationController.getDonationsByMonth
+);
 router.get("/getdonationtypes", donationController.getChurchDonationTypes);
 router.get("/donationhistory", api_auth, donationController.donationHistory); //add the jwt middleware to identify the user
 router.get(

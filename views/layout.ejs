@@ -184,38 +184,42 @@
     <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
 
     <script>
-      const labels = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: "My First dataset",
-            backgroundColor: "rgb(255, 99, 132)",
-            borderColor: "rgb(255, 99, 132)",
-            data: [0, 10, 5, 2, 20, 30, 45, 0, 10, 5, 2, 20, 30, 45],
-          },
-        ],
-      };
+      $(document).ready(() => {
+        $.get("/api/donations/donationsByMonth", function (data, status) {
+          const labels = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
+          const chartData = {
+            labels: labels,
+            datasets: [
+              {
+                label: "Donations per month",
+                backgroundColor: "rgb(255, 99, 132)",
+                borderColor: "rgb(255, 99, 132)",
+                data,
+              },
+            ],
+          };
 
-      const config = {
-        type: "line",
-        data,
-        options: {},
-      };
-      var myChart = new Chart(document.getElementById("myChart"), config);
+          const config = {
+            type: "line",
+            data: chartData,
+            options: {},
+          };
+          var myChart = new Chart(document.getElementById("myChart"), config);
+        });
+      });
     </script>
   </body>
 </html>
