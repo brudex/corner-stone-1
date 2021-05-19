@@ -5,7 +5,7 @@ module.exports = async (model, req, condition = { id: { [Op.gt]: 0 } }) => {
     page = Math.abs(parseInt(req.query.page));
     if (req.query.page === "0") page = 1;
   }
-  const limit = 2;
+  const limit = 10;
   const adjacentPagesRight = parseInt(page) + 3;
   const adjacentPagesLeft = parseInt(page) - 3;
   var adjacentLeft = [];

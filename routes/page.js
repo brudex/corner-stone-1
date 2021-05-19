@@ -118,8 +118,6 @@ router.get(
   appointmentController.addAppointmentDateView
 );
 router.get("/videos", [auth, admin], churchContentController.videosView);
-router.post("/videos/add", [auth, admin], churchContentController.addVideo);
-router.post("/sermons/add", [auth, admin], churchContentController.addSermon);
 router.post(
   "/appointments/add-appointment-date",
   [auth, admin],

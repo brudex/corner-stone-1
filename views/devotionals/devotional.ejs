@@ -3,10 +3,23 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div
-      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+      class="
+        flex
+        d-flex
+        flex-column flex-sm-row
+        align-items-center
+        mb-24pt mb-md-0
+      "
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0">Devotional</h2>
@@ -35,7 +48,12 @@ include('../partials/response-message.ejs') %>
     <% devotionals.forEach(devotional => {%>
     <div class="col-sm-4 card-group-row__col">
       <div
-        class="card card-lg overlay--primary-dodger-blue stack stack--1 card-group-row__card"
+        class="
+          card card-lg
+          overlay--primary-dodger-blue
+          stack stack--1
+          card-group-row__card
+        "
       >
         <div class="card-body d-flex flex-column">
           <div class="d-flex align-items-center">
@@ -45,7 +63,13 @@ include('../partials/response-message.ejs') %>
                   <div class="overlay">
                     <span class="overlay__content overlay__content-transparent">
                       <span
-                        class="overlay__action d-flex flex-column text-center lh-1"
+                        class="
+                          overlay__action
+                          d-flex
+                          flex-column
+                          text-center
+                          lh-1
+                        "
                       >
                         <small
                           class="h6 small text-white mb-0"
@@ -124,6 +148,7 @@ include('../partials/response-message.ejs') %>
     </div>
     <%})%>
   </div>
+  <%- include('../partials/pagination.ejs') %>
 </div>
 
 <%- include('../partials/drawer.ejs') %>

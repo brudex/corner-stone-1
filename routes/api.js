@@ -60,6 +60,8 @@ router.post(
   api_auth,
   churchContentController.addToUserPlayList
 ); //add the jwt middleware to identify the user
+router.post("/sermons/add", [auth, admin], churchContentController.addSermon);
+router.post("/videos/add", [auth, admin], churchContentController.addVideo);
 
 /**************Events*************/
 router.get("/events", api_auth, eventsController.getUpcomingEvents);

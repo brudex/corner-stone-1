@@ -163,7 +163,10 @@ Controller.editUser = async (req, res) => {
     attributes: ["id", "name"],
   });
 
-  const { error } = User.validateUser(req.body, "update");
+  const { error } = User.validateUser(req.body, {
+    requestType: "update",
+    userType: "admin",
+  });
   if (error) {
     req.flash("error", error.details[0].message);
     return res.render(page, {

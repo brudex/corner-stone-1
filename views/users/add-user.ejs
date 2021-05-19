@@ -76,6 +76,18 @@ include('../partials/response-message.ejs') %>
             />
           </div>
           <div class="form-group">
+            <label class="form-label" for="email">Phone*</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="tel"
+              name="phone"
+              value="<% if(typeof values !== 'undefined') {%><%=values.phone%><%}%>"
+              placeholder="Enter phone number"
+              required
+            />
+          </div>
+          <div class="form-group">
             <label class="form-label" for="church">Select Church</label>
             <select
               id="church"

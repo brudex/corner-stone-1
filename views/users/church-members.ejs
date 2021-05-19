@@ -2,7 +2,14 @@
 include('../partials/response-message.ejs') %>
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -73,6 +80,14 @@ include('../partials/response-message.ejs') %>
                 href="javascript:void(0)"
                 class="sort"
                 data-sort="js-lists-values-activity"
+                >Phone</a
+              >
+            </th>
+            <th style="width: 120px">
+              <a
+                href="javascript:void(0)"
+                class="sort"
+                data-sort="js-lists-values-activity"
                 >User type</a
               >
             </th>
@@ -99,6 +114,9 @@ include('../partials/response-message.ejs') %>
             </td>
             <td>
               <div class="d-flex align-items-center"><%=member.email %></div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center"><%=member.phone %></div>
             </td>
 
             <td>

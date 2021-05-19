@@ -140,7 +140,7 @@ include('../partials/response-message.ejs') %>
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "/sermons/add", true);
+    xhr.open("POST", "/api/sermons/add", true);
     xhr.upload.addEventListener("progress", (e) => {
       $("#progressContainer").css("visibility", "visible");
       $("#progress").css("width", `0%`);

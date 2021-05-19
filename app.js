@@ -61,7 +61,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   console.log(err);
   res.status(err.status || 500);
-  if (/\/api/.test(req.path)) return res.json(err);
+  if (/\/api/.test(req.path)) return res.json("Something went wrong!");
   res.render(`errors/${err.status || 500}`, {
     title: err.status || 500,
     layout: "blank-layout",

@@ -112,8 +112,9 @@ Controller.addVideo = async (req, res) => {
       },
       async function (error, result) {
         unlink(req.file.path, (err) => {
-          if (err) throw err;
-          debug("successfully deleted file");
+          if (err) {
+            return res.status(400).send(err);
+          }
         });
         if (error) {
           debug(error);
@@ -197,14 +198,15 @@ Controller.deleteSermon = async (req, res) => {
 
 Controller.dailyDevotionalView = async (req, res) => {
   const { churchId } = req.user;
-  const dailyDevotionals = await DailyDevotional.findAll({
-    where: { churchId },
-    order: [["createdAt", "DESC"]],
-  });
+
+  const paginationResults = await DailyDevotional.paginate(req, { churchId });
+  const devotionals = paginationResults.data;
+
   res.render("daily-devotionals/daily-devotional", {
     title: "Daily Devotionals",
     user: req.user,
-    devotionals: dailyDevotionals,
+    devotionals,
+    ...paginationResults,
   });
 };
 
@@ -313,14 +315,18 @@ Controller.editDailyDevotional = async (req, res) => {
 
 Controller.devotionalView = async (req, res) => {
   const { churchId } = req.user;
-  const devotionals = await ChurchContent.findAll({
-    where: { churchId, contentType: "devotional" },
-    order: [["createdAt", "DESC"]],
+  const paginationResults = await ChurchContent.paginate(req, {
+    contentType: "devotional",
+    churchId,
   });
+
+  const devotionals = paginationResults.data;
+
   res.render("devotionals/devotional", {
     title: "Devotionals",
     user: req.user,
     devotionals,
+    ...paginationResults,
   });
 };
 
