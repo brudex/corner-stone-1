@@ -113,7 +113,6 @@ Controller.makeDonation = (req, res) => {
 };
 
 Controller.donationHistory = (req, res) => {
-
   const array=[];
   const sql = `SELECT cd.paymentMode,cd.amount,cd.statusMessage,cd.pageId,cd.paymentReference,ct.donationType,cd.createdAt from churchdonation cd INNER JOIN churchdonationtype ct on cd.donationTypeId=ct.id where cd.userId=${req.user.id}`;
   db.sequelize.query(sql,{type:db.sequelize.QueryTypes.SELECT}).then(function (rows) {
@@ -123,7 +122,6 @@ Controller.donationHistory = (req, res) => {
     });
     res.json({ status: "00", data: array });
   });
-
 };
 
 Controller.addDonationType = async (req, res) => {
