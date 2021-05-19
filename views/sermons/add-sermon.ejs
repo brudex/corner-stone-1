@@ -3,7 +3,14 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -51,13 +58,28 @@ include('../partials/response-message.ejs') %>
           </div>
 
           <div class="form-group m-0">
-            <label class="form-label" for="exampleInputPassword1"
-              >Audio file*</label
+            <label class="form-label" for="sermon-thumbnail"
+              >Audio Thumbnail*</label
             >
             <div class="custom-file">
               <input
                 type="file"
-                id="file"
+                id="sermon-thumbnail"
+                class="custom-file-input"
+                name="sermon-thumbnail"
+                required
+              />
+              <label for="file" class="custom-file-label"
+                >Select audio thumbnail</label
+              >
+            </div>
+          </div>
+          <div class="form-group m-0">
+            <label class="form-label" for="file">Audio file*</label>
+            <div class="custom-file">
+              <input
+                type="file"
+                id="sermon-audio"
                 class="custom-file-input"
                 name="sermon-audio"
                 required
@@ -124,10 +146,7 @@ include('../partials/response-message.ejs') %>
       $("#progress").css("width", `0%`);
       const percent = e.lengthComputable ? (e.loaded / e.total) * 100 : 0;
       $("#progress").css("width", `${percent}%`);
-
-      console.log(percent);
     });
-    // xhr.setRequestHeader("Content-Type", "multipart/form-data");
     xhr.onerror = function (e) {
       $("#progressContainer").css("visibility", "visible");
       $("#progress").css("width", `0%`);
@@ -141,10 +160,8 @@ include('../partials/response-message.ejs') %>
       $("#alert-msg").text(this.responseText);
       form[0].reset();
       //   console.log(this.statusText);
-      //   console.log(this.response);
-      //   console.log(this.responseText);
     };
 
-    xhr.send(new FormData(form));
+    xhr.send(formData);
   }
 </script>

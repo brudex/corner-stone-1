@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       contentType: DataTypes.STRING, //audio sermon, devotional text, videolinks
       contentData: DataTypes.TEXT, // using contentData field to store content regardless of type.
+      audioThumbnail: DataTypes.STRING, // using contentData field to store content regardless of type.
     },
     {
       tableName: "ChurchContent",
@@ -27,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   ChurchContent.createSermonUrl = function (content, req) {
     if (content.contentType === "sermon")
-      content.contentData = `${req.protocol}://${req.headers.host}/uploads/sermons/${content.contentData}`;
+      content.contentData = `${req.protocol}://${req.headers.host}/uploads/${content.contentData}`;
+    content.audioThumbnail = `${req.protocol}://${req.headers.host}/uploads/${content.audioThumbnail}`;
   };
   ChurchContent.paginate = function (req, condition) {
     return pagination(this, req, condition);

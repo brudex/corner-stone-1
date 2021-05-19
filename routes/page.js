@@ -97,10 +97,6 @@ router.get(
   [auth, superAdmin],
   donationController.getDonationsByChurchView
 );
-// router.get(
-//   "/donations/donationsByMonth",
-//   donationController.getDonationsByMonth
-// );
 router.get(
   "/donations/types",
   [auth, admin],

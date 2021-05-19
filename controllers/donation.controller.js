@@ -3,7 +3,7 @@ const DonationTypes = db.ChurchDonationType;
 const Donations = db.ChurchDonation;
 const Users = db.User;
 const Church = db.Church;
-const { sequelize } = require("../models/index");
+const sequelize = require("sequelize");
 const dateFns = require("date-fns");
 const _ = require("lodash");
 const { Op } = require("sequelize");
@@ -13,10 +13,48 @@ const Controller = {};
 module.exports = Controller;
 
 Controller.getDonationsByMonth = async (req, res) => {
-  // const donationsByMonth = await Donations.findAll({
-  //   group: [sequelize.fn("date_trunc", "month", sequelize.col("createdAt"))],
-  // });
-  // res.send(donationsByMonth);
+  const { churchId, isSuperAdmin } = req.user;
+  const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const monhtlyDonationData = [];
+  let donationsByMonth;
+
+  if (isSuperAdmin) {
+    donationsByMonth = await Donations.findAll({
+      attributes: [
+        "createdAt",
+        [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
+      ],
+      group: [sequelize.fn("month", sequelize.col("createdAt"))],
+      raw: true,
+    });
+  } else {
+    donationsByMonth = await Donations.findAll({
+      attributes: [
+        "createdAt",
+        [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
+      ],
+      where: { churchId },
+      group: [sequelize.fn("month", sequelize.col("createdAt"))],
+      raw: true,
+    });
+  }
+
+  const availableDonationMonths = donationsByMonth.map((donation) =>
+    donation.createdAt.getMonth()
+  );
+
+  months.forEach((month) => {
+    if (!availableDonationMonths.includes(month)) {
+      monhtlyDonationData.push(0);
+    } else {
+      donationsByMonth.forEach((donation) => {
+        if (donation.createdAt.getMonth() === month) {
+          monhtlyDonationData.push(parseFloat(donation.total_amount));
+        }
+      });
+    }
+  });
+  res.send(monhtlyDonationData);
 };
 
 Controller.getDonationsByChurchView = async (req, res) => {

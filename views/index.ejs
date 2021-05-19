@@ -1,10 +1,23 @@
 <%- include('./partials/navbar.ejs') %>
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div
-      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+      class="
+        flex
+        d-flex
+        flex-column flex-sm-row
+        align-items-center
+        mb-24pt mb-md-0
+      "
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0">Dashboard</h2>
@@ -99,8 +112,8 @@
 
   <div class="card mb-lg-32pt">
     <div class="card-header d-flex align-items-center">
-      <strong class="card-title">Earnings</strong>
-      <div class="flatpickr-wrapper flatpickr-calendar-right d-flex ml-auto">
+      <strong class="card-title">Donations</strong>
+      <!-- <div class="flatpickr-wrapper flatpickr-calendar-right d-flex ml-auto">
         <div
           id="recent_orders_date"
           data-toggle="flatpickr"
@@ -120,7 +133,7 @@
             data-input
           />
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="card-body">
       <div
@@ -129,7 +142,7 @@
       ></div>
       <div class="chart">
         <canvas
-          id="ordersChart"
+          id="myChart"
           class="chart-canvas js-update-chart-bar"
           data-chart-legend="#ordersChartLegend"
           data-chart-prefix="$"

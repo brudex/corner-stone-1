@@ -3,10 +3,23 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div
-      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+      class="
+        flex
+        d-flex
+        flex-column flex-sm-row
+        align-items-center
+        mb-24pt mb-md-0
+      "
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0">Sermons</h2>
@@ -33,7 +46,12 @@ include('../partials/response-message.ejs') %>
     <% sermons.forEach(sermon => {%>
     <div class="col-sm-4 card-group-row__col">
       <div
-        class="card card-lg overlay--primary-dodger-blue stack stack--1 card-group-row__card"
+        class="
+          card card-lg
+          overlay--primary-dodger-blue
+          stack stack--1
+          card-group-row__card
+        "
       >
         <div class="card-body d-flex flex-column">
           <div class="d-flex align-items-center">
@@ -43,7 +61,13 @@ include('../partials/response-message.ejs') %>
                   <div class="overlay">
                     <span class="overlay__content overlay__content-transparent">
                       <span
-                        class="overlay__action d-flex flex-column text-center lh-1"
+                        class="
+                          overlay__action
+                          d-flex
+                          flex-column
+                          text-center
+                          lh-1
+                        "
                       >
                         <small
                           class="h6 small text-white mb-0"
@@ -57,7 +81,7 @@ include('../partials/response-message.ejs') %>
                 <div class="flex">
                   <div class="card-title"><%=sermon.title %></div>
                   <p class="flex text-50 lh-1 mb-0">
-                    <small
+                    <small style="font-size: 12px"
                       ><%=new Date(sermon.createdAt).toDateString() %></small
                     >
                   </p>
@@ -71,13 +95,24 @@ include('../partials/response-message.ejs') %>
               data-title="Delete sermon"
               data-placement="top"
               data-boundary="window"
-              class="ml-4pt material-icons text-20 card-course__icon-favorite text-danger"
+              class="
+                ml-4pt
+                material-icons
+                text-20
+                card-course__icon-favorite
+                text-danger
+              "
               data-original-title=""
               title=""
               >delete</a
             >
           </div>
-          <!-- <img src="/images/sermon.jpg" height="150" alt="sermon" /> -->
+          <img
+            src="/uploads/<%=sermon.audioThumbnail%>"
+            height="150"
+            alt="sermon"
+            style="border-radius: 10px"
+          />
           <p
             class="mt-16pt text-70 flex"
             style="

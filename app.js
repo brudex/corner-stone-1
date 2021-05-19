@@ -49,14 +49,12 @@ app.use("/api", apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  console.log(req.path);
   if (/\/api/.test(req.path)) return next(createError(404));
   res.render("errors/404", { title: "404", layout: "blank-layout" });
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-  console.log("req.path is ", req.path);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
