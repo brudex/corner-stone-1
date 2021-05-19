@@ -213,8 +213,10 @@ Controller.deleteUser = async (req, res) => {
 
 Controller.registerUser = async (req, res, next) => {
   const failed = { status_code: "03", message: "Registration failed" };
+  req.body.phone = "233246583910";
   const { email, password } = req.body;
   const { error } = User.validateUser(req.body, {});
+
   if (error)
     return res.status(400).json({ ...failed, reason: error.details[0].message });
 
