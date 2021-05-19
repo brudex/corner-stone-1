@@ -14,8 +14,8 @@ module.exports.allowImagesOnly = function (req, file, cb) {
     : cb("file type not supported");
 };
 
-module.exports.allowAudiosOnly = function (req, file, cb) {
-  const allowedTypes = /mp3|ogg|wav|/;
+module.exports.allowAudiosImagesOnly = function (req, file, cb) {
+  const allowedTypes = /mp3|ogg|wav|jpeg|jpg|png/;
 
   const ex = path.extname(file.originalname).toLocaleLowerCase();
   const em = file.mimetype;

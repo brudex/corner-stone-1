@@ -18,16 +18,20 @@ const debug = require("debug")("corner-stone:churchcontent");
 const cloudinary = require("cloudinary").v2;
 //utils
 const {
-  allowAudiosOnly,
+  allowAudiosImagesOnly,
   storage,
   allowVidoesOnly,
 } = require("../utils/upload");
 const Joi = require("joi");
+
 const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 100 },
-  fileFilter: allowAudiosOnly,
-}).single("sermon-audio");
+  fileFilter: allowAudiosImagesOnly,
+}).fields([
+  { name: "sermon-audio", maxCount: 1 },
+  { name: "sermon-thumbnail", maxCount: 1 },
+]);
 
 cloudinary.config({
   cloud_name: "perple",
@@ -170,10 +174,10 @@ Controller.addSermon = async (req, res) => {
     if (sermonExists) {
       return res.status(400).send("Sermon already exist");
     }
-
     await ChurchContent.create({
       title,
-      contentData: req.file.filename,
+      contentData: req.files["sermon-audio"][0].filename,
+      audioThumbnail: req.files["sermon-thumbnail"][0].filename,
       contentType: "sermon",
       churchId,
     });
