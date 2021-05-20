@@ -83,8 +83,8 @@ Controller.setPaymentStatus = function (req,res){
                 }
                 if(donation.paymentMode==='paypal' && donation.paymentStatus==="00"){
                     const paymentDetails = JSON.parse(req.body.data);
-                    donation.paymentReference = "";
-                }
+                    donation.paymentReference = paymentDetails.id;
+                 }
                 donation.save();
                 res.json({status:"00",message:"Payment status updated"})
             }else{

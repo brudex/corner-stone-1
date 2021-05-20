@@ -93,6 +93,7 @@
                 window.swal("Failed", "", "error");
             });
     }
+
     var showAlertWithCallback = function(title,message,alertType){
         window.swal({
                 title: title,
@@ -130,6 +131,10 @@
                 });
             }
         }).render('#paypal-button-container'); // Display payment options on your web page
+
+        var loading = function(isLoading) {
+
+        };
     </script>
 <%}%>
 <%if(paymentMode==="stripe"){%>
