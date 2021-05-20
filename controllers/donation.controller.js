@@ -203,8 +203,8 @@ Controller.editDonationType = async (req, res) => {
 
 Controller.churchDonationsByDateRange = async (req, res) => { //todo Bright e.g. payload: {startDate : '2021-01-01',endDate: '2021-01-01',churchId:1}
 
-   const startDate = req.body.startDate; //iso date yyyy-MM-dd
-   const endDate = req.body.endDate; //iso date yyyy-MM-dd
+  const startDate = req.body.startDate; //iso date yyyy-MM-dd
+  const endDate = req.body.endDate; //iso date yyyy-MM-dd
   let donationSum = 0;
   db.Donations.findAll({ attributes: [
      "id", "amount","paymentMode","paymentStatus","settlementStatus","paymentReference","createdAt",
@@ -215,15 +215,12 @@ Controller.churchDonationsByDateRange = async (req, res) => { //todo Bright e.g.
         });
         res.render("donations/church_donation_by_date", { title: "Donations by Data", ...donations, donationSum }); //todo : Bright render the page
       })
-
 };
 
 Controller.setSettlementStatus = async (req, res) => { //todo Bright e.g. payload: {status : 'COMPLETED',donationIds: [1,4] }
-
   const donationIds = req.body.donationIds; // [1,4]
   const status = req.body.status.toUpperCase(); //COMPLETED, PENDING
   db.Donations.update({ settlementStatus : status },{ where : { id : donationIds }}).then(function () {
     res.render("donations/settlement_status_updated", { title: "Settlement Status Updated" });  //todo : Bright render the page
   });
-
 };
