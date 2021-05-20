@@ -41,9 +41,9 @@ Controller.paymentPage = async (req, res) => {
 
 Controller.paymentResult = async (req, res) => {
     if(req.params.status==="success"){
-        return res.render("payment-status",{layout:"payment-layout",title:"Payment Success",status:"success"});
+        return res.render("payment-status",{layout:"white-layout",title:"Payment Success",status:"success"});
     }else{
-        return res.render("payment-status",{layout:"payment-layout",title:"Payment Failed",status:"failed"});
+        return res.render("payment-status",{layout:"white-layout",title:"Payment Failed",status:"failed"});
     }
 };
 
