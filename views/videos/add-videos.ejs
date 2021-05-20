@@ -139,10 +139,11 @@ include('../partials/response-message.ejs') %>
       $("#alert-msg").text("An error Occurred");
     };
     xhr.onload = function () {
+      const response = JSON.parse(this.responseText);
       $("#progressContainer").css("visibility", "hidden");
       $("#progress").css("width", `0%`);
       $("#msg").html(alertMsg);
-      $("#alert-msg").text(this.responseText);
+      $("#alert-msg").text(response.message);
       form[0].reset();
     };
 

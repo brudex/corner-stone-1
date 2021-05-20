@@ -65,21 +65,6 @@ Controller.videosView = async (req, res) => {
   });
 };
 Controller.addVideoView = async (req, res) => {
-  // let authorized = false;
-  // const code = req.query.code;
-  // const CLIENT_ID = OAuth2Data.web.client_id;
-  // const CLIENT_SECRET = OAuth2Data.web.client_secret;
-  // const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
-
-  // const oAuth2Client = new google.auth.OAuth2(
-  //   CLIENT_ID,
-  //   CLIENT_SECRET,
-  //   REDIRECT_URL
-  // );
-
-  // const SCOPES =
-  //   "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile";
-
   res.render("videos/add-videos", {
     title: "Add Video",
     user: req.user,
@@ -94,7 +79,7 @@ Controller.addVideo = async (req, res) => {
 
     if (err) {
       debug(err);
-      return res.status(400).send("An error occured");
+      return res.status(400).json({ message: "An error occured" });
     }
 
     const { error } = ChurchContent.validateVideoContent({
@@ -102,7 +87,8 @@ Controller.addVideo = async (req, res) => {
       churchId,
       contentType: "video",
     });
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error)
+      return res.status(400).send({ message: error.details[0].message });
 
     cloudinary.uploader.upload_large(
       req.file.path,
@@ -118,7 +104,7 @@ Controller.addVideo = async (req, res) => {
         });
         if (error) {
           debug(error);
-          return res.status(400).send("An error occurred!");
+          return res.status(400).send({ message: "An error occurred!" });
         }
         debug(result);
         await ChurchContent.create({
@@ -128,7 +114,7 @@ Controller.addVideo = async (req, res) => {
           contentData: result.secure_url,
         });
 
-        res.send("Video uploaded successfully");
+        res.send({ message: "Video uploaded successfully" });
       }
     );
   });
@@ -166,14 +152,14 @@ Controller.addSermon = async (req, res) => {
     });
     const { error } = schema.validate({ title });
     if (error) {
-      return res.status(400).send(error.details[0].message);
+      return res.status(400).send({ message: error.details[0].message });
     }
 
     const sermonExists = await ChurchContent.findOne({
       where: { title, churchId, contentType: "sermon" },
     });
     if (sermonExists) {
-      return res.status(400).send("Sermon already exist");
+      return res.status(400).send({ message: "Sermon already exist" });
     }
     await ChurchContent.create({
       title,
@@ -183,7 +169,7 @@ Controller.addSermon = async (req, res) => {
       churchId,
     });
 
-    res.send("Sermon added successfully");
+    res.send({ message: "Sermon added successfully" });
   });
 };
 
@@ -438,11 +424,19 @@ Controller.searchChurchContent = async (req, res) => {
   });
 };
 
-Controller.getChurchContentById = async (req, res) => {
+Controller.getChurchContentById = async (req, res, next) => {
   const { churchId } = req.user;
   const churchContent = await ChurchContent.findOne({
     where: { id: req.params.id, churchId },
   });
+  if (!churchContent)
+    return next(
+      createError(400, {
+        status_code: "03",
+        message: "request failed",
+        reason: "Requested resource not found",
+      })
+    );
   ChurchContent.createSermonUrl(churchContent, req);
   res.json({ status: "00", data: churchContent });
 };
@@ -463,7 +457,7 @@ Controller.getChurchContent = async (req, res, next) => {
     ChurchContent.createSermonUrl(content, req)
   );
 
-  res.json({ status_code: "03", data: churchContents });
+  res.json({ status_code: "00", data: churchContents });
 };
 
 Controller.getDailyDevotionals = async (req, res) => {
