@@ -13,7 +13,7 @@ Controller.initiatePaymentIntent = async (req, res) => {
     donation.pageId= uuid.v4();
     donation.amount=req.body.amount;
     donation.paymentMode = req.body.paymentMode;
-    donation.donationTypeId = req.body.donationType;
+    donation.donationTypeId = req.body.donationType.toLowerCase();
     donation.paymentStatus ="01";
     donation.statusMessage = "pending";
     donation.settlementStatus = "PENDING";

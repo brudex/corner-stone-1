@@ -414,13 +414,12 @@ Controller.editUserDetails = async (req, res, next) => {
 
   const { error } = User.validateEditUser(req.body);
   if (error)
-    return next(
-      createError(400, {
+    return res.status(400).json({
         status_code: "03",
         message: "Request Failed",
         reason: error.details[0].message,
-      })
-    );
+      });
+
 
   await User.update({ firstName, lastName }, { where: { id } });
   res.json({ status_code: "00", message: "User Details updated Successfully" });
