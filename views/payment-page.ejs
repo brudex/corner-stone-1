@@ -62,7 +62,7 @@
     </div>
 </div>
 <script>
-    var setPaymentStatus = function (success, data) {
+    var setPaymentStatus = function (success, data,statusMessage) {
         var pageId =  document.querySelector("#pageId").value;
         var payload = {};
         if(success===true){
@@ -71,6 +71,9 @@
         }else{
             payload.status="03";
             payload.statusMessage="Failed";
+            if(statusMessage){
+                payload.statusMessage=statusMessage;
+            }
         }
         payload.data= JSON.stringify(data);
         console.log("Payload sent to server <<<",payload);
@@ -103,6 +106,7 @@
                 closeOnConfirm: true
             },
             function () {
+                setPaymentStatus(false,null,"Cancelled")
                 window.location.replace("/paymentResult/failed");
             });
     }
