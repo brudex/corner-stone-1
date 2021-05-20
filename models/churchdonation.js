@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       amount: DataTypes.DECIMAL,
       paymentMode: DataTypes.STRING, //stripe,paypal
       donationTypeId: DataTypes.INTEGER, // Donation Type ID
-      paymentStatus: DataTypes.STRING, // 00=success,01=pending,03=failed,04=cancelled
+      paymentStatus: DataTypes.STRING, //00=success,01=pending,03=failed,04=cancelled
       statusMessage: DataTypes.STRING,
       settlementStatus: DataTypes.STRING, //PENDING, COMPLETED
       paymentReference: DataTypes.STRING, //PENDING, COMPLETED

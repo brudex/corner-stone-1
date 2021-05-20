@@ -59,6 +59,7 @@ Controller.getDonationsByMonth = async (req, res) => {
 
 Controller.getDonationsByChurchView = async (req, res) => {
   //Group donations by church
+  //todo pass the date range
   let donationsByChurch = await Donations.findAll({
     attributes: [
       "churchId",
@@ -102,20 +103,17 @@ Controller.getDonationsView = async (req, res) => {
   const { user } = req;
   const { churchId } = req.user;
   const donations = await Donations.paginate(req, { churchId });
-
   //Get Users
   const userIds = donations.data.map((donation) => donation.userId);
   const users = await Users.findAll({
     where: { id: { [Op.in]: userIds } },
     attributes: ["id", "firstName", "lastName"],
   });
-
   //Get DonationType
   const donationTypes = await DonationTypes.findAll({
     where: { churchId },
     attributes: ["id", "donationType"],
   });
-
   //update donation data
   donations.data.forEach((donation) => {
     donation.userId = users.filter((user) => user.id === donation.userId)[0];
@@ -123,7 +121,6 @@ Controller.getDonationsView = async (req, res) => {
       (donationType) => donationType.id === donation.donationTypeId
     )[0];
   });
-
   res.render("donations/donations", { title: "Donations", ...donations, user });
 };
 
