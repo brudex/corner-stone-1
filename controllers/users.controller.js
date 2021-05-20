@@ -246,9 +246,7 @@ Controller.login = async (req, res, next) => {
   const { error } = User.validateDetails(req.body);
   if (error)
     return next(
-      createError(400, {
-        reason: error.details[0].message,
-      })
+      createError(400, { ...failed, reason: error.details[0].message })
     );
 
   const user = await User.findByEmail(email, false);

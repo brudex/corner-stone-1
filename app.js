@@ -59,9 +59,17 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   // render the error page
-  console.log(err);
   res.status(err.status || 500);
-  if (/\/api/.test(req.path)) return res.json("Something went wrong!");
+  console.log(err);
+  if (/\/api/.test(req.path)) {
+    return err.status
+      ? res.json(err)
+      : res.json({
+          status_code: "500",
+          message: "Something went wrong",
+          reason: "An Internal server erorr occurred",
+        });
+  }
   res.render(`errors/${err.status || 500}`, {
     title: err.status || 500,
     layout: "blank-layout",
