@@ -146,8 +146,25 @@ Controller.addUser = async (req, res) => {
       user: req.user,
     });
   }
+
+  const userChurch = churches.find(
+    (church) => church.id.toString() === req.body.churchId.toString()
+  );
+  if (!userChurch) {
+    {
+      req.flash("error", "Church already exist");
+      return res.render(page, {
+        title: "Add User",
+        values: req.body,
+        churches,
+        user: req.user,
+      });
+    }
+  }
   const hashedPassword = await User.hashPassword(password);
   await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+
+  User.sendWelcomeMail(req, { email, password, church: userChurch.name });
 
   req.flash("success", "User added successfully");
   res.render(page, { title: "Add User", churches, user: req.user });
@@ -217,15 +234,19 @@ Controller.registerUser = async (req, res, next) => {
   const { error } = User.validateUser(req.body, {});
 
   if (error)
-    return res.status(400).json({ ...failed, reason: error.details[0].message });
+    return res
+      .status(400)
+      .json({ ...failed, reason: error.details[0].message });
 
   if (!req.body.fcm_token)
-    return res.status(400).json({...failed, reason: "fcm is a required field" });
+    return res
+      .status(400)
+      .json({ ...failed, reason: "fcm is a required field" });
 
   //check if email exists
   const userExist = await User.findByEmail(email);
   if (userExist)
-    return res.status(400).json( { ...failed, reason: "Email already exists" });
+    return res.status(400).json({ ...failed, reason: "Email already exists" });
 
   //Hash password
   const hashedPassword = await User.hashPassword(password);
@@ -256,7 +277,9 @@ Controller.login = async (req, res, next) => {
 
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword)
-    return res.status(400).json({ ...failed, reason: "Invalid email or password" });
+    return res
+      .status(400)
+      .json({ ...failed, reason: "Invalid email or password" });
 
   const token = user.generateAuthToken();
 
@@ -415,11 +438,10 @@ Controller.editUserDetails = async (req, res, next) => {
   const { error } = User.validateEditUser(req.body);
   if (error)
     return res.status(400).json({
-        status_code: "03",
-        message: "Request Failed",
-        reason: error.details[0].message,
-      });
-
+      status_code: "03",
+      message: "Request Failed",
+      reason: error.details[0].message,
+    });
 
   await User.update({ firstName, lastName }, { where: { id } });
   res.json({ status_code: "00", message: "User Details updated Successfully" });

@@ -108,6 +108,7 @@ include('../partials/response-message.ejs') %>
           <p
             class="mt-16pt text-70 flex"
             style="
+              text-align: justify;
               overflow: hidden;
               text-overflow: ellipsis;
               display: -webkit-box;
@@ -140,10 +141,26 @@ include('../partials/response-message.ejs') %>
               </div> -->
             </div>
             <div class="col text-right">
-              <a href="#" class="btn btn-outline-secondary">Read more</a>
+              <a
+                href="#devotional<%=devotional.id%>"
+                rel="modal:open"
+                class="btn btn-outline-secondary"
+                >Read more</a
+              >
             </div>
           </div>
         </div>
+      </div>
+      <div
+        id="devotional<%=devotional.id%>"
+        class="modal"
+        style="overflow: visible; padding: 20px;"
+      >
+      <h3><%=devotional.title%></h4>
+        <hr />
+        <p style="font-size: 15px; text-align: justify">
+          <%=devotional.contentData%>
+        </p>
       </div>
     </div>
     <%})%>

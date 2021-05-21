@@ -8,6 +8,7 @@ const dateFns = require("date-fns");
 const _ = require("lodash");
 const { Op } = require("sequelize");
 const Joi = require("joi");
+const debug = require("debug")("corner-stone:donation-controller");
 
 const Controller = {};
 module.exports = Controller;
@@ -142,17 +143,18 @@ Controller.getChurchDonationTypes = async (req, res) => {
   res.json({ status: "00", data: donationTypes }); ///data is array of events
 };
 
-
 Controller.donationHistory = (req, res) => {
-  const array=[];
+  const array = [];
   const sql = `SELECT cd.paymentMode,cd.amount,cd.statusMessage,cd.pageId,cd.paymentReference,ct.donationType,cd.createdAt from churchdonation cd INNER JOIN churchdonationtype ct on cd.donationTypeId=ct.id where cd.userId=${req.user.id}`;
-  db.sequelize.query(sql,{type:db.sequelize.QueryTypes.SELECT}).then(function (rows) {
-    rows.forEach(function (row) {
-      row.createdAt = dateFns.format(row.createdAt,'MMM dd, yyyy');
-      array.push(row);
+  db.sequelize
+    .query(sql, { type: db.sequelize.QueryTypes.SELECT })
+    .then(function (rows) {
+      rows.forEach(function (row) {
+        row.createdAt = dateFns.format(row.createdAt, "MMM dd, yyyy");
+        array.push(row);
+      });
+      res.json({ status: "00", data: array });
     });
-    res.json({ status: "00", data: array });
-  });
 };
 
 Controller.addDonationType = async (req, res) => {
@@ -201,26 +203,85 @@ Controller.editDonationType = async (req, res) => {
   res.redirect("back");
 };
 
-Controller.churchDonationsByDateRange = async (req, res) => { //todo Bright e.g. payload: {startDate : '2021-01-01',endDate: '2021-01-01',churchId:1}
+Controller.churchDonationsByDateRange = async (req, res) => {
+  //todo Bright e.g. payload: {startDate : '2021-01-01',endDate: '2021-01-01',churchId:1}
+  let startDate;
+  let endDate;
+  let churchId;
+  let churches;
 
-  const startDate = req.body.startDate; //iso date yyyy-MM-dd
-  const endDate = req.body.endDate; //iso date yyyy-MM-dd
+  //Set default dates
+  if (!req.query.startDate && !req.query.endDate) {
+    let today = new Date();
+    let day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+    // Only manipulate the date if it isn't Mon.
+    if (day !== 1) today.setHours(-24 * (day - 1)); // Set the hours to day number minus 1 multiplied by negative 24
+    startDate = new Date(today).toISOString();
+    endDate = new Date().toISOString();
+  } else {
+    startDate = new Date(req.query.startDate).toISOString();
+    endDate = new Date(req.query.endDate).toISOString();
+  }
+
+  // if userType is church admin, grab churchId from session
+  if (req.user.isAdmin) {
+    churchId = req.user.churchId;
+  } else {
+    //else grab from req.query or set it if undefined
+    churches = await Church.findAll({ raw: true });
+    if (req.query.churchId) {
+      churchId = req.query.churchId;
+    } else {
+      churchId = churches[0].id;
+    }
+  }
   let donationSum = 0;
-  db.Donations.findAll({ attributes: [
-     "id", "amount","paymentMode","paymentStatus","settlementStatus","paymentReference","createdAt",
-    ],where:{churchId:req.body.churchId, createdAt:{[Op.between] : [startDate , endDate ],paymentStatus:"00"}}})
-      .then(function (donations) {
-        donations.forEach(function (donation) {
-          donationSum += donation.amount;
-        });
-        res.render("donations/church_donation_by_date", { title: "Donations by Data", ...donations, donationSum }); //todo : Bright render the page
-      })
+  Donations.findAll({
+    attributes: [
+      "id",
+      "amount",
+      "paymentMode",
+      "paymentStatus",
+      "settlementStatus",
+      "paymentReference",
+      "createdAt",
+    ],
+    where: {
+      churchId,
+      createdAt: { [Op.between]: [startDate, endDate] },
+      paymentStatus: "00",
+    },
+  }).then(function (donations) {
+    donations.forEach(function (donation) {
+      donationSum += parseFloat(donation.amount);
+    });
+
+    res.render("donations/church_donation_by_date", {
+      title: "Donations by Data",
+      donations,
+      donationSum,
+      churches,
+      churchId,
+      startDate,
+      endDate,
+      user: req.user,
+    }); //todo : Bright render the page
+  });
 };
 
-Controller.setSettlementStatus = async (req, res) => { //todo Bright e.g. payload: {status : 'COMPLETED',donationIds: [1,4] }
+Controller.setSettlementStatus = async (req, res) => {
+  if (!req.body.donationIds) {
+    req.flash("error", `No data selected!`);
+    return res.redirect("back"); //todo : Bright render the page
+  }
+  //todo Bright e.g. payload: {status : 'COMPLETED',donationIds: [1,4] }
   const donationIds = req.body.donationIds; // [1,4]
   const status = req.body.status.toUpperCase(); //COMPLETED, PENDING
-  db.Donations.update({ settlementStatus : status },{ where : { id : donationIds }}).then(function () {
-    res.render("donations/settlement_status_updated", { title: "Settlement Status Updated" });  //todo : Bright render the page
+  Donations.update(
+    { settlementStatus: status },
+    { where: { id: donationIds } }
+  ).then(function () {
+    req.flash("success", `Settlement status updated successfully`);
+    res.redirect("back"); //todo : Bright render the page
   });
 };

@@ -86,6 +86,11 @@ router.get(
   churchContentController.editDailyDevotionalView
 );
 router.get("/videos/add", [auth, admin], churchContentController.addVideoView);
+router.get(
+  "/videos/delete/:id",
+  [auth, admin],
+  churchContentController.deleteVideo
+);
 router.get("/donations", [auth, admin], donationController.getDonationsView);
 router.get("/events", [auth, admin], eventsController.getUpcomingEventsView);
 router.get("/events/add", [auth, admin], eventsController.addEventView);
@@ -96,6 +101,11 @@ router.get(
   "/donationsByChurch",
   [auth, superAdmin],
   donationController.getDonationsByChurchView
+);
+router.get(
+  "/donations/church_donation_by_date",
+  [auth, admin],
+  donationController.churchDonationsByDateRange
 );
 router.get(
   "/donations/types",
@@ -143,6 +153,11 @@ router.post(
   "/donations/edit/:id",
   [auth, admin],
   donationController.editDonationType
+);
+router.post(
+  "/donations/setSettlementStatus",
+  [auth, superAdmin],
+  donationController.setSettlementStatus
 );
 router.post("/events/add", [auth, admin], eventsController.addEvent);
 router.post("/events/edit/:id", [auth, admin], eventsController.editEvent);
