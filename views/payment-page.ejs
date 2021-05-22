@@ -79,14 +79,15 @@
         console.log("Payload sent to server <<<",payload);
         jQuery.post( "/api/setPaymentStatus/"+pageId, payload, function(response) {
             loading(false);
-            window.swal({
-                    title: "Payment Successful",
-                    text:  response.message,
-                    type: "success",
-                },
-                function () {
-                    window.location.replace("/paymentResult/success");
-                });
+            window.location.replace("/paymentResult/success");
+            // window.swal({
+            //         title: "Payment Successful",
+            //         text:  response.message,
+            //         type: "success",
+            //     },
+            //     function () {
+            //         window.location.replace("/paymentResult/success");
+            //     });
         },'json')
             .fail(function() {
                 loading(false);
