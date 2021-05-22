@@ -23,6 +23,7 @@ const {
   allowVidoesOnly,
 } = require("../utils/upload");
 const Joi = require("joi");
+const config = require("../config/config");
 
 const upload = multer({
   storage,
@@ -34,9 +35,9 @@ const upload = multer({
 ]);
 
 cloudinary.config({
-  cloud_name: "perple",
-  api_key: "616251437221118",
-  api_secret: "BjztMn3K0XgsrqtUxpEqqDlVjJo",
+  cloud_name: "cache-tech",
+  api_key: "278597117122115",
+  api_secret: config.cloudinary_secret_key,
 });
 
 const uploadVideo = multer({
@@ -119,6 +120,14 @@ Controller.addVideo = async (req, res) => {
     );
   });
 };
+Controller.deleteVideo = async (req, res) => {
+  const { churchId } = req.user;
+  const { id } = req.params;
+  await ChurchContent.destroy({ where: { id, churchId } });
+
+  req.flash("success", "Video deleted successfully");
+  res.redirect("back");
+};
 Controller.sermonView = async (req, res) => {
   const { churchId } = req.user;
   const paginationResults = await ChurchContent.paginate(req, {
@@ -178,8 +187,8 @@ Controller.deleteSermon = async (req, res) => {
   const { id } = req.params;
 
   await ChurchContent.destroy({ where: { churchId, id } });
-  req.flash("Sermon deleted successfully");
-  res.redirect("/sermons/sermons");
+  req.flash("success", "Sermon deleted successfully");
+  res.redirect("back");
 };
 
 Controller.dailyDevotionalView = async (req, res) => {

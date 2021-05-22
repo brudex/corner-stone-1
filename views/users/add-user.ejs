@@ -3,7 +3,14 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
@@ -97,6 +104,7 @@ include('../partials/response-message.ejs') %>
               tabindex="-1"
               aria-hidden="true"
               name="churchId"
+              style="width: 100%"
             >
               <% churches.forEach(church => {%> <% if(typeof values !==
               'undefined'){%> <% if(values.churchId === church.id.toString())
@@ -135,3 +143,9 @@ include('../partials/response-message.ejs') %>
   </div>
 </div>
 <%- include('../partials/drawer.ejs') %>
+
+<script>
+  $(document).ready(function () {
+    $("#church").select2();
+  });
+</script>

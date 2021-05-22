@@ -148,6 +148,26 @@ module.exports = (sequelize, DataTypes) => {
     sendMail(options);
   };
 
+  User.sendWelcomeMail = async function (req, { email, church, password }) {
+    const hostname = `${req.protocol}://${req.headers.host}`;
+    const options = {
+      from: '"noreply"<test@senyotheart.com>',
+      to: email,
+      subject: "Corner Stone",
+      html: `<DOCTYPE html>
+        <html>
+          <body>          
+            <p>Hi there, you've been added as admin user for <strong>${church}</strong>. You can find your login details below.</p>
+            <p>Email: ${email}</p>
+            <p>Password: ${password}</p>
+            <a href="${hostname}">Click here to log into your account!</a>
+          </body>
+        </html>`,
+    };
+
+    sendMail(options);
+  };
+
   User.paginate = function (req, condition) {
     return pagination(this, req, condition);
   };
