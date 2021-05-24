@@ -4,15 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     "AppointmentDate",
     {
       churchId: DataTypes.INTEGER,
-      appointmentDate: DataTypes.DATEONLY,
-      appointmentType: DataTypes.STRING, //onetime, recurring
-      sun: DataTypes.BOOLEAN,
-      mon: DataTypes.BOOLEAN,
-      tue: DataTypes.BOOLEAN,
-      wed: DataTypes.BOOLEAN,
-      thu: DataTypes.BOOLEAN,
-      fri: DataTypes.BOOLEAN,
-      sat: DataTypes.BOOLEAN
+      day: DataTypes.STRING,
+      appointment: DataTypes.STRING, //onetime, recurring
     },
     {
       tableName: "AppointmentDate",

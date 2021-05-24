@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       churchId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       appointmentReason: DataTypes.STRING,
-      appointmentTimeId: DataTypes.INTEGER,
+      appointmentTimeId: DataTypes.INTEGER,//todo no longer joining with appointment_times
+      time: DataTypes.STRING, //time of appointment
+      date: DataTypes.DATEONLY,  //date of appointment //yyyy-MM
     },
     {
       tableName: "ChurchAppointments",

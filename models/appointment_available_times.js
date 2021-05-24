@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "AvailableAppointmentTime",
     {
       appointmentDateId: DataTypes.INTEGER,
-      appointmentTime: DataTypes.STRING,
+      appointmentTime: DataTypes.STRING, //17:00
       numberOfAllowedAppointments: DataTypes.INTEGER,
     },
     {
