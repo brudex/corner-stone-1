@@ -498,23 +498,36 @@ Controller.addToUserPlayList = async (req, res, next) => {
   });
   if (!churchContent)
     return next(
-      createError(400, {
-        status_code: "03",
-        message: "add to user playlist failed",
-        reason: "Church content not Found",
-      })
+        createError(400, {
+          status_code: "03",
+          message: "add to user playlist failed",
+          reason: "Church content not Found",
+        })
     );
   if (churchContent.title !== title)
     return next(
-      createError(400, {
-        status_code: "03",
-        message: "add to user playlist failed",
-        reason: "Church content titles do not match",
-      })
+        createError(400, {
+          status_code: "03",
+          message: "add to user playlist failed",
+          reason: "Church content titles do not match",
+        })
     );
   await UserPlayList.create({ ...req.body, userId });
 
   res.json({ status: "00", message: "playlist updated successfully" });
+};
+
+Controller.deleteUserPlayListItem = async (req, res, next) => {
+  const  userId = req.user.id;
+  const { churchContentId } = req.body;
+
+  db.UserPlayList.findAll({where:{churchContentId:churchContentId,userId:userId}})
+      .then(function (playlists) {
+         playlists.forEach(function (playlist) {
+           playlist.destroy();
+         });
+        res.json({ status: "00", message: "playlist deleted successfully" });
+      })
 };
 
 Controller.getRecentContent = async (req, res, next) => {
