@@ -245,8 +245,7 @@ Controller.setAppointment = async (req, res, next) => { //todo after implementat
         message: "set appointment failed",
         reason: "Appointments with provided ID not found",
       })
-    );
-
+    ); 
 
   const appointmentsSet = await ChurchAppointments.count({
     where: { appointmentTimeId: appointmenttime.id, date:req.body.date},
