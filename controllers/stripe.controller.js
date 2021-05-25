@@ -50,7 +50,7 @@ Controller.paymentResult = async (req, res) => {
 function renderStripePayment(donation,res){
     // Create a PaymentIntent with the order amount and currency
     const intent={
-        amount: 1500, //todo calculate payment
+        amount: calculateOrderAmount(donation),
         currency: "usd"
     };
     console.log('The intent is >>>',intent);
@@ -65,7 +65,7 @@ function renderStripePayment(donation,res){
 }
 
 function renderPaypalPayment(donation,res){
-    const amount=1500; //todo calculate amount
+    const amount=calculateOrderAmount(donation);
     return res.render( "payment-page", { paymentMode:donation.paymentMode,pageId:donation.pageId,payPalClientId:config.paypal_client_id,layout: "payment-layout",title:"Pay with PayPal",amount:amount});
 }
 
@@ -78,8 +78,7 @@ Controller.setPaymentStatus = function (req,res){
                 donation.paymentStatus =req.body.status;
                 donation.statusMessage = req.body.statusMessage;
                 if(donation.paymentMode==='stripe' && donation.paymentStatus==="00"){
-                    const paymentDetails = JSON.parse(req.body.data);
-                    donation.paymentReference = paymentDetails.paymentIntent.id;
+                    const paymentDetails = JSON.parse(req.body.paymentIntent.id;
                 }
                 if(donation.paymentMode==='paypal' && donation.paymentStatus==="00"){
                     const paymentDetails = JSON.parse(req.body.data);
@@ -109,7 +108,9 @@ Controller.paymentStatus = async (req, res) => {
 
 const calculateOrderAmount = donation => {
     console.log('Donation object >>',donation.toJSON());
-    //todo add charge fees if any
     console.log("the donation amount is >>>",donation.amount);
-    return Number(Number(donation.amount)*100);
+    if(donation.paymentMode=== 'stripe'){
+        return Number(Number(donation.amount)*100);
+    }
+    return Number(donation.amount);
 };
