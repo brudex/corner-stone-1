@@ -469,6 +469,23 @@ Controller.getChurchContent = async (req, res, next) => {
   res.json({ status_code: "00", data: churchContents });
 };
 
+Controller.getChurchLiveStream = async (req, res, next) => {
+  const limit =1;
+  const { churchId } = req.user;
+  const contentType  = "livestream";
+
+  const churchContents = await ChurchContent.findAll({
+    where: { contentType, churchId },
+    order: [["createdAt", "DESC"]],
+    limit:limit ,
+    offset: 0,
+  });
+  churchContents.forEach((content) =>
+      ChurchContent.createSermonUrl(content, req)
+  );
+  res.json({ status_code: "00", data: churchContents });
+};
+
 Controller.getDailyDevotionals = async (req, res) => {
   const { churchId } = req.user;
   let dailyDevotional = await DailyDevotional.findOne({

@@ -51,6 +51,12 @@ router.get(
   churchContentController.getDailyDevotionals
 );
 router.get(
+    "/churchcontent/livestream",
+    api_auth,
+    churchContentController.getChurchLiveStream
+);
+
+router.get(
   "/churchcontent/:contentType",
   api_auth,
   churchContentController.getChurchContent
