@@ -1,0 +1,330 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+<div class="pt-32pt">
+  <div
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Pending Settlements</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Pending Settlements</li>
+        </ol>
+      </div>
+    </div>
+    <div class="row" role="tablist">
+      <div class="col-auto"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+<div class="container page__container page-section">
+  <div class="page-separator">
+    <div class="page-separator__text">Pending Settlements</div>
+  </div>
+
+  <div class="card mb-0">
+    <div class="table-responsive p-3">
+      <div class="d-flex mb-2 justify-content-between align-items-center">
+        <div>
+          <div class="form-group">
+            <label class="form-label">Select date range</label><br />
+            <div class="flatpickr-wrapper">
+              <div
+                id="recent_orders_date"
+                data-toggle="flatpickr"
+                data-flatpickr-wrap="true"
+                data-flatpickr-mode="range"
+                data-flatpickr-alt-format="Y/m/d"
+                data-flatpickr-date-format="Y/m/d"
+              >
+                <a href="javascript:void(0)" class="link-date" data-toggle=""
+                  ><%=startDate.split("T")[0]%> to <%=endDate.split("T")[0]%></a
+                >
+                <input
+                  id="date"
+                  class="flatpickr-hidden-input flatpickr-input"
+                  type="hidden"
+                  value="<%=startDate%> to <%=endDate%>"
+                  onchange="setDateRange(this.value);"
+                  data-input=""
+                /><input
+                  class="form-control flatpickr-input"
+                  placeholder=""
+                  tabindex="0"
+                  type="text"
+                  readonly="readonly"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <% if (user.isSuperAdmin) {%>
+        <div>
+          <div class="col-lg-8 d-flex" data-select2-id="18" id="select-church">
+            <div class="flex" style="max-width: 100%" data-select2-id="17">
+              <div class="form-group" data-select2-id="16">
+                <label class="form-label" for="select01">Select Church</label>
+                <select
+                  id="select01"
+                  data-toggle="select"
+                  class="form-control select2-hidden-accessible"
+                  data-select2-id="select01"
+                  tabindex="-1"
+                  onchange="setChurch(this.value)"
+                  aria-hidden="true"
+                  style="width: 100%"
+                >
+                  <% churches.forEach(church => {%> <% if (church.id.toString()
+                  === churchId.toString()) {%>
+                  <option
+                    selected
+                    value="<%=church.id%>"
+                    data-select2-id="<%=church.id%>"
+                  >
+                    <%=church.name%>
+                  </option>
+                  <%}else {%>
+                  <option
+                    value="<%=church.id%>"
+                    data-select2-id="<%=church.id%>"
+                  >
+                    <%=church.name%>
+                  </option>
+                  <%}%> <%})%>
+                </select>
+                <!-- <span
+                  class="
+                    select2
+                    select2-container
+                    select2-container--bootstrap4
+                    select2-container--below
+                  "
+                  dir="ltr"
+                  data-select2-id="1"
+                  style="width: 589.333px"
+                  ><span class="selection"
+                    ><span
+                      class="select2-selection select2-selection--single"
+                      role="combobox"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      tabindex="0"
+                      aria-disabled="false"
+                      aria-labelledby="select2-select01-container"
+                      ><span
+                        class="select2-selection__rendered"
+                        id="select2-select01-container"
+                        role="textbox"
+                        aria-readonly="true"
+                        title="Third option is here"
+                        >Third option is here</span
+                      ><span
+                        class="select2-selection__arrow"
+                        role="presentation"
+                        ><b role="presentation"></b></span></span></span
+                  ><span class="dropdown-wrapper" aria-hidden="true"></span
+                ></span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex">
+          <form
+            id="pendingForm"
+            method="POST"
+            action="/donations/setSettlementStatus"
+          >
+            <button class="btn btn-light mr-2">Mark as unsettled</button>
+          </form>
+          <form
+            id="completedForm"
+            method="POST"
+            action="/donations/setSettlementStatus"
+          >
+            <button type="submit" class="btn btn-primary">
+              Mark as settled
+            </button>
+          </form>
+        </div>
+        <%}%>
+      </div>
+
+      <table
+        class="
+          table
+          mb-0
+          thead-border-top-0
+          table-nowrap
+          tablesort
+          tablesearch-table
+        "
+        class="display"
+        cellspacing="0"
+        width="100%"
+        id="data-table"
+      >
+        <thead>
+          <tr>
+            <% if (user.isSuperAdmin) {%>
+            <th style="width: 50px"></th>
+            <%}%>
+            <th style="width: 150px" data-tablesort-type="string">
+              GHC Amount
+            </th>
+            <th style="width: 120px" data-tablesort-type="string">
+              Payment mode
+            </th>
+            <th style="width: 120px" data-tablesort-type="string">
+              Settlement status
+            </th>
+            <th style="width: 120px" data-tablesort-type="string">
+              paymentReference
+            </th>
+            <th style="width: 120px" data-tablesort-type="string">Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% donations.forEach(donation => {%>
+          <tr>
+            <% if (user.isSuperAdmin) {%>
+            <td><%=donation.id %></td>
+            <%}%>
+            <td>
+              <%=parseFloat(donation.amount).toLocaleString('US-en',
+              {minimumFractionDigits: 2}) %>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=donation.paymentMode %>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=donation.settlementStatus %>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=donation.paymentReference %>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=new Date(donation.createdAt).toDateString() %>
+              </div>
+            </td>
+          </tr>
+          <% })%>
+        </tbody>
+        <tfoot>
+          <tr>
+            <% if (user.isSuperAdmin) {%>
+            <th style="width: 50px"></th>
+            <%}%>
+            <th colspan="3" style="text-align: right">Total:</th>
+            <th>
+              <%=donationSum.toLocaleString('US-en', {minimumFractionDigits:
+              2})%>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- <div class="card-body bordet-top text-right">
+          15 <span class="text-50">of 1,430</span> <a href="#" class="text-50"><i class="material-icons ml-1">arrow_forward</i></a>
+          </div> -->
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>
+
+<script>
+  $(document).ready(function () {
+    var table;
+    const isSuperAdmin = "<%=user.isSuperAdmin%>";
+
+    if (isSuperAdmin === "1") {
+      table = $("#data-table").DataTable({
+        columnDefs: [
+          {
+            targets: 0,
+            checkboxes: {
+              selectRow: false,
+            },
+          },
+        ],
+        select: {
+          style: "multi",
+        },
+        order: [[1, "asc"]],
+      });
+    } else {
+      table = $("#data-table").DataTable();
+    }
+
+    $("#completedForm").on("submit", function () {
+      var form = this;
+      updateStatus(form, "completed");
+    });
+
+    $("#pendingForm").on("submit", function () {
+      var form = this;
+      updateStatus(form, "pending");
+    });
+
+    function updateStatus(form, status) {
+      var rows_selected = table.column(0).checkboxes.selected();
+
+      $(form).append(
+        $("<input>").attr("type", "hidden").attr("name", "status").val(status)
+      );
+
+      $.each(rows_selected, function (index, rowId) {
+        // Create a hidden element
+        $(form).append(
+          $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "donationIds")
+            .val(rowId)
+        );
+      });
+    }
+
+    $("#select01").select2();
+  });
+
+  function setDateRange(dateRange) {
+    //if daterange not completed do nothing - (eg. complete date range = yyyy/mm/dd to yyyy/mm/dd)
+    if (dateRange.includes("to")) {
+      const startDate = dateRange.split(" ")[0];
+      const endDate = dateRange.split("to ")[1];
+      // check if church selector element exist --- indicating superadmin
+      if ($("#select-church").length) {
+        const churchId = $("#select01").val();
+        return (location = `${location.origin}${location.pathname}?startDate=${startDate}&endDate=${endDate}&churchId=${churchId}`);
+      }
+      location = `${location.origin}${location.pathname}?startDate=${startDate}&endDate=${endDate}`;
+    }
+  }
+
+  function setChurch() {
+    const dateRange = $("#date").val();
+    setDateRange(dateRange);
+  }
+</script>

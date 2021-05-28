@@ -103,9 +103,14 @@ router.get(
   donationController.getDonationsByChurchView
 );
 router.get(
-  "/donations/church_donation_by_date",
+  "/donations/pending-settlements",
   [auth, admin],
-  donationController.churchDonationsByDateRange
+  donationController.pendingSettlements
+);
+router.get(
+  "/donations/completed-settlements",
+  [auth, admin],
+  donationController.completedSettlements
 );
 router.get(
   "/donations/types",

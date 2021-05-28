@@ -203,7 +203,7 @@ Controller.editDonationType = async (req, res) => {
   res.redirect("back");
 };
 
-Controller.churchDonationsByDateRange = async (req, res) => {
+Controller.pendingSettlements = async (req, res) => {
   //todo Bright e.g. payload: {startDate : '2021-01-01',endDate: '2021-01-01',churchId:1}
   let startDate;
   let endDate;
@@ -250,13 +250,80 @@ Controller.churchDonationsByDateRange = async (req, res) => {
       churchId,
       createdAt: { [Op.between]: [startDate, endDate] },
       paymentStatus: "00",
+      settlementStatus: "PENDING",
     },
   }).then(function (donations) {
     donations.forEach(function (donation) {
       donationSum += parseFloat(donation.amount);
     });
 
-    res.render("donations/church_donation_by_date", {
+    res.render("donations/pending-settlements", {
+      title: "Donations by Data",
+      donations,
+      donationSum,
+      churches,
+      churchId,
+      startDate,
+      endDate,
+      user: req.user,
+    }); //todo : Bright render the page
+  });
+};
+Controller.completedSettlements = async (req, res) => {
+  //todo Bright e.g. payload: {startDate : '2021-01-01',endDate: '2021-01-01',churchId:1}
+  let startDate;
+  let endDate;
+  let churchId;
+  let churches;
+
+  //Set default dates
+  if (!req.query.startDate && !req.query.endDate) {
+    let today = new Date();
+    let day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+    // Only manipulate the date if it isn't Mon.
+    if (day !== 1) today.setHours(-24 * (day - 1)); // Set the hours to day number minus 1 multiplied by negative 24
+    startDate = new Date(today).toISOString();
+    endDate = new Date().toISOString();
+  } else {
+    startDate = new Date(req.query.startDate).toISOString();
+    endDate = new Date(req.query.endDate).toISOString();
+  }
+
+  // if userType is church admin, grab churchId from session
+  if (req.user.isAdmin) {
+    churchId = req.user.churchId;
+  } else {
+    //else grab from req.query or set it if undefined
+    churches = await Church.findAll({ raw: true });
+    if (req.query.churchId) {
+      churchId = req.query.churchId;
+    } else {
+      churchId = churches[0].id;
+    }
+  }
+  let donationSum = 0;
+  Donations.findAll({
+    attributes: [
+      "id",
+      "amount",
+      "paymentMode",
+      "paymentStatus",
+      "settlementStatus",
+      "paymentReference",
+      "createdAt",
+    ],
+    where: {
+      churchId,
+      createdAt: { [Op.between]: [startDate, endDate] },
+      paymentStatus: "00",
+      settlementStatus: "COMPLETED",
+    },
+  }).then(function (donations) {
+    donations.forEach(function (donation) {
+      donationSum += parseFloat(donation.amount);
+    });
+
+    res.render("donations/completed-settlements", {
       title: "Donations by Data",
       donations,
       donationSum,

@@ -13,11 +13,11 @@ include('../partials/response-message.ejs') %>
   >
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Settlements</h2>
+        <h2 class="mb-0">Completed Settlements</h2>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Settlements</li>
+          <li class="breadcrumb-item">Completed Settlements</li>
         </ol>
       </div>
     </div>
@@ -34,7 +34,7 @@ include('../partials/response-message.ejs') %>
 <!-- Page Content -->
 <div class="container page__container page-section">
   <div class="page-separator">
-    <div class="page-separator__text">Settlements</div>
+    <div class="page-separator__text">Completed Settlements</div>
   </div>
 
   <div class="card mb-0">
@@ -192,6 +192,9 @@ include('../partials/response-message.ejs') %>
             <th style="width: 120px" data-tablesort-type="string">
               Settlement status
             </th>
+            <th style="width: 120px" data-tablesort-type="string">
+              paymentReference
+            </th>
             <th style="width: 120px" data-tablesort-type="string">Date</th>
           </tr>
         </thead>
@@ -214,6 +217,11 @@ include('../partials/response-message.ejs') %>
             <td>
               <div class="d-flex align-items-center">
                 <%=donation.settlementStatus %>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <%=donation.paymentReference %>
               </div>
             </td>
             <td>
