@@ -1,3 +1,4 @@
+const db = require("../models");
 const { sequelize, Sequelize } = require("../models/index");
 const appointmentDate = require("../models/appointment_available_days");
 const AppointmentDate = appointmentDate(sequelize, Sequelize);
@@ -92,17 +93,61 @@ Controller.appointmentsView = async (req, res) => {
   });
 };
 
+Controller.recurringAppointmentsView = async (req, res) => {
+  const { churchId } = req.user;
+
+  //1
+  let appointmentDates = await AppointmentDate.findAll({
+    where: { churchId, appointmentType: "recurring" },
+    raw: true,
+    order: [["createdAt", "DESC"]],
+  });
+  appointmentDates = JSON.parse(JSON.stringify(appointmentDates));
+
+  const appointmentDateIds = appointmentDates.map(
+    (appointmentDate) => appointmentDate.id
+  );
+
+  //2
+  let appointmentTimes = await AppointmentTime.findAll({
+    where: { appointmentDateId: { [Op.in]: appointmentDateIds } },
+    raw: true,
+  });
+  appointmentTimes = JSON.parse(JSON.stringify(appointmentTimes));
+
+  appointmentTimes.forEach((appointmentTime) => {
+    appointmentDates.forEach((appointmentDate) => {
+      if (appointmentDate.id === appointmentTime.appointmentDateId) {
+        const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+        let recurringDays = "";
+        appointmentTime.appointmentDate = appointmentDate.appointmentDate;
+        days.forEach((day) => {
+          if (appointmentDate[day] === 1) {
+            recurringDays += `${day.toUpperCase()}, `;
+          }
+        });
+        recurringDays = recurringDays.slice(0, -2);
+        appointmentTime.recurringDays = recurringDays;
+      }
+    });
+  });
+
+  res.render("appointments/recurring-appointment", {
+    title: "Available Recurring days",
+    appointments: appointmentTimes,
+    user: req.user,
+  });
+};
 Controller.availableAppointmentsView = async (req, res) => {
   const { churchId } = req.user;
 
   //1
   let appointmentDates = await AppointmentDate.findAll({
-    where: { churchId },
+    where: { churchId, appointmentType: "onetime" },
     raw: true,
     order: [["createdAt", "DESC"]],
   });
   appointmentDates = JSON.parse(JSON.stringify(appointmentDates));
-  console.log(appointmentDates);
 
   const appointmentDateIds = appointmentDates.map(
     (appointmentDate) => appointmentDate.id
@@ -166,14 +211,26 @@ Controller.addAppointmentDateView = async (req, res, next) => {
   });
 };
 
+Controller.setRecurringAppointmentView = async (req, res) => {
+  res.render("appointments/set-recurring-appointment", {
+    title: "Set Recurring Appointment",
+    user: req.user,
+  });
+};
+
 Controller.addAppointmentDate = async (req, res) => {
-  const data = JSON.parse(JSON.stringify(req.body));
-  let { date, times } = req.body;
-  times = JSON.parse(times);
   const { churchId } = req.user;
   const recurring = req.body.recurring;
 
-  if(!recurring){
+  let { date, times } = req.body;
+  times = JSON.parse(times);
+
+  let days;
+  if (req.body.days) {
+    days = JSON.parse(req.body.days);
+  }
+
+  if (!recurring) {
     let appointmentDate = await AppointmentDate.findOne({
       where: { appointmentDate: date },
     });
@@ -188,7 +245,7 @@ Controller.addAppointmentDate = async (req, res) => {
     if (!appointmentDate) {
       appointmentDate = await AppointmentDate.create({
         appointmentDate: date,
-        appointmentType :"onetime",
+        appointmentType: "onetime",
         churchId,
       });
     }
@@ -200,39 +257,45 @@ Controller.addAppointmentDate = async (req, res) => {
     });
     debug(times);
     await AppointmentTime.bulkCreate(times);
-  }else{
+  } else {
     //{
-    // "days" : ["mon","tue","wed","thur","fri","sat","sun"],
+    // "days" : ["mon","tue","wed","thu","fri","sat","sun"],
     //}
-     req.body.days.forEach(function (dayOfWeek) {
-       const query = {where:{churchId:churchId}};
-       query.where[dayOfWeek] =true;
-        db.AppointmentDate.findOne(query).then(function(appointment){
-          if(appointment){
-            appointment.destroy();
-          }
-        })
-     });
-    const apptmntModel ={};
-    apptmntModel.appointmentType ="recurring";
-    ["mon","tue","wed","thur","fri","sat","sun"].forEach(function(dayOfWeek){
-      apptmntModel[dayOfWeek]=false;
+    days.forEach(function (dayOfWeek) {
+      const query = { where: { churchId: churchId } };
+      query.where[dayOfWeek] = true;
+      db.AppointmentDate.findOne(query).then(function (appointment) {
+        if (appointment) {
+          appointment.destroy();
+        }
+      });
     });
-    req.body.days.forEach(function (dayOfWeek) {
-      apptmntModel[dayOfWeek]=true;
+    const apptmntModel = {};
+    apptmntModel.appointmentType = "recurring";
+    apptmntModel.churchId = churchId;
+    ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].forEach(function (
+      dayOfWeek
+    ) {
+      apptmntModel[dayOfWeek] = false;
     });
-    db.AppointmentDate.create(apptmntModel).then(function(appointment){
+    days.forEach(function (dayOfWeek) {
+      apptmntModel[dayOfWeek] = true;
+    });
+    db.AppointmentDate.create(apptmntModel).then(function (appointment) {
       times.forEach((time) => {
         time.appointmentDateId = appointment.id;
         time.appointmentTime = time.time;
         time.numberOfAllowedAppointments = time.allowedAppointments;
       });
-    })
+
+      AppointmentTime.bulkCreate(times);
+    });
   }
   res.send("ok");
 };
 
-Controller.setAppointment = async (req, res, next) => { //todo after implementation let Michael send date in addition to payload
+Controller.setAppointment = async (req, res, next) => {
+  //todo after implementation let Michael send date in addition to payload
   const { churchId, id: userId } = req.user;
   const { appointmentTimeId, appointmentReason } = req.body;
   const appointmenttime = await AppointmentTime.findOne({
@@ -243,12 +306,12 @@ Controller.setAppointment = async (req, res, next) => { //todo after implementat
       createError(400, {
         status_code: "03",
         message: "set appointment failed",
-        reason: "Appointments with provided ID not found",
+        reason: "Appointment with provided ID not found",
       })
-    ); 
+    );
 
   const appointmentsSet = await ChurchAppointments.count({
-    where: { appointmentTimeId: appointmenttime.id, date:req.body.date},
+    where: { appointmentTimeId: appointmenttime.id, date: req.body.date },
   });
 
   if (appointmentsSet >= appointmenttime.numberOfAllowedAppointments)
@@ -260,45 +323,49 @@ Controller.setAppointment = async (req, res, next) => { //todo after implementat
       })
     );
 
-
   await ChurchAppointments.create({
     churchId,
     userId,
-    date :req.body.date,
-    time : appointmenttime.appointmentTime,
+    date: req.body.date,
+    time: appointmenttime.appointmentTime,
     appointmentReason,
     appointmentTimeId,
   });
   res.json({ status_code: "00", message: "appointment created successfully" });
 };
 
-Controller.getAppointmentTimes = async (req, res, next) => { //todo test
+Controller.getAppointmentTimes = async (req, res, next) => {
+  //todo test
   const { churchId } = req.user;
   const { date } = req.params;
+  let appointmentDay;
 
-  const appointmentDay = await AppointmentDate.findOne({
+  const dayOfWeek = getDayOfWeek(date);
+
+  appointmentDay = await AppointmentDate.findOne({
     where: { appointmentDate: date, churchId },
   });
-  let appointmentTimes=[];
-  if(appointmentDay){
+
+  let appointmentTimes = [];
+  if (appointmentDay) {
     appointmentTimes = await AppointmentTime.findAll({
       where: { appointmentDateId: appointmentDay.id },
     });
   }
 
-  const dayOfWeek = getDayOfWeek(req.params);
-  const query = {where: {  churchId }};
-  query.where[dayOfWeek] =true;
-   const appointment = await db.AppointmentDate.findOne(query);
+  const query = { where: { churchId } };
+  query.where[dayOfWeek] = true;
+  const appointment = await db.AppointmentDate.findOne(query);
 
-  if(appointment){
-    const times = await  db.AppointmentTime.findAll({
+  if (appointment) {
+    const times = await AppointmentTime.findAll({
       where: { appointmentDateId: appointment.id },
-    }) ;
-    appointmentTimes = [].concat(times);
+    });
+    console.log(times);
+    appointmentTimes.push(...times);
   }
 
-  if (!appointmentTimes)
+  if (appointmentTimes.length === 0)
     return next(
       createError(400, {
         status_code: "03",
@@ -310,6 +377,7 @@ Controller.getAppointmentTimes = async (req, res, next) => { //todo test
   res.send({ status_code: "00", data: appointmentTimes });
 };
 
-function getDayOfWeek(date){
-  return  "mon"; //todo get day of week from date
+function getDayOfWeek(date) {
+  const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  return days[new Date(date).getDay()]; //todo get day of week from date
 }

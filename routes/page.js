@@ -132,6 +132,16 @@ router.get(
   [auth, admin],
   appointmentController.addAppointmentDateView
 );
+router.get(
+  "/appointments/recurring-appointment",
+  [auth, admin],
+  appointmentController.recurringAppointmentsView
+);
+router.get(
+  "/appointments/set-recurring-appointment",
+  [auth, admin],
+  appointmentController.setRecurringAppointmentView
+);
 router.get("/videos", [auth, admin], churchContentController.videosView);
 router.post(
   "/appointments/add-appointment-date",

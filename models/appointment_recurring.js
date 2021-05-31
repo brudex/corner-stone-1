@@ -1,14 +1,14 @@
 const Joi = require("joi");
 module.exports = (sequelize, DataTypes) => {
   const AppointmentDate = sequelize.define(
-    "AppointmentDate",
+    "RecurringAppointment",
     {
       churchId: DataTypes.INTEGER,
       day: DataTypes.STRING,
       appointment: DataTypes.STRING, //onetime, recurring
     },
     {
-      tableName: "AppointmentDate",
+      tableName: "RecurringAppointment",
       classMethods: {
         associate: (models) => {},
       },

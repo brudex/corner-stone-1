@@ -17,12 +17,18 @@ include('../partials/response-message.ejs') %>
 
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Appointments</li>
+          <li class="breadcrumb-item">Recurring Appointments</li>
         </ol>
       </div>
     </div>
     <div class="row" role="tablist">
-      <div class="col-auto"></div>
+      <div class="col-auto">
+        <a
+          href="/appointments/set-recurring-appointment"
+          class="btn btn-outline-secondary"
+          >Add Recurring Appointment</a
+        >
+      </div>
     </div>
   </div>
 </div>
@@ -52,29 +58,25 @@ include('../partials/response-message.ejs') %>
       >
         <thead>
           <tr>
-            <th style="width: 150px" data-tablesort-type="string">name</th>
-            <th style="width: 120px" data-tablesort-type="string">reason</th>
             <th style="width: 120px" data-tablesort-type="string">Date</th>
-            <th style="width: 120px" data-tablesort-type="string">Time</th>
+            <th style="width: 150px" data-tablesort-type="string">Time</th>
+            <th style="width: 120px" data-tablesort-type="string">
+              No. allowed appointments
+            </th>
           </tr>
         </thead>
         <tbody>
           <% appointments.forEach(appointment => {%>
           <tr>
-            <td><%=appointment.user %></td>
+            <td><%=appointment.recurringDays%></td>
             <td>
               <div class="d-flex align-items-center">
-                <%=appointment.appointmentReason %>
+                <%=appointment.appointmentTime %>
               </div>
             </td>
             <td>
               <div class="d-flex align-items-center">
-                <%=new Date(appointment.date).toDateString() %>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <%=appointment.appointmentTime%>
+                <%=appointment.numberOfAllowedAppointments %>
               </div>
             </td>
           </tr>
