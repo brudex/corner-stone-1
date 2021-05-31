@@ -20,6 +20,7 @@ const cloudinary = require("cloudinary").v2;
 const {
   allowAudiosImagesOnly,
   storage,
+  allowImagesOnly,
   allowVidoesOnly,
 } = require("../utils/upload");
 const Joi = require("joi");
@@ -33,6 +34,12 @@ const upload = multer({
   { name: "sermon-audio", maxCount: 1 },
   { name: "sermon-thumbnail", maxCount: 1 },
 ]);
+
+const uploadLiveStreamthumbnail = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: allowImagesOnly,
+}).single("livestream-thumbnail");
 
 cloudinary.config({
   cloud_name: "cache-tech",
@@ -469,20 +476,172 @@ Controller.getChurchContent = async (req, res, next) => {
   res.json({ status_code: "00", data: churchContents });
 };
 
-Controller.getChurchLiveStream = async (req, res, next) => {
-  const limit =1;
+Controller.livestreamView = async (req, res) => {
   const { churchId } = req.user;
-  const contentType  = "livestream";
+  const paginationResults = await ChurchContent.paginate(req, {
+    contentType: "livestream",
+    churchId,
+  });
+
+  const livestream = paginationResults.data;
+
+  res.render("livestream/livestream", {
+    title: "Live Stream",
+    user: req.user,
+    livestream,
+    ...paginationResults,
+  });
+};
+
+Controller.addLiveStreamView = async (req, res) => {
+  res.render("livestream/add-livestream", {
+    title: "Add Live Stream",
+    user: req.user,
+  });
+};
+
+Controller.editLiveStreamView = async (req, res) => {
+  const { id } = req.params;
+  const { churchId } = req.user;
+
+  const livestream = await ChurchContent.findOne({ where: { churchId, id } });
+
+  res.render("livestream/edit-livestream", {
+    title: "Edit live stream",
+    user: req.user,
+    values: livestream,
+  });
+};
+
+Controller.editLiveStreamImage = async (req, res) => {
+  await uploadLiveStreamthumbnail(req, res, async (err) => {
+    const { id } = req.params;
+    const { churchId } = req.user;
+
+    if (err) {
+      console.log(err);
+      req.flash("error", err);
+      return res.redirect("back");
+    }
+    await ChurchContent.update(
+      { audioThumbnail: req.file.filename },
+      { where: { churchId, id } }
+    );
+
+    res.redirect("back");
+  });
+};
+
+Controller.addLiveStream = async (req, res) => {
+  await uploadLiveStreamthumbnail(req, res, async (err) => {
+    const { user } = req;
+    const { churchId } = req.user;
+    if (err) {
+      req.flash("error", err);
+      return res.render("livestream/add-livestream", {
+        title: "Add Live Stream",
+        values: req.body,
+        user,
+      });
+    }
+    const { error } = ChurchContent.validateContent({
+      ...req.body,
+      contentType: "livestream",
+      churchId,
+    });
+    if (error) {
+      req.flash("error", error.details[0].message);
+      return res.render("livestream/add-livestream", {
+        title: "Add Live Stream",
+        values: req.body,
+        user,
+      });
+    }
+    const livestreamExists = await ChurchContent.findOne({
+      where: { title: req.body.title, contentType: "livestream" },
+    });
+    if (livestreamExists) {
+      req.flash("error", "Live stream already exist");
+      return res.render("livestream/add-livestream", {
+        title: "Add Live Stream",
+        values: req.body,
+        user,
+      });
+    }
+    await ChurchContent.create({
+      ...req.body,
+      contentType: "livestream",
+      churchId,
+      audioThumbnail: req.file.filename,
+    });
+    req.flash("success", "Live stream added successfully");
+    return res.redirect("/livestream/add");
+  });
+};
+
+Controller.editLiveStream = async (req, res) => {
+  const { churchId } = req.user;
+  const { id } = req.params;
+
+  const { title, contentData } = req.body;
+
+  const livestreamExists = await ChurchContent.findOne({
+    where: {
+      churchId,
+      title,
+      contentData,
+      contentType: "livestream",
+      id: { [Op.ne]: id },
+    },
+  });
+  if (livestreamExists) {
+    req.flash("error", "Live stream exists already ");
+  }
+
+  await ChurchContent.update({ title, contentData }, { where: { id } });
+
+  req.flash("success", "Live stream updated successfully");
+  res.redirect("back");
+};
+
+Controller.deleteLiveStream = async (req, res) => {
+  const { id } = req.params;
+  const { churchId } = req.user;
+  await ChurchContent.destroy({ where: { churchId, id } });
+
+  req.flash("success", "Live stream deleted successfully");
+  res.redirect("back");
+};
+
+Controller.getChurchLiveStream = async (req, res, next) => {
+  let limit;
+  let offset;
+  if (req.query.limit) {
+    limit = parseInt(req.query.limit);
+  } else {
+    limit = 10;
+  }
+  if (req.query.offset) {
+    offset = parseInt(req.query.offset);
+  } else {
+    offset = 0;
+  }
+  const { churchId } = req.user;
+  const contentType = "livestream";
 
   const churchContents = await ChurchContent.findAll({
     where: { contentType, churchId },
     order: [["createdAt", "DESC"]],
-    limit:limit ,
-    offset: 0,
+    limit,
+    offset,
+    raw: true,
   });
-  churchContents.forEach((content) =>
-      ChurchContent.createSermonUrl(content, req)
+
+  churchContents.forEach(
+    (content) =>
+      (content.audioThumbnail = `${req.protocol}://${req.headers.host}/uploads/${content.audioThumbnail}`)
   );
+
   res.json({ status_code: "00", data: churchContents });
 };
 
@@ -515,19 +674,19 @@ Controller.addToUserPlayList = async (req, res, next) => {
   });
   if (!churchContent)
     return next(
-        createError(400, {
-          status_code: "03",
-          message: "add to user playlist failed",
-          reason: "Church content not Found",
-        })
+      createError(400, {
+        status_code: "03",
+        message: "add to user playlist failed",
+        reason: "Church content not Found",
+      })
     );
   if (churchContent.title !== title)
     return next(
-        createError(400, {
-          status_code: "03",
-          message: "add to user playlist failed",
-          reason: "Church content titles do not match",
-        })
+      createError(400, {
+        status_code: "03",
+        message: "add to user playlist failed",
+        reason: "Church content titles do not match",
+      })
     );
   await UserPlayList.create({ ...req.body, userId });
 
@@ -535,16 +694,17 @@ Controller.addToUserPlayList = async (req, res, next) => {
 };
 
 Controller.deleteUserPlayListItem = async (req, res, next) => {
-  const  userId = req.user.id;
+  const userId = req.user.id;
   const { churchContentId } = req.body;
 
-  db.UserPlayList.findAll({where:{churchContentId:churchContentId,userId:userId}})
-      .then(function (playlists) {
-         playlists.forEach(function (playlist) {
-           playlist.destroy();
-         });
-        res.json({ status: "00", message: "playlist deleted successfully" });
-      })
+  db.UserPlayList.findAll({
+    where: { churchContentId: churchContentId, userId: userId },
+  }).then(function (playlists) {
+    playlists.forEach(function (playlist) {
+      playlist.destroy();
+    });
+    res.json({ status: "00", message: "playlist deleted successfully" });
+  });
 };
 
 Controller.getRecentContent = async (req, res, next) => {

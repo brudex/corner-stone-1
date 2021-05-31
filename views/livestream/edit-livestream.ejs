@@ -1,0 +1,105 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Edit livestream</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/livestream">Live stream</a></li>
+          <li class="breadcrumb-item">Edit livestream</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-4">
+      <div class="page-separator">
+        <div class="page-separator__text">Edit livestream</div>
+      </div>
+      <!-- <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Enter livestream name, GPS coordinates and select an image to represent the
+        livestream
+      </p> -->
+      <img
+        src="/uploads/<%=values.audioThumbnail %>"
+        height="250"
+        width="100%"
+      />
+      <form
+        action="/livestream/edit/image/<%=values.id %>"
+        method="post"
+        enctype="multipart/form-data"
+        id="image-form"
+      >
+        <input
+          onchange="document.getElementById('image-form').submit()"
+          type="file"
+          id="image"
+          name="livestream-thumbnail"
+          required
+          hidden
+        />
+      </form>
+      <button
+        type="button"
+        class="btn btn-primary mt-3"
+        onclick="document.getElementById('image').click();"
+      >
+        Change Image
+      </button>
+    </div>
+    <div class="col-lg-8 d-flex align-items-center">
+      <div class="flex" style="max-width: 100%">
+        <form action="/livestream/edit/<%=values.id %>" method="post">
+          <div class="form-group">
+            <label class="form-label" for="livestreamname">title*:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="livestreamname"
+              name="title"
+              value="<% if(typeof values !== 'undefined') {%><%=values.title%><%}%>"
+              placeholder="Enter livestream title"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="address">LIve stream url*</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              name="contentData"
+              value="<% if(typeof values !== 'undefined') {%><%=values.contentData%><%}%>"
+              placeholder="Enter livestream url"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>

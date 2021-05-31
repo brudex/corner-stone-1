@@ -81,6 +81,26 @@ router.get(
   churchContentController.editDevotionalView
 );
 router.get(
+  "/livestream",
+  [auth, admin],
+  churchContentController.livestreamView
+);
+router.get(
+  "/livestream/add",
+  [auth, admin],
+  churchContentController.addLiveStreamView
+);
+router.get(
+  "/livestream/edit/:id",
+  [auth, admin],
+  churchContentController.editLiveStreamView
+);
+router.get(
+  "/livestream/delete/:id",
+  [auth, admin],
+  churchContentController.deleteLiveStream
+);
+router.get(
   "/daily-devotionals/edit/:id",
   [auth, admin],
   churchContentController.editDailyDevotionalView
@@ -202,6 +222,21 @@ router.post(
   "/daily-devotionals/edit/:id",
   [auth, admin],
   churchContentController.editDailyDevotional
+);
+router.post(
+  "/livestream/add",
+  [auth, admin],
+  churchContentController.addLiveStream
+);
+router.post(
+  "/livestream/edit/:id",
+  [auth, admin],
+  churchContentController.editLiveStream
+);
+router.post(
+  "/livestream/edit/image/:id",
+  [auth, admin],
+  churchContentController.editLiveStreamImage
 );
 router.post(
   "/login",

@@ -21,7 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     const schema = Joi.object({
       churchId: Joi.number().positive().integer().required(),
       title: Joi.string().min(1).max(256).required(),
-      contentType: Joi.string().valid("sermon", "devotional", "video"),
+      contentType: Joi.string().valid(
+        "sermon",
+        "devotional",
+        "video",
+        "livestream"
+      ),
       contentData: Joi.string().min(1).max(10000).required(),
     });
     return schema.validate(content);
