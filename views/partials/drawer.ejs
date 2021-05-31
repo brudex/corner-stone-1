@@ -20,7 +20,7 @@
       <a href="/" class="sidebar-brand">
         <span class="avatar avatar-xl sidebar-brand-icon h-auto">
           <span class="avatar-title rounded bg-light"
-            ><img src="/images/logo/logo.png" class="img-fluid" alt="logo"
+            ><img src="/images/logo/logo.JPG" class="img-fluid" alt="logo"
           /></span>
         </span>
         <span>Corner Stone</span>
@@ -206,17 +206,38 @@
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/appointments/available-dates"
+                href="/appointments/add-appointment-date"
               >
-                <span class="sidebar-menu-text">View Available times</span>
+                <span class="sidebar-menu-text"> <small>Add Onetime Appointment</small></span>
               </a>
             </li>
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/appointments/add-appointment-date"
+                href="/appointments/available-dates"
               >
-                <span class="sidebar-menu-text">Add Appointment date</span>
+                <span class="sidebar-menu-text"
+                  ><small> View Onetime appointments </small></span
+                >
+              </a>
+            </li>
+            
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/appointments/recurring-appointment"
+              >
+                <span class="sidebar-menu-text"></span>
+                  <small>View Recurring Appointments </small></span
+                >
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/appointments/set-recurring-appointment"
+              >
+                <span class="sidebar-menu-text"><small>Add Recurring Appointment</small></span>
               </a>
             </li>
           </ul>
@@ -273,6 +294,38 @@
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
+            href="#settlements"
+          >
+            <span
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
+              >receipt</span
+            >
+            Settlements
+            <span class="ml-auto sidebar-menu-toggle-icon"></span>
+          </a>
+          <ul class="sidebar-submenu collapse sm-indent" id="settlements">
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/donations/pending-settlements"
+              >
+                <span class="sidebar-menu-text">Pending Settlements</span>
+              </a>
+            </li>
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/donations/completed-settlements"
+              >
+                <span class="sidebar-menu-text">Completed Settlements</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-menu-item">
+          <a
+            class="sidebar-menu-button js-sidebar-collapse"
+            data-toggle="collapse"
             href="#notifications"
           >
             <span
@@ -306,7 +359,7 @@
             </li>
           </ul>
         </li>
-        <li class="sidebar-menu-item">
+        <!-- <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button"
             href="/donations/church_donation_by_date"
@@ -317,7 +370,7 @@
             >
             Settlements
           </a>
-        </li>
+        </li> -->
       </ul>
       <!-- <div class="sidebar-heading">Settings</div>
       <ul class="sidebar-menu">

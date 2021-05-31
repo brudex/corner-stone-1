@@ -103,9 +103,14 @@ router.get(
   donationController.getDonationsByChurchView
 );
 router.get(
-  "/donations/church_donation_by_date",
+  "/donations/pending-settlements",
   [auth, admin],
-  donationController.churchDonationsByDateRange
+  donationController.pendingSettlements
+);
+router.get(
+  "/donations/completed-settlements",
+  [auth, admin],
+  donationController.completedSettlements
 );
 router.get(
   "/donations/types",
@@ -126,6 +131,16 @@ router.get(
   "/appointments/add-appointment-date",
   [auth, admin],
   appointmentController.addAppointmentDateView
+);
+router.get(
+  "/appointments/recurring-appointment",
+  [auth, admin],
+  appointmentController.recurringAppointmentsView
+);
+router.get(
+  "/appointments/set-recurring-appointment",
+  [auth, admin],
+  appointmentController.setRecurringAppointmentView
 );
 router.get("/videos", [auth, admin], churchContentController.videosView);
 router.post(

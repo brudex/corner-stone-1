@@ -1,0 +1,279 @@
+<%- include('../partials/navbar.ejs') %> <%-
+include('../partials/response-message.ejs') %>
+
+<div class="pt-32pt">
+  <div
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
+  >
+    <div class="flex d-flex flex-column flex-sm-row align-items-center">
+      <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+        <h2 class="mb-0">Recurring Appointment</h2>
+
+        <ol class="breadcrumb p-0 m-0">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Recurring Appointment</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE Page Content -->
+
+<!-- // END BEFORE Page Content -->
+
+<!-- Page Content -->
+
+<div class="container page__container page-section">
+  <div class="row mb-32pt">
+    <div class="col-lg-6">
+      <div class="page-separator">
+        <div class="page-separator__text">Recurring Appointment</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Select the date you wish to make available for appointment
+      </p>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Monday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Tuesday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Wednesday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Thursday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Friday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Saturday</a>
+      </span>
+      <span style="font-size: 2em">
+        <a href="#" class="badge badge-secondary">Sunday</a>
+      </span>
+    </div>
+    <div class="col-lg-6">
+      <div class="page-separator">
+        <div class="page-separator__text">Appointment Time</div>
+      </div>
+      <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+        Add appointment time for the selected date. Multiple times can be added
+      </p>
+      <div class="flex" style="max-width: 100%">
+        <div class="form-group">
+          <label class="form-label" for="flatpickrSample05"
+            >Add time for appointment</label
+          >
+          <input
+            id="flatpickrSample05"
+            type="text"
+            class="form-control"
+            placeholder="Select a time"
+            data-toggle="flatpickr"
+            data-flatpickr-enable-time="true"
+            data-flatpickr-no-calendar="true"
+            data-flatpickr-alt-format="H:i"
+            data-flatpickr-date-format="H:i"
+            value="00:00"
+          />
+        </div>
+        <!-- Times container -->
+        <div id="times"></div>
+        <!-- Message container -->
+        <div id="msg" style="visibility: collapse">
+          <div class="alert alert-info" id="alert" role="alert">
+            <div class="d-flex flex-wrap align-items-start">
+              <div class="mr-8pt">
+                <i class="material-icons">info</i>
+              </div>
+              <div class="flex" style="min-width: 180px">
+                <small id="alert-msg" class="text-black-100">
+                  <strong>Error!</strong> Please add a time for the appointment.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button onclick="addTime()" id="add" class="btn btn-info mt-3">
+          Add time
+        </button>
+
+        <button
+          onclick="saveAppointment();"
+          id="save"
+          class="btn btn-primary mt-3"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/drawer.ejs') %>
+
+<script>
+  var times = [];
+  const timeInput = $("#flatpickrSample05");
+  const timesContainer = $("#times");
+  const msgContainer = $("#msg");
+  const alertContainer = $("#alert");
+  const alertmsg = $("#alert-msg");
+  const saveBtn = $("#save");
+  const addBtn = $("#add");
+
+  const addTime = () => {
+    //limit number of appointments added for a selected day to
+    if (times.length >= 8) {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text(
+        "Sorry, you cannot add anymore appointment times for today."
+      );
+      return;
+    }
+    //check if times array already contains selected time... update array if not
+    if (!times.find(({ time }) => time === timeInput.val())) {
+      times.push({ time: timeInput.val(), allowedAppointments: 1 });
+      updateTimes();
+    } else {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text("Selected time added already");
+    }
+  };
+
+  const updateTimes = () => {
+    timesContainer.html("");
+    msgContainer.css("visibility", "hidden");
+    times.forEach(({ time, allowedAppointments }) => {
+      timesContainer.append(
+        `
+        <div class="p-1 px-2 d-flex card flex-row justify-content-around align-items-center">
+          <div class="form-group">
+            <label class="form-label" for="eventname" style="font-size: 10px;"
+              >Time:</label
+            >
+            <div
+            class="badge badge-info"
+            style="font-size:20px; height: 35px"
+            >
+            ${time}
+            </div>
+          </div>
+          <div class="form-group ml-3 w-100">
+            <label class="form-label" for="eventname" style="font-size: 10px;"
+              >No. allowed appointments*:</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="${time}" 
+              min="1"             
+              name="allowedAppointments"
+              value="${allowedAppointments}"
+              onchange="updateAllowedAppointmentTimes(this.id, this.value);"
+              placeholder="Enter Number of allowed appointments"
+              required
+            />
+          </div>
+          <div class="form-group ml-3 mt-4">
+            <button id="delete-${time}" type="button" class="btn btn-accent" onclick="removeTime(this.id)">
+              <i class="material-icons">delete</i>
+              </button>
+          </div>
+        </div>
+        `
+      );
+    });
+  };
+
+  const removeTime = (timeToRemove) => {
+    timeToRemove = timeToRemove.split("-")[1];
+    times = times.filter((time) => time.time !== timeToRemove);
+    updateTimes();
+  };
+
+  const validateAddAppointment = () => {
+    if (times.length === 0) {
+      msgContainer.css("visibility", "visible");
+      alertmsg.text("Please add an appointment time for the selected date");
+      return false;
+    }
+    return true;
+  };
+
+  const updateAllowedAppointmentTimes = (time, allowedAppointments) => {
+    times.forEach((addedTime) => {
+      if (addedTime.time === time)
+        addedTime.allowedAppointments = allowedAppointments;
+    });
+  };
+</script>
+
+<script>
+  let selectedDays = [];
+  $(".badge").on("click", function () {
+    const clickedDay = $(this).text();
+    if ($(this).hasClass("badge-primary")) {
+      //remove clicked day from selected days
+      selectedDays = selectedDays.filter((day) => day !== clickedDay);
+      $(this).removeClass("badge-primary");
+      $(this).addClass("badge-secondary");
+    } else {
+      selectedDays.push(clickedDay);
+      $(this).removeClass("badge-secondary");
+      $(this).addClass("badge-primary");
+    }
+  });
+
+  const saveAppointment = () => {
+    if (!validateAddAppointment()) return;
+
+    const trimmedDays = selectedDays.map((day) =>
+      day.substring(0, 3).toLowerCase()
+    );
+
+    console.log(times);
+    console.log(selectedDays);
+    console.log(trimmedDays);
+
+    $.ajax({
+      url: "/appointments/add-appointment-date",
+      method: "post",
+      data: {
+        days: JSON.stringify(trimmedDays),
+        times: JSON.stringify(times),
+        recurring: true,
+      },
+      beforeSend: () => {
+        saveBtn.addClass("is-loading");
+        saveBtn.html("Loading...");
+        saveBtn.attr("disabled", "disabled");
+        addBtn.attr("disabled", "disabled");
+      },
+    })
+      .done(function () {
+        timesContainer.html("");
+        msgContainer.css("visibility", "visible");
+        alertmsg.text("Appointment date added succesfully");
+      })
+      .fail(function () {
+        msgContainer.css("visibility", "visible");
+        alertmsg.text("Something went wrong");
+      })
+      .always(function () {
+        saveBtn.html("Save");
+        saveBtn.removeClass("is-loading");
+        saveBtn.removeAttr("disabled");
+        addBtn.removeAttr("disabled");
+      });
+  };
+</script>
