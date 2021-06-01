@@ -339,9 +339,7 @@ Controller.getAppointmentTimes = async (req, res, next) => {
   const { churchId } = req.user;
   const { date } = req.params;
   let appointmentDay;
-
   const dayOfWeek = getDayOfWeek(date);
-
   appointmentDay = await AppointmentDate.findOne({
     where: { appointmentDate: date, churchId },
   });
@@ -379,5 +377,5 @@ Controller.getAppointmentTimes = async (req, res, next) => {
 
 function getDayOfWeek(date) {
   const days = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-  return days[new Date(date).getDay()]; //todo get day of week from date
+  return days[new Date(date).getDay()];
 }
