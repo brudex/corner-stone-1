@@ -164,6 +164,14 @@ include('../partials/response-message.ejs') %>
       </div>
     </div>
     <%})%>
+    <% if(devotionals.length === 0) {%>
+      <div
+        class="d-flex justify-content-center align-items-center w-100"
+        style="height: 300px"
+      >
+        <h3>No Content Available!</h3>
+      </div>
+      <%}%>
   </div>
   <%- include('../partials/pagination.ejs') %>
 </div>

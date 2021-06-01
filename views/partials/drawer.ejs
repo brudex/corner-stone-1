@@ -6,7 +6,7 @@
       data-perfect-scrollbar
     >
       <!-- Sidebar Content -->
-      <div class="d-flex align-items-center navbar-height">
+      <!-- <div class="d-flex align-items-center navbar-height">
         <form
           action="index.html"
           class="search-form search-form--black mx-16pt pr-0 pl-16pt"
@@ -16,7 +16,7 @@
             <i class="material-icons">search</i>
           </button>
         </form>
-      </div>
+      </div> -->
       <a href="/" class="sidebar-brand">
         <span class="avatar avatar-xl sidebar-brand-icon h-auto">
           <span class="avatar-title rounded bg-light"
@@ -149,11 +149,6 @@
               </a>
             </li>
             <li class="sidebar-menu-item">
-              <a class="sidebar-menu-button" href="/livestream/add">
-                <span class="sidebar-menu-text">Add Live Stream</span>
-              </a>
-            </li>
-            <li class="sidebar-menu-item">
               <a class="sidebar-menu-button" href="/videos">
                 <span class="sidebar-menu-text">Videos</span>
               </a>
@@ -210,15 +205,9 @@
           <ul class="sidebar-submenu collapse sm-indent" id="productivity_menu">
             <li class="sidebar-menu-item">
               <a class="sidebar-menu-button" href="/appointments/">
-                <span class="sidebar-menu-text">View Appointments</span>
-              </a>
-            </li>
-            <li class="sidebar-menu-item">
-              <a
-                class="sidebar-menu-button"
-                href="/appointments/add-appointment-date"
-              >
-                <span class="sidebar-menu-text"> <small>Add Onetime Appointment</small></span>
+                <span class="sidebar-menu-text">
+                  <small> View Booked Appointments </small></span
+                >
               </a>
             </li>
             <li class="sidebar-menu-item">
@@ -227,18 +216,27 @@
                 href="/appointments/available-dates"
               >
                 <span class="sidebar-menu-text"
-                  ><small> View Onetime appointments </small></span
+                  ><small>View Onetime appointments</small></span
                 >
               </a>
             </li>
-            
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/appointments/add-appointment-date"
+              >
+                <span class="sidebar-menu-text"
+                  ><small>Add Onetime Appointment</small></span
+                >
+              </a>
+            </li>
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
                 href="/appointments/recurring-appointment"
               >
-                <span class="sidebar-menu-text"></span>
-                  <small>View Recurring Appointments </small></span
+                <span class="sidebar-menu-text"
+                  ><small>View Recurring Appointments</small></span
                 >
               </a>
             </li>
@@ -247,7 +245,9 @@
                 class="sidebar-menu-button"
                 href="/appointments/set-recurring-appointment"
               >
-                <span class="sidebar-menu-text"><small>Add Recurring Appointment</small></span>
+                <span class="sidebar-menu-text"
+                  ><small>Add Recurring Appointment</small></span
+                >
               </a>
             </li>
           </ul>

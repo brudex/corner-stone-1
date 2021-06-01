@@ -3,10 +3,23 @@ include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
   <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
+    class="
+      container
+      page__container
+      d-flex
+      flex-column flex-md-row
+      align-items-center
+      text-center text-sm-left
+    "
   >
     <div
-      class="flex d-flex flex-column flex-sm-row align-items-center mb-24pt mb-md-0"
+      class="
+        flex
+        d-flex
+        flex-column flex-sm-row
+        align-items-center
+        mb-24pt mb-md-0
+      "
     >
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0">Events</h2>
@@ -34,7 +47,14 @@ include('../partials/response-message.ejs') %>
     <% events.forEach(event => {%>
     <div class="col-lg-4 card-group-row__col">
       <div
-        class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary-dodger-blue js-overlay card-group-row__card"
+        class="
+          card card-sm card--elevated
+          p-relative
+          o-hidden
+          overlay overlay--primary-dodger-blue
+          js-overlay
+          card-group-row__card
+        "
         data-toggle="popover"
         data-trigger="click"
         data-original-title=""
@@ -192,11 +212,6 @@ include('../partials/response-message.ejs') %>
     class="row d-flex justify-content-center align-items-center"
     style="height: 350px"
   >
-    <div class="col-sm-12 d-flex justify-content-center">
-      <span class="material-icons" style="font-size: 100px">
-        sentiment_very_dissatisfied
-      </span>
-    </div>
     <h4>You do not have any events</h4>
   </div>
   <%}%>

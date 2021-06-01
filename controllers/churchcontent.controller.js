@@ -558,10 +558,13 @@ Controller.addLiveStream = async (req, res) => {
       });
     }
     const livestreamExists = await ChurchContent.findOne({
-      where: { title: req.body.title, contentType: "livestream" },
+      where: { contentType: "livestream", churchId },
     });
     if (livestreamExists) {
-      req.flash("error", "Live stream already exist");
+      req.flash(
+        "error",
+        "You have an active live stream, delete it to add a new one!"
+      );
       return res.render("livestream/add-livestream", {
         title: "Add Live Stream",
         values: req.body,
