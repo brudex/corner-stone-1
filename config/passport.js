@@ -11,6 +11,9 @@ const authenticateUser = async (email, password, done) => {
   if (!user)
     return done(null, false, { message: "Invalid email or password provided" });
 
+  if (!user.isAdmin && !user.isSuperAdmin)
+    return done(null, false, { message: "Access Forbidden!" });
+
   try {
     if (!(await bcrypt.compare(password, user.password)))
       return done(null, false, {
