@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  node:
+    container_name: cornerstone
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    networks:
+      - cornerstone-network
+    depends_on:
+      - mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - mysql
+    ports:
+      - "8081:80"
+    networks:
+      - cornerstone-network
+    environment:
+      PMA_HOST: mysql
+      PMA_HOSTS: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
+    networks:
+      - cornerstone-network
+    environment:
+      MYSQL_DATABASE: cornerstone
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: my@secret-root
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "6033:3306"
+networks:
+  cornerstone-network:
+    driver: bridge
+volumes:
+  dbdata:
