@@ -1,15 +1,5 @@
 version: '3.3'
 services:
-  node:
-    container_name: cornerstone
-    build:
-      context: .
-    ports:
-      - "3000:3000"
-    networks:
-      - cornerstone-network
-    depends_on:
-      - mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
@@ -38,7 +28,7 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     ports:
-      - "6033:3306"
+      - "3306:3306"
 networks:
   cornerstone-network:
     driver: bridge

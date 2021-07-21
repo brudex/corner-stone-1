@@ -59,7 +59,7 @@ const config = {
       name: "cornerstone",
     },
     port: process.env.PORT || 3000,
-    dbhost: process.env.DBHOST || "157.230.150.194",
+    dbhost: process.env.DBHOST || "213.52.128.176",
     db: process.env.DBNAME || "cornerstone",
     dbuser: process.env.DBUSER || "appuser",
     dbpass: process.env.DBPASS || "Pass123@$$123",

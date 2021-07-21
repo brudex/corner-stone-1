@@ -4,12 +4,11 @@ module.exports = {
         script: "./bin/www",
         env: {
             NODE_ENV: "production",
-            DBHOST: "localhost",
+            DBHOST: "213.52.128.176",
             PORT: 3000,
             DBNAME: "cornerstone",
             DBUSER: "admin",
             DBPASS: "pass"
-
         }
     }]
 };
