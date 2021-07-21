@@ -61,8 +61,8 @@ const config = {
     port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST || "213.52.128.176",
     db: process.env.DBNAME || "cornerstone",
-    dbuser: process.env.DBUSER || "appuser",
-    dbpass: process.env.DBPASS || "Pass123@$$123",
+    dbuser: process.env.DBUSER || "admin",
+    dbpass: process.env.DBPASS || "pass",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
     cloudinary_secret_key:
