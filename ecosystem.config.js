@@ -3,10 +3,13 @@ module.exports = {
         name: "cornerstone",
         script: "./bin/www",
         env: {
-            NODE_ENV: "test",
+            NODE_ENV: "production",
+            DBHOST: "localhost",
             PORT: 3000,
-            DBPASS: "Pass123@$$123",
-            JWT_SECRET : "123joisuiu"
+            DBNAME: "cornerstone",
+            DBUSER: "admin",
+            DBPASS: "pass"
+
         }
     }]
 };
