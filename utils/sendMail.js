@@ -17,7 +17,7 @@ const sendMail = async (options) => {
     "Messages":[
       {
         "From": {
-          "Email": "zenoteck.cornerstone@gmail.com",
+          "Email": "danielameyaw@gmail.com",
           "Name": "Cornerstone Giving"
         },
         "To": [
