@@ -99,7 +99,13 @@ Controller.changePassword = async (req, res) => {
   const { churchId, id } = req.user;
   const { password } = req.body;
 
+  if (!(req.body.password && req.body.password.length > 6)) {
+    req.flash("error", "Password length must be at least 6");
+    return res.redirect("/account/change-password");
+  }
+
   const { error } = User.validateChangePassword(req.body);
+
 
   if (error) {
     req.flash("error", "passwords do not match");
@@ -107,15 +113,7 @@ Controller.changePassword = async (req, res) => {
   }
 
   const hashedPassword = await User.hashPassword(password);
-  const oldPassword = await User.hashPassword(req.body.oldPassword);
-  console.log("Oldpassword >>"+oldPassword);
-  console.log("req.user.password >>"+req.user.password);
-  if(oldPassword!==req.user.password){
-    req.flash("error", "Invalid old password");
-    return res.redirect("/account/change-password");
-  }
   await User.update({ password: hashedPassword }, { where: { churchId, id } });
-
 
   req.flash("success", "Password Change Successful");
   res.redirect("/account/change-password");
