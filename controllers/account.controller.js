@@ -99,7 +99,7 @@ Controller.changePassword = async (req, res) => {
   const { churchId, id } = req.user;
   const { password } = req.body;
 
-  if (!(req.body.password && req.body.password.length > 6)) {
+  if (!(req.body.password && req.body.password.length >= 6)) {
     req.flash("error", "Password length must be at least 6");
     return res.redirect("/account/change-password");
   }
