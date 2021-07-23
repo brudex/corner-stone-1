@@ -1,4 +1,3 @@
-// Example model
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -115,16 +114,10 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.validateChangePassword = function (passwords) {
-    const schema = Joi.object({
-      oldPassword: Joi.string().min(6).max(256).required(),
-      password: Joi.string().min(6).max(256).required(),
-      confirmPassword: Joi.any()
-        .equal(Joi.ref("password"))
-        .required()
-        .label("Confirm password")
-        .messages({ "any.only": "passwords do not match" }),
-    });
-    return schema.validate(passwords);
+    if(passwords.password!== passwords.confirmPassword){
+      return {error:true}
+    }
+    return {error:false}
   };
 
   User.sendResetPasswordMail = async function (email, req) {

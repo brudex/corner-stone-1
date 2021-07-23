@@ -100,15 +100,24 @@ Controller.changePassword = async (req, res) => {
   const { password } = req.body;
 
   const { error } = User.validateChangePassword(req.body);
+
   if (error) {
     req.flash("error", "passwords do not match");
     return res.redirect("/account/change-password");
   }
 
   const hashedPassword = await User.hashPassword(password);
+  const oldPassword = await User.hashPassword(req.body.oldPassword);
+  console.log("Oldpassword >>"+oldPassword);
+  console.log("req.user.password >>"+req.user.password);
+  if(oldPassword!==req.user.password){
+    req.flash("error", "Invalid old password");
+    return res.redirect("/account/change-password");
+  }
   await User.update({ password: hashedPassword }, { where: { churchId, id } });
 
-  req.flash("success", "Password Change Succesful");
+
+  req.flash("success", "Password Change Successful");
   res.redirect("/account/change-password");
 };
 
