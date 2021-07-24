@@ -48,7 +48,9 @@ Controller.usersView = async (req, res, next) => {
     const userChurch = churches.filter(
       (church) => church.id === user.churchId
     )[0];
-    user.church = userChurch.name;
+    if(userChurch){
+      user.church = userChurch.name;
+    }
   });
 
   debug(paginationResults.data);
