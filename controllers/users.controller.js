@@ -272,7 +272,7 @@ Controller.registerUser = async (req, res, next) => {
 
 
 Controller.joinChurch = async (req, res, next) => {
-  const joinedChurches = db.UserChurches.findAll({where:{userId:req.user.id,churchId:req.body.churchId}});
+  const joinedChurches = await db.UserChurches.findAll({where:{userId:req.user.id,churchId:req.body.churchId}});
   if(joinedChurches.length){
     return next(
         createError(400, {
@@ -305,6 +305,13 @@ Controller.leaveChurch = async (req, res, next) => {
   const joinedChurch = await db.UserChurches.findOne({where:{userId:req.user.id,churchId:req.body.churchId}});
   if(joinedChurch){
     joinedChurch.destroy();
+     const user = await db.User.find({where:{id:req.user.id}});
+    if(user){
+      if(user.churchId===joinedChurch.id){
+        user.churchId=0;
+        user.save();
+      }
+    }
     res.json({
       status_code: "00",
       message: "You have successfully left the church.",
