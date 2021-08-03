@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       fbHandle: DataTypes.STRING,
       IGHandle: DataTypes.STRING,
       twitterHandle: DataTypes.STRING,
+      youTubeUrl: DataTypes.STRING,
+      accountNumber1: DataTypes.STRING,
+      accountNumber2: DataTypes.STRING,
+      accountNumber3: DataTypes.STRING,
     },
     {
       tableName: "Church",

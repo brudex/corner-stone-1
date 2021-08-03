@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const db = require("../models/index");
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
 const User = user(sequelize, Sequelize);
@@ -253,12 +254,78 @@ Controller.registerUser = async (req, res, next) => {
   //Hash password
   const hashedPassword = await User.hashPassword(password);
 
+
   const user = await User.create({ ...req.body, password: hashedPassword });
+
+  const userChurch = {};
+  userChurch.churchId= req.body.churchId;
+  userChurch.userId = user.id;
+  await db.UserChurches.create(userChurch);
+
   const token = user.generateAuthToken();
   res
     .header("Authorization", `Bearer ${token}`)
     .header("access-control-expose-headers", "Authorization")
     .json({ status_code: "00", message: "Registration successful", token });
+};
+
+
+
+Controller.joinChurch = async (req, res, next) => {
+  const joinedChurches = db.UserChurches.findAll({where:{userId:req.user.id,churchId:req.body.churchId}});
+  if(joinedChurches.length){
+    return next(
+        createError(400, {
+          status_code: "03",
+          message: "User already a member of this church",
+          reason: "User already a member of this church"
+        })
+    );
+  }
+  const userChurch = {};
+  userChurch.churchId= req.body.churchId;
+  userChurch.userId = req.user.id;
+ const church = await db.Church.findOne({where:{id:req.body.churchId}});
+ if(church){
+   await db.UserChurches.create(userChurch);
+   res.json({
+     status_code: "00",
+     message: "You have successfully joined the church.",
+   });
+ }else{
+   res.status(404).json({
+     status_code: "404",
+     message: "Church not found invalid church.",
+   });
+ }
+
+};
+
+Controller.leaveChurch = async (req, res, next) => {
+  const joinedChurch = await db.UserChurches.findOne({where:{userId:req.user.id,churchId:req.body.churchId}});
+  if(joinedChurch){
+    joinedChurch.destroy();
+    res.json({
+      status_code: "00",
+      message: "You have successfully left the church.",
+    });
+  }else{
+    res.status(404).json({
+      status_code: "404",
+      message: "User not a member of church",
+    });
+  }
+};
+
+
+Controller.myChurches = async (req, res, next) => {
+  const sql = 'select  c.id,c.name,c.address,c.image,c.phone,c.email,c.website,c.fbHandle,c.IGHandle,c.twitterHandle,c.youTubeUrl from UserChurches u left join Church c on u.churchId=c.id where u.userId='+req.user.id;
+  console.log('Church query >>',sql);
+  const churches = await  db.sequelize.query(sql,{ type: sequelize.QueryTypes.SELECT});
+  res.json({
+    status_code: "00",
+    data:churches,
+  });
 };
 
 Controller.login = async (req, res, next) => {
@@ -287,11 +354,12 @@ Controller.login = async (req, res, next) => {
 
   //update fcm token
   await User.update({ fcm_token }, { where: { email } });
-
+  const sql = 'select  c.id,c.name,c.address,c.image,c.phone,c.email,c.website,c.fbHandle,c.IGHandle,c.twitterHandle,c.youTubeUrl from UserChurches u left join Church c on u.churchId=c.id where u.userId='+user.id;
+  const churches = await  db.sequelize.query(sql,{ type: sequelize.QueryTypes.SELECT});
   res
     .header("Authorization", `Bearer ${token}`)
     .header("access-control-expose-headers", "Authorization")
-    .json({ token, status_code: "00", message: "login successful" });
+    .json({ token, status_code: "00", message: "login successful",churches:churches });
 };
 
 Controller.resetPassword = async (req, res, next) => {
