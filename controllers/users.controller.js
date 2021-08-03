@@ -328,7 +328,7 @@ Controller.setCurrentChurch = async (req, res, next) => {
 
   const currentChurch = await db.Church.findOne({where:{id: req.params.churchId}});
   if(currentChurch){
-     const loggedInUser = await db.User.find({where:{id:req.user.id}});
+     const loggedInUser = await db.User.findOne({where:{id:req.user.id}});
      loggedInUser.churchId = currentChurch.id;
      loggedInUser.save();
      const token = loggedInUser.generateAuthToken();
