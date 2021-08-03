@@ -331,9 +331,11 @@ Controller.setCurrentChurch = async (req, res, next) => {
      const loggedInUser = await db.User.find({where:{id:req.user.id}});
      loggedInUser.churchId = currentChurch.id;
      loggedInUser.save();
+     const token = loggedInUser.generateAuthToken();
      res.json({
       status_code: "00",
-      message: "Current Church successfully set to " + currentChurch.name
+      message: "Current Church successfully set to " + currentChurch.name,
+      token
     });
   }else{
     res.status(404).json({

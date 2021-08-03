@@ -1,4 +1,5 @@
 const { sequelize, Sequelize } = require("../models/index");
+const db = require("../models/index");
 const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
 const Op = Sequelize.Op;
@@ -49,10 +50,15 @@ Controller.getChurches = async (req, res, next) => {
 };
 
 Controller.getChurch = async (req, res, next) => {
-  const { churchId } = req.user;
+  const churchId = req.user.churchId;//getUserCurrentChurchId(req.user);
   const church = await Church.findOne({ where: { id: churchId } });
   res.send(church);
 };
+
+async function getUserCurrentChurchId(reqUser){
+  const user = await db.User.findOne({where:{id:reqUser.id}});
+  return user.churchId;
+}
 
 Controller.addChurch = async (req, res, next) => {
   const page = "church/add-church";

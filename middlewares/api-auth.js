@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const db = require("../models");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
 const debug = require("debug")("corner-stone:api-auth");
