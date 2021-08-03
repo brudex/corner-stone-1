@@ -317,6 +317,25 @@ Controller.leaveChurch = async (req, res, next) => {
   }
 };
 
+Controller.setCurrentChurch = async (req, res, next) => {
+
+  const currentChurch = await db.Church.findOne({where:{id: req.params.churchId}});
+  if(currentChurch){
+     const loggedInUser = await db.User.find({where:{id:req.user.id}});
+     loggedInUser.churchId = currentChurch.id;
+     loggedInUser.save();
+     res.json({
+      status_code: "00",
+      message: "Current Church successfully set to " + currentChurch.name
+    });
+  }else{
+    res.status(404).json({
+      status_code: "404",
+      message: "Church not found",
+    });
+  }
+};
+
 
 Controller.myChurches = async (req, res, next) => {
   const sql = 'select  c.id,c.name,c.address,c.image,c.phone,c.email,c.website,c.fbHandle,c.IGHandle,c.twitterHandle,c.youTubeUrl from UserChurches u left join Church c on u.churchId=c.id where u.userId='+req.user.id;

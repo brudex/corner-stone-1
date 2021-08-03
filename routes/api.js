@@ -21,6 +21,7 @@ router.post("/users/register", usersController.registerUser);
 router.post("/user/joinchurch",api_auth, usersController.joinChurch);
 router.post("/user/leavechurch",api_auth, usersController.leaveChurch);
 router.get("/user/mychurches", api_auth,usersController.myChurches);
+router.get("/user/setCurrentChurch/:churchId", api_auth,usersController.myChurches);
 //Todo return church contact info on login
 
 router.get("/churches", churchesController.getChurches);
