@@ -305,7 +305,7 @@ Controller.leaveChurch = async (req, res, next) => {
   const joinedChurch = await db.UserChurches.findOne({where:{userId:req.user.id,churchId:req.body.churchId}});
   if(joinedChurch){
     joinedChurch.destroy();
-     const user = await db.User.find({where:{id:req.user.id}});
+     const user = await db.User.findOne({where:{id:req.user.id}});
     if(user){
       if(user.churchId===joinedChurch.id){
         user.churchId=0;
@@ -317,9 +317,9 @@ Controller.leaveChurch = async (req, res, next) => {
       message: "You have successfully left the church.",
     });
   }else{
-    res.status(404).json({
-      status_code: "404",
-      message: "User not a member of church",
+    res.json({
+      status_code: "03",
+      message: "User has already left church or not a member.",
     });
   }
 };
