@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       address: DataTypes.STRING,
       image: DataTypes.STRING,
+      pastorImage: DataTypes.STRING,
       phone: DataTypes.STRING,
       email: DataTypes.STRING,
       website: DataTypes.STRING,
@@ -36,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       website: Joi.string().uri().allow(""),
       fbHandle: Joi.string().uri().allow(""),
       IGHandle: Joi.string().uri().allow(""),
+      youTubeUrl: Joi.string().uri().allow(""),
       twitterHandle: Joi.string().uri().allow(""),
     });
     return schema.validate(church);

@@ -11,7 +11,12 @@ const upload = multer({
   storage,
   limits: { fileSize: 1024 * 1024 * 5 },
   fileFilter: allowImagesOnly,
-}).single("church-image");
+}).fields([{
+  name: 'church-image', maxCount: 1
+}, {
+  name: 'pastor-image', maxCount: 1
+}]);
+
 
 const Controller = {};
 module.exports = Controller;
@@ -23,6 +28,28 @@ Controller.churchesView = async (req, res, next) => {
     title: "Churches",
     user: req.user,
     ...paginationResults,
+  });
+};
+
+Controller.churchAdmins = async (req, res, next) => {
+  const church = await Church.findOne({ raw: true, where: { id :req.params.churchId } });
+  const sql = 'SELECT u.firstName,u.lastName,u.email,uc.id from userchurches uc LEFT JOIN  `user` u on uc.userId=u.id where uc.isAdmin=TRUE and uc.churchId='+req.params.churchId;
+  console.log('Admins query >>',sql);
+  const admins = await  db.sequelize.query(sql,{ type: sequelize.QueryTypes.SELECT});
+  res.render("church/admin-users", {
+    title: "Admin Users",
+    user: req.user,
+    data:admins,
+    church:church
+  });
+};
+
+Controller.addChurchAdmin = async (req, res, next) => {
+  const church = await Church.findOne({ raw: true, where: { id :req.params.churchId } });
+   res.render("church/add-admin", {
+    title: "Add Admin",
+    user: req.user,
+    church:church
   });
 };
 
@@ -62,7 +89,6 @@ async function getUserCurrentChurchId(reqUser){
 
 Controller.addChurch = async (req, res, next) => {
   const page = "church/add-church";
-
   await upload(req, res, async (err) => {
     const { user } = req;
     const { name, email, phone } = req.body;
@@ -82,7 +108,11 @@ Controller.addChurch = async (req, res, next) => {
       req.flash("error", "Church already exist");
       return res.render(page, { title: "Add Church", values: req.body, user });
     }
-    await Church.create({ ...req.body, image: req.file.filename });
+    const churchRow = { ...req.body, image: req.files['church-image'][0].filename };
+    if(req.files['pastor-image'].length){
+      churchRow.pastorImage = req.files['pastor-image'][0].filename;
+    }
+    await Church.create();
     req.flash("success", "Church added successfully");
     return res.redirect("/churches");
   });

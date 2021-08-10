@@ -39,8 +39,10 @@ router.get("/churches", [auth, superAdmin], churchController.churchesView);
 router.get("/churches/add", [auth, superAdmin], churchController.addChurchView);
 router.get("/churches/delete/:id", churchController.deleteChurch);
 router.get("/churches/edit/:id", churchController.editChurchView);
+router.get("/church/admins/:churchId", [auth], churchController.churchAdmins);
 router.get("/users", [auth, superAdmin], usersController.usersView);
 router.get("/users/add", [auth, superAdmin], usersController.addUserView);
+router.get("/church/addAdmin/:churchId", [auth], usersController.addUserView);
 router.get("/users/edit/:id", [auth, superAdmin], usersController.editUserView);
 router.get("/users/delete/:id", [auth, superAdmin], usersController.deleteUser);
 router.get("/churchmembers", [auth, admin], usersController.churchMembersView);
@@ -247,6 +249,7 @@ router.post(
   })
 );
 router.post("/users/add", [auth, superAdmin], usersController.addUser);
+router.post("/church/addAdmin/:churchId", [auth, superAdmin], usersController.addUser);
 router.post("/users/edit/:id", [auth, superAdmin], usersController.editUser);
 router.post("/forgotpassword", accountController.forgotPassword);
 router.post("/resetpassword", accountController.resetPassword);

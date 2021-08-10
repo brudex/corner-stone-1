@@ -29,7 +29,7 @@ include('../partials/response-message.ejs') %>
 <!-- // END BEFORE Page Content -->
 
 <!-- Page Content -->
-<div class="container page__container page-section">
+<div class="container1 page__container page-section">
   <div class="page-separator">
     <div class="page-separator__text">Churches</div>
   </div>
@@ -48,26 +48,7 @@ include('../partials/response-message.ejs') %>
             placeholder="Search ..."
           />
 
-          <!-- <label class="sr-only" for="inlineFormRole">Role</label>
-          <select
-            id="inlineFormRole"
-            class="custom-select mb-2 mr-sm-2 mb-sm-0"
-          >
-            <option value="All Roles">All Roles</option>
-          </select> -->
 
-          <!-- <div class="ml-auto mb-2 mb-sm-0 custom-control-inline mr-0">
-            <label class="form-label mb-0" for="active">Active</label>
-            <div class="custom-control custom-checkbox-toggle ml-8pt">
-              <input
-                checked=""
-                type="checkbox"
-                id="active"
-                class="custom-control-input"
-              />
-              <label class="custom-control-label" for="active">Active</label>
-            </div>
-          </div> -->
         </form>
       </div>
 
@@ -110,9 +91,7 @@ include('../partials/response-message.ejs') %>
                 <div class="media-body">
                   <div class="d-flex flex-column">
                     <p class="mb-0">
-                      <strong class="js-lists-values-employee-name"
-                        ><%=church.name %></strong
-                      >
+                      <strong class="js-lists-values-employee-name"><%=church.name %></strong>
                     </p>
                     <!-- <small class="js-lists-values-employee-email text-50"
                       >lorna_kirlin@nora.biz</small
@@ -122,30 +101,28 @@ include('../partials/response-message.ejs') %>
               </div>
             </td>
             <td>
-              <div class="d-flex align-items-center"><%=church.email %></div>
+              <div class="d-flex align-items-center"><%=church.email%></div>
             </td>
-
             <td>
-              <div class="d-flex align-items-center"><%=church.phone %></div>
+              <div class="d-flex align-items-center"><%=church.phone%></div>
             </td>
-
             <td>
-              <div class="d-flex align-items-center"><%=church.address %></div>
+              <div class="d-flex align-items-center"><%=church.address%></div>
             </td>
-
             <td class="text-center js-lists-values-projects small">
-              <a
-                type="button"
-                class="btn btn-warning"
-                href="/churches/edit/<%=church.id %>"
-              >
+              <a type="button"
+                class="btn btn-warning btn-sm"
+                href="/churches/edit/<%=church.id %>">
                 <i class="material-icons">edit</i>
               </a>
-              <a
-                type="button"
-                class="btn btn-danger"
-                href="/churches/delete/<%=church.id %>"
-              >
+              <a type="button"
+                 class="btn btn-info btn-sm"
+                 href="/church/admins/<%=church.id %>">
+                <i class="material-icons">people</i>Admins
+              </a>
+              <a type="button"
+                class="btn btn-danger btn-sm"
+                href="/churches/delete/<%=church.id %>">
                 <i class="material-icons">delete</i>
               </a>
             </td>

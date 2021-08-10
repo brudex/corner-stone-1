@@ -55,7 +55,6 @@ Controller.usersView = async (req, res, next) => {
   });
 
   debug(paginationResults.data);
-
   res.render("users/users", {
     title: "Users",
     user: req.user,
@@ -78,12 +77,23 @@ Controller.churchMembersView = async (req, res, next) => {
 };
 
 Controller.addUserView = async (req, res) => {
-  const churches = await Church.findAll({
-    raw: true,
-    attributes: ["id", "name"],
-  });
+  let churches =[];
+  let postAction='';
+  if(req.params.churchId){
+      churches = await Church.findAll({ where:{id:req.params.churchId},
+      raw: true,
+      attributes: ["id", "name"],
+    });
+      postAction='/church/addAdmin/'+req.params.churchId;
+  }else{
+      churches = await Church.findAll({
+      raw: true,
+      attributes: ["id", "name"],
+    });
+      postAction='/users/add';
+  }
   debug(churches);
-  res.render("users/add-user", { title: "Add User", user: req.user, churches });
+  res.render("users/add-user", { title: "Add User", user: req.user, postAction, churches });
 };
 
 Controller.editUserView = async (req, res) => {
@@ -115,47 +125,88 @@ Controller.editUserView = async (req, res) => {
 Controller.addUser = async (req, res) => {
   const page = "users/add-user";
   const { email } = req.body;
-
-  const churches = await Church.findAll({
-    raw: true,
-    attributes: ["id", "name"],
-  });
-
-  const password = generator.generate({
-    length: 10,
-    numbers: true,
-  });
-  const { error } = User.validateUser(
-    { ...req.body, password },
-    { userType: "admin" }
-  );
-  if (error) {
-    req.flash("error", error.details[0].message);
-    return res.render(page, {
-      title: "Add User",
-      values: req.body,
-      churches,
-      user: req.user,
+  let postAction='';
+  let user;
+  let password;
+  let churches=[];
+  if(req.params.churchId){
+    postAction='/church/addAdmin/'+req.params.churchId;
+    churches = await Church.findAll({ where:{id:req.params.churchId},
+      raw: true,
+      attributes: ["id", "name"],
+    });
+  }else{
+    postAction='/users/add';
+    churches = await Church.findAll({
+      raw: true,
+      attributes: ["id", "name"],
     });
   }
 
-  const userExists = await User.findOne({ where: { email } });
-  if (userExists) {
-    req.flash("error", "Email already exist");
-    return res.render(page, {
-      title: "Add User",
-      values: req.body,
-      churches,
-      user: req.user,
+  if(req.body.existing==='0'){
+      password = generator.generate({
+      length: 10,
+      numbers: true,
     });
+    const { error } = User.validateUser(
+        { ...req.body, password },
+        { userType: "admin" }
+    );
+    if(error) {
+      req.flash("error", error.details[0].message);
+      return res.render(page, {
+        title: "Add User",
+        values: req.body,
+        churches,
+        postAction,
+        user: req.user,
+      });
+    }
+    const userExists = await User.findOne({ where: { email } });
+    if(userExists) {
+      req.flash("error", "Email already exist");
+      return res.render(page, {
+        title: "Add User",
+        values: req.body,
+        churches,
+        postAction,
+        user: req.user,
+
+      });
+    }
+    const hashedPassword = await User.hashPassword(password);
+    user =await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+  }else if(req.body.existing==='1'){
+    user = await User.findOne({ where: { email } });
+    if(!user){
+      req.flash("error", "User does not exist");
+      return res.render(page, {
+        title: "Add User",
+        values: req.body,
+        churches,
+        user: req.user,
+        postAction
+      });
+    }
+    const existingAdmin = await db.UserChurches.findOne({where:{userId:user.id}});
+    if(existingAdmin) {
+      req.flash("error", "User is already admin");
+      return res.render(page, {
+        title: "Add User",
+        values: req.body,
+        churches,
+        user: req.user,
+        postAction,
+      });
+    }
   }
 
-  const userChurch = churches.find(
+  const existingChurch = churches.find(
     (church) => church.id.toString() === req.body.churchId.toString()
   );
-  if (!userChurch) {
+  if (!existingChurch) {
     {
-      req.flash("error", "Church already exist");
+      req.flash("error", "Church does not exist");
       return res.render(page, {
         title: "Add User",
         values: req.body,
@@ -164,13 +215,17 @@ Controller.addUser = async (req, res) => {
       });
     }
   }
-  const hashedPassword = await User.hashPassword(password);
-  await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+  const userChurch = {};
+  userChurch.churchId= req.body.churchId;
+  userChurch.userId = user.id;
+  userChurch.isAdmin= true;
+  await db.UserChurches.create(userChurch);
+  req.flash("success", "User successfully added as admin");
+  if(req.body.existing==='0'){
+    User.sendWelcomeMail(req, { email, password, church: existingChurch.name });
+  }
 
-  User.sendWelcomeMail(req, { email, password, church: userChurch.name });
-
-  req.flash("success", "User added successfully");
-  res.render(page, { title: "Add User", churches, user: req.user });
+  res.render(page, { title: "Add User", churches, user: req.user,postAction });
 };
 
 Controller.editUser = async (req, res) => {

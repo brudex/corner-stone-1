@@ -66,6 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       phone: Joi.string().min(10).max(15).required(),
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
+      existing: Joi.number().min(0),
       fcm_token: Joi.string()
         .max(256)
         .alter({
@@ -95,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
   User.validateDetails = function (userDetails) {
     const schema = Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().min(6).max(256).required(),
+      password: Joi.string().min(3).max(256).required(),
     });
     return schema.validate(userDetails);
   };

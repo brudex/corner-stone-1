@@ -130,7 +130,51 @@ include('../partials/response-message.ejs') %>
               placeholder="Enter twitter handle"
             />
           </div>
-          <div class="form-group m-0">
+          <div class="form-group">
+            <label class="form-label" for="youTubeUrl">Youtube Url</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="youTubeUrl"
+                    name="youTubeUrl"
+                    value="<% if(typeof values !== 'undefined' && typeof values.youTubeUrl !== 'undefined' ) {%><%=values.youTubeUrl%><%}%>"
+                    placeholder="Enter youtube link"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber1">Settlement Account 1</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="youTubeUrl"
+                    name="youTubeUrl"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber1 !== 'undefined' ) {%><%=values.accountNumber1%><%}%>"
+                    placeholder="Enter Settlement Account 1"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber2">Settlement Account 2</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="youTubeUrl"
+                    name="youTubeUrl"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber2 !== 'undefined' ) {%><%=values.accountNumber2%><%}%>"
+                    placeholder="Enter Settlement Account 2"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber2">Settlement Account 3</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="youTubeUrl"
+                    name="youTubeUrl"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber3 !== 'undefined' ) {%><%=values.accountNumber3%><%}%>"
+                    placeholder="Enter Settlement Account 3"
+            />
+          </div>
+          <div class="form-group">
             <label class="form-label" for="exampleInputPassword1"
               >Church image*</label
             >
@@ -144,6 +188,23 @@ include('../partials/response-message.ejs') %>
               />
               <label for="file" class="custom-file-label"
                 >Select church image</label
+              >
+            </div>
+          </div>
+          <div class="form-group m-0">
+            <label class="form-label" for="pastor-image"
+            >Pastor's image</label
+            >
+            <div class="custom-file">
+              <input
+                      type="file"
+                      id="file"
+                      class="custom-file-input"
+                      name="pastor-image"
+
+              />
+              <label for="file" class="custom-file-label"
+              >Select pastor's image</label
               >
             </div>
           </div>

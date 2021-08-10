@@ -99,16 +99,35 @@
           </a>
         </li>
         <%}%> <% if (user.isAdmin) {%>
+          <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button js-sidebar-collapse"
+                    data-toggle="collapse"
+                    href="#instructor_menu">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people</span>
+              Admins
+              <span class="ml-auto sidebar-menu-toggle-icon"></span>
+            </a>
+            <ul class="sidebar-submenu collapse sm-indent" id="instructor_menu">
+              <li class="sidebar-menu-item">
+                <a class="sidebar-menu-button" href="/church/admins/<%=user.churchId%>">
+                  <span class="sidebar-menu-text">View Admins</span>
+                </a>
+              </li>
+              <li class="sidebar-menu-item">
+                <a class="sidebar-menu-button" href="/church/addAdmin/<%=user.churchId%>">
+                  <span class="sidebar-menu-text">Add Admin</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
-            href="#church_content"
-          >
+            href="#church_content">
             <span
               class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >dynamic_feed</span
-            >
+              >dynamic_feed</span>
             Church Content
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
@@ -164,12 +183,9 @@
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
-            href="#enterprise_menu"
-          >
+            href="#enterprise_menu">
             <span
-              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >event</span
-            >
+              class="material-icons sidebar-menu-icon sidebar-menu-icon--left">event</span>
             Events
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
@@ -193,12 +209,10 @@
           <a
             class="sidebar-menu-button"
             data-toggle="collapse"
-            href="#productivity_menu"
-          >
+            href="#productivity_menu">
             <span
               class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >meeting_room</span
-            >
+              >meeting_room</span>
             Appointments
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
@@ -213,8 +227,7 @@
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/appointments/available-dates"
-              >
+                href="/appointments/available-dates">
                 <span class="sidebar-menu-text"
                   ><small>View Onetime appointments</small></span
                 >

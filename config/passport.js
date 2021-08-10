@@ -1,5 +1,6 @@
 const { sequelize, Sequelize } = require("../models/index");
 const user = require("../models/user");
+const db = require("../models/index");
 const User = user(sequelize, Sequelize);
 const church = require("../models/church");
 const Church = church(sequelize, Sequelize);
@@ -8,22 +9,42 @@ const LocalStrategy = require("passport-local").Strategy;
 
 const authenticateUser = async (email, password, done) => {
   let user = await User.findByEmail(email);
+  let userChurch;
   if (!user)
     return done(null, false, { message: "Invalid email or password provided" });
 
-  if (!user.isAdmin && !user.isSuperAdmin)
-    return done(null, false, { message: "Access Forbidden!" });
+  let isChurchAdmin = false;
+  let isSuperAdmin=false;
+  if (user.isSuperAdmin){
+    isSuperAdmin=true;
+  }else{
+    userChurch =  await db.UserChurches.findOne({ where: { userId: user.id } });
+    if(userChurch){
+      if(userChurch.isAdmin){
+        isChurchAdmin=true;
+        user.churchId= userChurch.churchId;
+      }
 
-  try {
-    if (!(await bcrypt.compare(password, user.password)))
-      return done(null, false, {
-        message: "Invalid email or password provided",
-      });
-    const church = await Church.findOne({ where: { id: user.churchId } });
-    return done(null, user);
-  } catch (error) {
-    done(error);
+    }
   }
+
+   if(isSuperAdmin || isChurchAdmin){
+     try {
+       if (!(await bcrypt.compare(password, user.password))){
+         return done(null, false, {
+           message: "Invalid email or password provided",
+         });
+       }
+       user.isSuperAdmin=isSuperAdmin;
+       user.isAdmin = isChurchAdmin;
+       return done(null, user);
+     } catch (error) {
+       done(error);
+     }
+   }else{
+     return done(null, false, { message: "Access Forbidden!" });
+   }
+
 };
 
 const initialize = async (passport) => {
