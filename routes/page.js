@@ -52,16 +52,8 @@ router.get(
   [auth, admin],
   churchContentController.addSermonView
 );
-router.get(
-  "/sermons/delete/:id",
-  [auth, admin],
-  churchContentController.deleteSermon
-);
-router.get(
-  "/devotionals",
-  [auth, admin],
-  churchContentController.devotionalView
-);
+router.get("/sermons/delete/:id",[auth, admin],churchContentController.deleteSermon);
+router.get("/devotionals",[auth, admin],churchContentController.devotionalView);
 router.get(
   "/daily-devotionals",
   [auth, admin],

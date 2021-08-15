@@ -146,8 +146,8 @@ include('../partials/response-message.ejs') %>
             <input
                     type="url"
                     class="form-control"
-                    id="youTubeUrl"
-                    name="youTubeUrl"
+                    id="accountNumber1"
+                    name="accountNumber1"
                     value="<% if(typeof values !== 'undefined' && typeof values.accountNumber1 !== 'undefined' ) {%><%=values.accountNumber1%><%}%>"
                     placeholder="Enter Settlement Account 1"
             />
@@ -157,8 +157,8 @@ include('../partials/response-message.ejs') %>
             <input
                     type="url"
                     class="form-control"
-                    id="youTubeUrl"
-                    name="youTubeUrl"
+                    id="accountNumber2"
+                    name="accountNumber2"
                     value="<% if(typeof values !== 'undefined' && typeof values.accountNumber2 !== 'undefined' ) {%><%=values.accountNumber2%><%}%>"
                     placeholder="Enter Settlement Account 2"
             />
@@ -168,44 +168,33 @@ include('../partials/response-message.ejs') %>
             <input
                     type="url"
                     class="form-control"
-                    id="youTubeUrl"
-                    name="youTubeUrl"
+                    id="accountNumber3"
+                    name="accountNumber3"
                     value="<% if(typeof values !== 'undefined' && typeof values.accountNumber3 !== 'undefined' ) {%><%=values.accountNumber3%><%}%>"
                     placeholder="Enter Settlement Account 3"
             />
           </div>
           <div class="form-group">
-            <label class="form-label" for="exampleInputPassword1"
-              >Church image*</label
-            >
+            <label class="form-label" for="exampleInputPassword1">Church image*</label>
             <div class="custom-file">
               <input
                 type="file"
                 id="file"
                 class="custom-file-input"
                 name="church-image"
-                required
-              />
-              <label for="file" class="custom-file-label"
-                >Select church image</label
-              >
+                required />
+              <label for="file" class="custom-file-label">Select church image</label>
             </div>
           </div>
           <div class="form-group m-0">
-            <label class="form-label" for="pastor-image"
-            >Pastor's image</label
-            >
+            <label class="form-label" for="pastor-image">Pastor's image</label>
             <div class="custom-file">
               <input
                       type="file"
                       id="file"
                       class="custom-file-input"
-                      name="pastor-image"
-
-              />
-              <label for="file" class="custom-file-label"
-              >Select pastor's image</label
-              >
+                      name="pastor-image"/>
+              <label for="file" class="custom-file-label">Select pastor's image</label>
             </div>
           </div>
           <button type="submit" class="btn btn-primary mt-3">Submit</button>

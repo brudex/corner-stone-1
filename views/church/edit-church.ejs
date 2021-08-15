@@ -2,13 +2,10 @@
 include('../partials/response-message.ejs') %>
 
 <div class="pt-32pt">
-  <div
-    class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left"
-  >
+  <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
         <h2 class="mb-0">Edit church</h2>
-
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/churches">Churches</a></li>
           <li class="breadcrumb-item">Edit church</li>
@@ -39,24 +36,53 @@ include('../partials/response-message.ejs') %>
         action="/churches/edit/image/<%=values.id %>"
         method="post"
         enctype="multipart/form-data"
-        id="image-form"
-      >
+        id="image-form">
         <input
           onchange="document.getElementById('image-form').submit()"
           type="file"
-          id="image"
+          id="church-image"
           name="church-image"
           required
-          hidden
-        />
+          hidden />
       </form>
       <button
         type="button"
         class="btn btn-primary mt-3"
-        onclick="document.getElementById('image').click();"
-      >
+        onclick="document.getElementById('church-image').click();">
         Change Image
       </button>
+
+     <p class="mt-5">
+
+
+      <form
+              action="/churches/edit/image/<%=values.id %>"
+              method="post"
+              enctype="multipart/form-data"
+              id="image-pastor">
+        <% if(values.pastorImage !=null && values.pastorImage!=='') {%>
+          <img src="/uploads/<%=values.pastorImage %>" height="250" width="100%" />
+        <%}%>
+
+        <input
+                onchange="document.getElementById('image-pastor').submit()"
+                type="file"
+                id="pastor-image"
+                name="pastor-image"
+                required
+                hidden />
+
+      </form>
+      <button
+              type="button"
+              class="btn btn-primary mt-3"
+              onclick="document.getElementById('pastor-image').click();">
+        Select Pastor's Image
+      </button>
+     </p>
+
+
+
     </div>
     <div class="col-lg-8 d-flex align-items-center">
       <div class="flex" style="max-width: 100%">
@@ -70,8 +96,7 @@ include('../partials/response-message.ejs') %>
               name="name"
               value="<% if(typeof values !== 'undefined') {%><%=values.name%><%}%>"
               placeholder="Enter church name"
-              required
-            />
+              required />
           </div>
           <div class="form-group">
             <label class="form-label" for="address">GPS co-ordinates*</label>
@@ -82,8 +107,7 @@ include('../partials/response-message.ejs') %>
               name="address"
               value="<% if(typeof values !== 'undefined') {%><%=values.address%><%}%>"
               placeholder="Enter church location"
-              required
-            />
+              required />
           </div>
           <div class="form-group">
             <label class="form-label" for="phone">Phone*</label>
@@ -94,8 +118,7 @@ include('../partials/response-message.ejs') %>
               name="phone"
               value="<% if(typeof values !== 'undefined') {%><%=values.phone%><%}%>"
               placeholder="Enter phone number"
-              required
-            />
+              required />
           </div>
           <div class="form-group">
             <label class="form-label" for="email">Email*</label>
@@ -106,8 +129,7 @@ include('../partials/response-message.ejs') %>
               name="email"
               value="<% if(typeof values !== 'undefined') {%><%=values.email%><%}%>"
               placeholder="Enter email address"
-              required
-            />
+              required />
           </div>
           <div class="form-group">
             <label class="form-label" for="website">Website</label>
@@ -117,8 +139,7 @@ include('../partials/response-message.ejs') %>
               id="website"
               name="website"
               value="<% if(typeof values !== 'undefined' && typeof values.website !== 'undefined' ) {%><%=values.website%><%}%>"
-              placeholder="Enter church location"
-            />
+              placeholder="Enter church location"/>
           </div>
           <div class="form-group">
             <label class="form-label" for="fbHandle">Facebook handle</label>
@@ -128,8 +149,7 @@ include('../partials/response-message.ejs') %>
               id="fbHandle"
               name="fbHandle"
               value="<% if(typeof values !== 'undefined' && typeof values.fbHandle !== 'undefined' ) {%><%=values.fbHandle%><%}%>"
-              placeholder="Enter facebook handle"
-            />
+              placeholder="Enter facebook handle"/>
           </div>
           <div class="form-group">
             <label class="form-label" for="IGHandle">Instagram Handle</label>
@@ -150,9 +170,57 @@ include('../partials/response-message.ejs') %>
               id="twitterHandle"
               name="twitterHandle"
               value="<% if(typeof values !== 'undefined' && typeof values.twitterHandle !== 'undefined' ) {%><%=values.twitterHandle%><%}%>"
-              placeholder="Enter twitter handle"
+              placeholder="Enter twitter handle"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="youTubeUrl">Youtube Url</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="youTubeUrl"
+                    name="youTubeUrl"
+                    value="<% if(typeof values !== 'undefined' && typeof values.youTubeUrl !== 'undefined' ) {%><%=values.youTubeUrl%><%}%>"
+                    placeholder="Enter youtube link"
             />
           </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber1">Settlement Account 1</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="accountNumber1"
+                    name="accountNumber1"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber1 !== 'undefined' ) {%><%=values.accountNumber1%><%}%>"
+                    placeholder="Enter Settlement Account 1"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber2">Settlement Account 2</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="accountNumber2"
+                    name="accountNumber2"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber2 !== 'undefined' ) {%><%=values.accountNumber2%><%}%>"
+                    placeholder="Enter Settlement Account 1"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="accountNumber3">Settlement Account 2</label>
+            <input
+                    type="url"
+                    class="form-control"
+                    id="accountNumber3"
+                    name="accountNumber3"
+                    value="<% if(typeof values !== 'undefined' && typeof values.accountNumber3 !== 'undefined' ) {%><%=values.accountNumber3%><%}%>"
+                    placeholder="Enter Settlement Account 2"
+            />
+          </div>
+
+
+
+
           <button type="submit" class="btn btn-primary mt-3">Save</button>
         </form>
       </div>

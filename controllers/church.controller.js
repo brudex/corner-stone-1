@@ -92,6 +92,7 @@ Controller.addChurch = async (req, res, next) => {
   await upload(req, res, async (err) => {
     const { user } = req;
     const { name, email, phone } = req.body;
+    console.log('the addChurch Data >>> ',req.body);
     if (err) {
       req.flash("error", err);
       return res.render(page, { title: "Add Church", values: req.body, user });
@@ -112,7 +113,7 @@ Controller.addChurch = async (req, res, next) => {
     if(req.files['pastor-image'].length){
       churchRow.pastorImage = req.files['pastor-image'][0].filename;
     }
-    await Church.create();
+    await Church.create(churchRow);
     req.flash("success", "Church added successfully");
     return res.redirect("/churches");
   });
@@ -132,9 +133,13 @@ Controller.editChurchImage = async (req, res) => {
       req.flash("error", "Church not found");
       return res.redirect(`/churches/edit/${id}`);
     }
-    church.image = req.file.filename;
+    if(req.files['pastor-image'] && req.files['pastor-image'].length){
+      church.pastorImage = req.files['pastor-image'][0].filename;
+    }
+    if(req.files['church-image'] && req.files['church-image'].length){
+      church.image = req.files['church-image'][0].filename;
+    }
     await church.save();
-
     req.flash("success", "Church image changed successfully");
     res.redirect(`/churches/edit/${id}`);
   });
