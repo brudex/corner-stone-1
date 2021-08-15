@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
       fbHandle: Joi.string().uri().allow(""),
       IGHandle: Joi.string().uri().allow(""),
       youTubeUrl: Joi.string().uri().allow(""),
-      accountNumber1: Joi.string().uri().allow(""),
-      accountNumber2: Joi.string().uri().allow(""),
-      accountNumber3: Joi.string().uri().allow(""),
+      accountNumber1: Joi.string().allow(""),
+      accountNumber2: Joi.string().allow(""),
+      accountNumber3: Joi.string().allow(""),
       twitterHandle: Joi.string().uri().allow(""),
     });
     return schema.validate(church);
