@@ -48,7 +48,7 @@ const config = {
       process.env.STRIPE_PUBLIC_KEY || "pk_test_TYooMQauvdEDq54NiTphI7jx",
     paypal_client_id:
       process.env.PAYPAL_CLIENT_ID ||
-      "AUdpMlR3WKvxCWfC2EgXPTlFdvuAmgb8W7_RK013om3OdYn8Z4KKVuucK2l4kbWBtSqVu-TLIJvzgs_8",
+      "AQWZjWXin-d5o7HCuS7Cz8tr9RwFLkjiBqdfg_u6rF7s62ly0Fgr_Np32Z-m3jkda6VBzehUoV9y0frJ",
     firebase_cloud_api_key:
       "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
@@ -73,7 +73,7 @@ const config = {
       process.env.STRIPE_PUBLIC_KEY || "pk_test_TYooMQauvdEDq54NiTphI7jx",
     paypal_client_id:
       process.env.PAYPAL_CLIENT_ID ||
-      "AUdpMlR3WKvxCWfC2EgXPTlFdvuAmgb8W7_RK013om3OdYn8Z4KKVuucK2l4kbWBtSqVu-TLIJvzgs_8",
+      "AQWZjWXin-d5o7HCuS7Cz8tr9RwFLkjiBqdfg_u6rF7s62ly0Fgr_Np32Z-m3jkda6VBzehUoV9y0frJ",
     firebase_cloud_api_key:
       "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
