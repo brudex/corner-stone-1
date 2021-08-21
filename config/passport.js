@@ -10,12 +10,13 @@ const LocalStrategy = require("passport-local").Strategy;
 const authenticateUser = async (email, password, done) => {
   let user = await User.findByEmail(email);
   let userChurch;
-  if (!user)
+  if (!user) {
     return done(null, false, { message: "Invalid email or password provided" });
-
+  }
   let isChurchAdmin = false;
   let isSuperAdmin=false;
-  if (user.isSuperAdmin){
+  user.roleType ="admin";
+  if(user.isSuperAdmin){
     isSuperAdmin=true;
   }else{
     userChurch =  await db.UserChurches.findOne({ where: { userId: user.id } });
@@ -23,12 +24,11 @@ const authenticateUser = async (email, password, done) => {
       if(userChurch.isAdmin){
         isChurchAdmin=true;
         user.churchId= userChurch.churchId;
+        user.roleType= userChurch.roleType || "admin"
       }
-
     }
   }
-
-   if(isSuperAdmin || isChurchAdmin){
+  if(isSuperAdmin || isChurchAdmin){
      try {
        if (!(await bcrypt.compare(password, user.password))){
          return done(null, false, {
@@ -44,7 +44,6 @@ const authenticateUser = async (email, password, done) => {
    }else{
      return done(null, false, { message: "Access Forbidden!" });
    }
-
 };
 
 const initialize = async (passport) => {

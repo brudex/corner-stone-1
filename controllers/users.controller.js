@@ -142,12 +142,13 @@ Controller.addUser = async (req, res) => {
       attributes: ["id", "name"],
     });
   }
-
+  console.log('Request body >>',req.body);
   if(req.body.existing==='0'){
       password = generator.generate({
       length: 10,
       numbers: true,
     });
+
     const { error } = User.validateUser(
         { ...req.body, password },
         { userType: "admin" }
@@ -171,11 +172,10 @@ Controller.addUser = async (req, res) => {
         churches,
         postAction,
         user: req.user,
-
       });
     }
     const hashedPassword = await User.hashPassword(password);
-    user =await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
+    user = await User.create({ ...req.body, isAdmin: true, password: hashedPassword });
   }else if(req.body.existing==='1'){
     user = await User.findOne({ where: { email } });
     if(!user){
@@ -205,7 +205,7 @@ Controller.addUser = async (req, res) => {
     (church) => church.id.toString() === req.body.churchId.toString()
   );
   if (!existingChurch) {
-    {
+
       req.flash("error", "Church does not exist");
       return res.render(page, {
         title: "Add User",
@@ -213,12 +213,13 @@ Controller.addUser = async (req, res) => {
         churches,
         user: req.user,
       });
-    }
+
   }
   const userChurch = {};
   userChurch.churchId= req.body.churchId;
   userChurch.userId = user.id;
   userChurch.isAdmin= true;
+  userChurch.roleType=req.body.roleType;
   await db.UserChurches.create(userChurch);
   req.flash("success", "User successfully added as admin");
   if(req.body.existing==='0'){

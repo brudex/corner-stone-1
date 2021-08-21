@@ -8,16 +8,13 @@ include('../partials/response-message.ejs') %>
       d-flex
       flex-column flex-md-row
       align-items-center
-      text-center text-sm-left
-    "
-  >
+      text-center text-sm-left">
     <div class="flex d-flex flex-column flex-sm-row align-items-center">
       <div class="mb-24pt mb-sm-0 mr-sm-24pt">
-        <h2 class="mb-0">Pending Settlements</h2>
-
+        <h2 class="mb-0"><%=title%> </h2>
         <ol class="breadcrumb p-0 m-0">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item">Pending Settlements</li>
+          <li class="breadcrumb-item">Settlement Summary</li>
         </ol>
       </div>
     </div>
@@ -34,7 +31,7 @@ include('../partials/response-message.ejs') %>
 <!-- Page Content -->
 <div class="container page__container page-section">
   <div class="page-separator">
-    <div class="page-separator__text">Pending Settlements</div>
+    <div class="page-separator__text">Completed Settlements</div>
   </div>
 
   <div class="card mb-0">
@@ -77,84 +74,27 @@ include('../partials/response-message.ejs') %>
         <div>
           <div class="col-lg-8 d-flex" data-select2-id="18" id="select-church">
             <div class="flex" style="max-width: 100%" data-select2-id="17">
-              <div class="form-group" data-select2-id="16">
-                <label class="form-label" for="select01">Select Church</label>
-                <select
-                  id="select01"
-                  data-toggle="select"
-                  class="form-control select2-hidden-accessible"
-                  data-select2-id="select01"
-                  tabindex="-1"
-                  onchange="setChurch(this.value)"
-                  aria-hidden="true"
-                  style="width: 100%"
-                >
-                  <% churches.forEach(church => {%> <% if (church.id.toString() === churchId.toString()) {%>
-                  <option selected
-                    value="<%=church.id%>"
-                    data-select2-id="<%=church.id%>">
-                    <%=church.name%>
-                  </option>
-                  <%}else {%>
-                  <option
-                    value="<%=church.id%>"
-                    data-select2-id="<%=church.id%>">
-                    <%=church.name%>
-                  </option>
-                  <%}%> <%})%>
-                </select>
-                <!-- <span
-                  class="
-                    select2
-                    select2-container
-                    select2-container--bootstrap4
-                    select2-container--below
-                  "
-                  dir="ltr"
-                  data-select2-id="1"
-                  style="width: 589.333px"
-                  ><span class="selection"
-                    ><span
-                      class="select2-selection select2-selection--single"
-                      role="combobox"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      tabindex="0"
-                      aria-disabled="false"
-                      aria-labelledby="select2-select01-container"
-                      ><span
-                        class="select2-selection__rendered"
-                        id="select2-select01-container"
-                        role="textbox"
-                        aria-readonly="true"
-                        title="Third option is here"
-                        >Third option is here</span
-                      ><span
-                        class="select2-selection__arrow"
-                        role="presentation"
-                        ><b role="presentation"></b></span></span></span
-                  ><span class="dropdown-wrapper" aria-hidden="true"></span
-                ></span> -->
-              </div>
+
             </div>
           </div>
         </div>
         <div class="d-flex">
-          <form
-            id="pendingForm"
-            method="POST"
-            action="/donations/setSettlementStatus"
-          >
-            <button class="btn btn-light mr-2">Mark as unsettled</button>
-          </form>
-          <form
-            id="completedForm"
-            method="POST"
-            action="/donations/setSettlementStatus"
-          >
-            <button type="submit" class="btn btn-primary">
-              Mark as settled
-            </button>
+
+          <form id="settleStatusForm">
+            <label class="form-label">Select Settlement Status</label><br />
+            <div class="form-group">
+              <div class="custom-controls-stacked">
+                <div class="custom-control custom-radio">
+                  <input id="rdCompleted" value="COMPLETED" name="radio-stacked" type="radio" class="form-label custom-control-input" checked="">
+                  <label for="rdCompleted" class="custom-control-label">COMPLETED</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input id="rdPending" value="PENDING" name="radio-stacked" type="radio" class="form-label custom-control-input" >
+                  <label for="rdPending"  class="custom-control-label">PENDING </label>
+                </div>
+
+              </div>
+            </div>
           </form>
         </div>
         <%}%>
@@ -167,62 +107,52 @@ include('../partials/response-message.ejs') %>
           thead-border-top-0
           table-nowrap
           tablesort
-          tablesearch-table
-        "
-        class="display"
+          tablesearch-table "
+
         cellspacing="0"
         width="100%"
         id="data-table"
       >
         <thead>
           <tr>
-            <% if (user.isSuperAdmin) {%>
-            <th style="width: 50px"></th>
-            <%}%>
             <th style="width: 150px" data-tablesort-type="string">
-              GHC Amount
+              Church Name
+            </th>
+            <th style="width: 150px" data-tablesort-type="string">
+                Amount Paid
+            </th>
+            <th style="width: 150px" data-tablesort-type="string">
+                Settlement Amount
             </th>
             <th style="width: 120px" data-tablesort-type="string">
-              Payment mode
+              Profit
             </th>
             <th style="width: 120px" data-tablesort-type="string">
               Settlement status
             </th>
-            <th style="width: 120px" data-tablesort-type="string">
-              paymentReference
-            </th>
-            <th style="width: 120px" data-tablesort-type="string">Date</th>
           </tr>
         </thead>
 
         <tbody>
           <% donations.forEach(donation => {%>
           <tr>
-            <% if (user.isSuperAdmin) {%>
-            <td><%=donation.id %></td>
-            <%}%>
-            <td>
-              <%=parseFloat(donation.amount).toLocaleString('US-en',
-              {minimumFractionDigits: 2}) %>
-            </td>
             <td>
               <div class="d-flex align-items-center">
-                <%=donation.paymentMode %>
+                <%=donation.name%>
               </div>
+            </td>
+            <td>
+              <%=parseFloat(donation.amountPaid).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+            </td>
+            <td>
+              <%=parseFloat(donation.settleAmount).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+            </td>
+            <td>
+              <%=parseFloat(donation.profit).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
             </td>
             <td>
               <div class="d-flex align-items-center">
                 <%=donation.settlementStatus %>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <%=donation.paymentReference %>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex align-items-center">
-                <%=new Date(donation.createdAt).toDateString() %>
               </div>
             </td>
           </tr>
@@ -233,10 +163,9 @@ include('../partials/response-message.ejs') %>
             <% if (user.isSuperAdmin) {%>
             <th style="width: 50px"></th>
             <%}%>
-            <th colspan="3" style="text-align: right">Total:</th>
+            <th colspan="3" style="text-align: right">Total Profit:</th>
             <th>
-              <%=donationSum.toLocaleString('US-en', {minimumFractionDigits:
-              2})%>
+              <%=profitSum%>
             </th>
           </tr>
         </tfoot>
@@ -254,15 +183,11 @@ include('../partials/response-message.ejs') %>
   $(document).ready(function () {
     var table;
     const isSuperAdmin = "<%=user.isSuperAdmin%>";
-
     if (isSuperAdmin === "1") {
       table = $("#data-table").DataTable({
         columnDefs: [
           {
             targets: 0,
-            checkboxes: {
-              selectRow: false,
-            },
           },
         ],
         select: {
@@ -274,23 +199,13 @@ include('../partials/response-message.ejs') %>
       table = $("#data-table").DataTable();
     }
 
-    $("#completedForm").on("submit", function () {
-      var form = this;
-      updateStatus(form, "completed");
-    });
 
-    $("#pendingForm").on("submit", function () {
-      var form = this;
-      updateStatus(form, "pending");
-    });
 
     function updateStatus(form, status) {
       var rows_selected = table.column(0).checkboxes.selected();
-
       $(form).append(
         $("<input>").attr("type", "hidden").attr("name", "status").val(status)
       );
-
       $.each(rows_selected, function (index, rowId) {
         // Create a hidden element
         $(form).append(
@@ -301,7 +216,6 @@ include('../partials/response-message.ejs') %>
         );
       });
     }
-
     $("#select01").select2();
   });
 
@@ -310,12 +224,8 @@ include('../partials/response-message.ejs') %>
     if (dateRange.includes("to")) {
       const startDate = dateRange.split(" ")[0];
       const endDate = dateRange.split("to ")[1];
-      // check if church selector element exist --- indicating superadmin
-      if ($("#select-church").length) {
-        const churchId = $("#select01").val();
-        return (location = `${location.origin}${location.pathname}?startDate=${startDate}&endDate=${endDate}&churchId=${churchId}`);
-      }
-      location = `${location.origin}${location.pathname}?startDate=${startDate}&endDate=${endDate}`;
+      var settlementStatus = $('input[name=radio-stacked]:checked', '#settleStatusForm').val();
+      return (location = `${location.origin}${location.pathname}?startDate=${startDate}&endDate=${endDate}&settlementStatus=${settlementStatus}`);
     }
   }
 

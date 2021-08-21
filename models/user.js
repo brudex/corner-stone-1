@@ -67,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       email: Joi.string().email().required(),
       churchId: Joi.number().min(1).required(),
       existing: Joi.number().min(0),
+      roleType: Joi.string(),
       fcm_token: Joi.string()
         .max(256)
         .alter({

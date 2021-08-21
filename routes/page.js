@@ -26,14 +26,14 @@ router.get("/forgotpassword", accountController.forgotPasswordView);
 router.get("/resetpassword/:token", accountController.resetPasswordView);
 router.get("/logout", accountController.logout);
 router.get(
-  "/account/change-password",
-  [auth, admin],
-  accountController.changePasswordView
+    "/account/change-password",
+    [auth, admin],
+    accountController.changePasswordView
 );
 router.get(
-  "/account/edit-account",
-  [auth, admin],
-  accountController.editAccountView
+    "/account/edit-account",
+    [auth, admin],
+    accountController.editAccountView
 );
 router.get("/churches", [auth, superAdmin], churchController.churchesView);
 router.get("/churches/add", [auth, superAdmin], churchController.addChurchView);
@@ -48,62 +48,62 @@ router.get("/users/delete/:id", [auth, superAdmin], usersController.deleteUser);
 router.get("/churchmembers", [auth, admin], usersController.churchMembersView);
 router.get("/sermons", [auth, admin], churchContentController.sermonView);
 router.get(
-  "/sermons/add",
-  [auth, admin],
-  churchContentController.addSermonView
+    "/sermons/add",
+    [auth, admin],
+    churchContentController.addSermonView
 );
-router.get("/sermons/delete/:id",[auth, admin],churchContentController.deleteSermon);
-router.get("/devotionals",[auth, admin],churchContentController.devotionalView);
+router.get("/sermons/delete/:id", [auth, admin], churchContentController.deleteSermon);
+router.get("/devotionals", [auth, admin], churchContentController.devotionalView);
 router.get(
-  "/daily-devotionals",
-  [auth, admin],
-  churchContentController.dailyDevotionalView
-);
-router.get(
-  "/devotionals/add",
-  [auth, admin],
-  churchContentController.addDevotionalView
+    "/daily-devotionals",
+    [auth, admin],
+    churchContentController.dailyDevotionalView
 );
 router.get(
-  "/daily-devotionals/add",
-  [auth, admin],
-  churchContentController.addDailyDevotionalView
+    "/devotionals/add",
+    [auth, admin],
+    churchContentController.addDevotionalView
 );
 router.get(
-  "/devotionals/edit/:id",
-  [auth, admin],
-  churchContentController.editDevotionalView
+    "/daily-devotionals/add",
+    [auth, admin],
+    churchContentController.addDailyDevotionalView
 );
 router.get(
-  "/livestream",
-  [auth, admin],
-  churchContentController.livestreamView
+    "/devotionals/edit/:id",
+    [auth, admin],
+    churchContentController.editDevotionalView
 );
 router.get(
-  "/livestream/add",
-  [auth, admin],
-  churchContentController.addLiveStreamView
+    "/livestream",
+    [auth, admin],
+    churchContentController.livestreamView
 );
 router.get(
-  "/livestream/edit/:id",
-  [auth, admin],
-  churchContentController.editLiveStreamView
+    "/livestream/add",
+    [auth, admin],
+    churchContentController.addLiveStreamView
 );
 router.get(
-  "/livestream/delete/:id",
-  [auth, admin],
-  churchContentController.deleteLiveStream
+    "/livestream/edit/:id",
+    [auth, admin],
+    churchContentController.editLiveStreamView
 );
 router.get(
-  "/daily-devotionals/edit/:id",
-  [auth, admin],
-  churchContentController.editDailyDevotionalView
+    "/livestream/delete/:id",
+    [auth, admin],
+    churchContentController.deleteLiveStream
+);
+router.get(
+    "/daily-devotionals/edit/:id",
+    [auth, admin],
+    churchContentController.editDailyDevotionalView
 );
 router.get("/videos/add", [auth, admin], churchContentController.addVideoView);
 router.get(
-  "/videos/delete/:id",
-  [auth, admin],
-  churchContentController.deleteVideo
+    "/videos/delete/:id",
+    [auth, admin],
+    churchContentController.deleteVideo
 );
 router.get("/donations", [auth, admin], donationController.getDonationsView);
 router.get("/events", [auth, admin], eventsController.getUpcomingEventsView);
@@ -112,133 +112,121 @@ router.get("/events/edit/:id", [auth, admin], eventsController.editEventView);
 router.get("/events/delete/:id", [auth, admin], eventsController.deleteEvent);
 router.get("/donations", [auth, admin], donationController.getDonationsView);
 router.get(
-  "/donationsByChurch",
-  [auth, superAdmin],
-  donationController.getDonationsByChurchView
+    "/donationsByChurch",
+    [auth, superAdmin],
+    donationController.getDonationsByChurchView
+);
+router.get("/donations/pending-settlements", [auth, admin], donationController.pendingSettlements);
+router.get("/donations/completed-settlements", [auth, admin], donationController.completedSettlements);
+router.get("/donations/settlement-summary", [auth, admin], donationController.settlementSummary);
+router.get("/donations/completed-settlements", [auth, admin], donationController.completedSettlements);
+router.get("/donations/types", [auth, admin], donationController.donationTypesView);
+router.get("/appointments", [auth, admin],
+    appointmentController.appointmentsView
 );
 router.get(
-  "/donations/pending-settlements",
-  [auth, admin],
-  donationController.pendingSettlements
+    "/appointments/available-dates",
+    [auth, admin],
+    appointmentController.availableAppointmentsView
 );
 router.get(
-  "/donations/completed-settlements",
-  [auth, admin],
-  donationController.completedSettlements
+    "/appointments/add-appointment-date",
+    [auth, admin],
+    appointmentController.addAppointmentDateView
 );
 router.get(
-  "/donations/types",
-  [auth, admin],
-  donationController.donationTypesView
+    "/appointments/recurring-appointment",
+    [auth, admin],
+    appointmentController.recurringAppointmentsView
 );
 router.get(
-  "/appointments",
-  [auth, admin],
-  appointmentController.appointmentsView
-);
-router.get(
-  "/appointments/available-dates",
-  [auth, admin],
-  appointmentController.availableAppointmentsView
-);
-router.get(
-  "/appointments/add-appointment-date",
-  [auth, admin],
-  appointmentController.addAppointmentDateView
-);
-router.get(
-  "/appointments/recurring-appointment",
-  [auth, admin],
-  appointmentController.recurringAppointmentsView
-);
-router.get(
-  "/appointments/set-recurring-appointment",
-  [auth, admin],
-  appointmentController.setRecurringAppointmentView
+    "/appointments/set-recurring-appointment",
+    [auth, admin],
+    appointmentController.setRecurringAppointmentView
 );
 router.get("/videos", [auth, admin], churchContentController.videosView);
 router.post(
-  "/appointments/add-appointment-date",
-  [auth, admin],
-  appointmentController.addAppointmentDate
+    "/appointments/add-appointment-date",
+    [auth, admin],
+    appointmentController.addAppointmentDate
 );
 
 router.post(
-  "/account/edit-account",
-  [auth, admin],
-  accountController.editAccount
+    "/account/edit-account",
+    [auth, admin],
+    accountController.editAccount
 );
 router.post(
-  "/account/change-password",
-  [auth, admin],
-  accountController.changePassword
+    "/account/change-password",
+    [auth, admin],
+    accountController.changePassword
 );
 router.post(
-  "/donations/add",
-  [auth, admin],
-  donationController.addDonationType
+    "/donations/add",
+    [auth, admin],
+    donationController.addDonationType
 );
 router.post(
-  "/donations/edit/:id",
-  [auth, admin],
-  donationController.editDonationType
+    "/donations/edit/:id",
+    [auth, admin],
+    donationController.editDonationType
 );
 router.post(
-  "/donations/setSettlementStatus",
-  [auth, superAdmin],
-  donationController.setSettlementStatus
+    "/donations/setSettlementStatus",
+    [auth, superAdmin],
+    donationController.setSettlementStatus
 );
 router.post("/events/add", [auth, admin], eventsController.addEvent);
 router.post("/events/edit/:id", [auth, admin], eventsController.editEvent);
 router.post(
-  "/events/edit/image/:id",
-  [auth, admin],
-  eventsController.editEventImage
+    "/events/edit/image/:id",
+    [auth, admin],
+    eventsController.editEventImage
 );
 
 router.post(
-  "/devotionals/add",
-  [auth, admin],
-  churchContentController.addDevotional
+    "/devotionals/add",
+    [auth, admin],
+    churchContentController.addDevotional
 );
 
 router.post(
-  "/daily-devotionals/add",
-  [auth, admin],
-  churchContentController.addDailyDevotional
+    "/daily-devotionals/add",
+    [auth, admin],
+    churchContentController.addDailyDevotional
 );
 router.post(
-  "/devotionals/edit/:id",
-  [auth, admin],
-  churchContentController.editDevotional
+    "/devotionals/edit/:id",
+    [auth, admin],
+    churchContentController.editDevotional
 );
 router.post(
-  "/daily-devotionals/edit/:id",
-  [auth, admin],
-  churchContentController.editDailyDevotional
+    "/daily-devotionals/edit/:id",
+    [auth, admin],
+    churchContentController.editDailyDevotional
 );
 router.post(
-  "/livestream/add",
-  [auth, admin],
-  churchContentController.addLiveStream
+    "/livestream/add",
+    [auth, admin],
+    churchContentController.addLiveStream
 );
 router.post(
-  "/livestream/edit/:id",
-  [auth, admin],
-  churchContentController.editLiveStream
+    "/livestream/edit/:id",
+    [auth, admin],
+    churchContentController.editLiveStream
 );
 router.post(
-  "/livestream/edit/image/:id",
-  [auth, admin],
-  churchContentController.editLiveStreamImage
+    "/livestream/edit/image/:id",
+    [auth, admin],
+    churchContentController.editLiveStreamImage
 );
 router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
+    "/login",
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/login",
+        failureFlash: true,
+    })
 );
 router.post("/users/add", [auth, superAdmin], usersController.addUser);
 router.post("/church/addAdmin/:churchId", [auth, superAdmin], usersController.addUser);
@@ -247,14 +235,14 @@ router.post("/forgotpassword", accountController.forgotPassword);
 router.post("/resetpassword", accountController.resetPassword);
 router.post("/addchurch", [auth, superAdmin], churchController.addChurch);
 router.post(
-  "/churches/edit/:id",
-  [auth, superAdmin],
-  churchController.editChurch
+    "/churches/edit/:id",
+    [auth, superAdmin],
+    churchController.editChurch
 );
 router.post(
-  "/churches/edit/image/:id",
-  [auth, superAdmin],
-  churchController.editChurchImage
+    "/churches/edit/image/:id",
+    [auth, superAdmin],
+    churchController.editChurchImage
 );
 
 /***************Payment Url*****************/
@@ -263,28 +251,28 @@ router.get("/paymentResult/:status", stripeController.paymentResult);
 
 /************* Push Notification */
 router.get(
-  "/notifications/super-admin",
-  [auth, superAdmin],
-  notificationsController.getAllNotificationsHistory
+    "/notifications/super-admin",
+    [auth, superAdmin],
+    notificationsController.getAllNotificationsHistory
 );
 router.get(
-  "/notifications/church",
-  [auth, admin],
-  notificationsController.getChurchNotificationsHistory
+    "/notifications/church",
+    [auth, admin],
+    notificationsController.getChurchNotificationsHistory
 );
 router.get(
-  "/notifications/send-notification",
-  [auth, admin],
-  notificationsController.sendNotificationView
+    "/notifications/send-notification",
+    [auth, admin],
+    notificationsController.sendNotificationView
 );
 router.post(
-  "/notifications/send-by-church",
-  [auth, admin],
-  notificationsController.sendNotifications
+    "/notifications/send-by-church",
+    [auth, admin],
+    notificationsController.sendNotifications
 );
 router.post(
-  "/notifications/send-by-superadmin",
-  [auth, superAdmin],
-  notificationsController.superAdminSendNotifications
+    "/notifications/send-by-superadmin",
+    [auth, superAdmin],
+    notificationsController.superAdminSendNotifications
 );
 module.exports = router;

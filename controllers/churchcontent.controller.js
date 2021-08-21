@@ -127,14 +127,15 @@ Controller.addVideo = async (req, res) => {
     );
   });
 };
+
 Controller.deleteVideo = async (req, res) => {
   const { churchId } = req.user;
   const { id } = req.params;
   await ChurchContent.destroy({ where: { id, churchId } });
-
   req.flash("success", "Video deleted successfully");
   res.redirect("back");
 };
+
 Controller.sermonView = async (req, res) => {
   const { churchId } = req.user;
   const paginationResults = await ChurchContent.paginate(req, {
@@ -162,7 +163,6 @@ Controller.addSermon = async (req, res) => {
     if (err) {
       return res.status(400).send(err);
     }
-
     const schema = Joi.object({
       title: Joi.string().min(1).max(256).required(),
     });
@@ -170,7 +170,6 @@ Controller.addSermon = async (req, res) => {
     if (error) {
       return res.status(400).send({ message: error.details[0].message });
     }
-
     const sermonExists = await ChurchContent.findOne({
       where: { title, churchId, contentType: "sermon" },
     });
@@ -184,7 +183,6 @@ Controller.addSermon = async (req, res) => {
       contentType: "sermon",
       churchId,
     });
-
     res.send({ message: "Sermon added successfully" });
   });
 };
@@ -192,7 +190,6 @@ Controller.addSermon = async (req, res) => {
 Controller.deleteSermon = async (req, res) => {
   const { churchId } = req.user;
   const { id } = req.params;
-
   await ChurchContent.destroy({ where: { churchId, id } });
   req.flash("success", "Sermon deleted successfully");
   res.redirect("back");
@@ -200,10 +197,8 @@ Controller.deleteSermon = async (req, res) => {
 
 Controller.dailyDevotionalView = async (req, res) => {
   const { churchId } = req.user;
-
   const paginationResults = await DailyDevotional.paginate(req, { churchId });
   const devotionals = paginationResults.data;
-
   res.render("daily-devotionals/daily-devotional", {
     title: "Daily Devotionals",
     user: req.user,
@@ -656,7 +651,7 @@ Controller.getDailyDevotionals = async (req, res) => {
       dateToShow: dateFns.format(new Date(), "yyyy-MM-dd"),
     },
   });
-  if (!dailyDevotional)
+  if(!dailyDevotional)
     dailyDevotional = await DailyDevotional.findOne({
       where: {
         churchId,
@@ -671,7 +666,6 @@ Controller.addToUserPlayList = async (req, res, next) => {
   const { churchContentId, title } = req.body;
   const { error } = UserPlayList.validateList(req.body);
   if (error) return next(createError(400, error.details[0].message));
-
   const churchContent = await ChurchContent.findOne({
     where: { id: churchContentId },
   });

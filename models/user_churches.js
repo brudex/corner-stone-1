@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+        roleType: {
+            type: DataTypes.STRING,
+            defaultValue: "admin", //admin, secretary,treasurer
+        },
     },
     {
       tableName: "UserChurches",

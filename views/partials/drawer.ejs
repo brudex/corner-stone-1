@@ -179,6 +179,9 @@
             </li>
           </ul>
         </li>
+
+        <% if(user.isSuperAdmin  || user.roleType=='admin' || user.roleType==='secretary'){ %>
+
         <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button js-sidebar-collapse"
@@ -205,6 +208,8 @@
             </li>
           </ul>
         </li>
+        <%}%>
+
         <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button"
@@ -313,7 +318,8 @@
           </ul>
         </li>
         <%}%>
-        <li class="sidebar-menu-item">
+        <%if(user.isSuperAdmin  || user.roleType=== "admin" || user.roleType==="treasurer"){ %>
+          <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
@@ -343,8 +349,17 @@
                 <span class="sidebar-menu-text">Completed Settlements</span>
               </a>
             </li>
+            <li class="sidebar-menu-item">
+              <a
+                class="sidebar-menu-button"
+                href="/donations/settlement-summary"
+              >
+                <span class="sidebar-menu-text">Settlement Summary</span>
+              </a>
+            </li>
           </ul>
         </li>
+        <%}%>
         <li class="sidebar-menu-item">
           <a
             class="sidebar-menu-button js-sidebar-collapse"

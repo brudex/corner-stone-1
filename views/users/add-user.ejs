@@ -102,6 +102,26 @@ include('../partials/response-message.ejs') %>
                   />
                 </div>
                 <div class="form-group">
+                  <label class="form-label" for="firstName">Select Role:</label>
+                  <div class="form-group">
+                    <div class="custom-controls-stacked">
+                      <div class="custom-control custom-radio">
+                        <input id="adminN" name="roleType" value="admin" type="radio" class="custom-control-input" checked="">
+                        <label for="adminN" class="form-label custom-control-label">Admin</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input id="secretaryN" name="roleType" value="secretary" type="radio" class="custom-control-input">
+                        <label for="secretaryN" class="form-label custom-control-label">Secretary</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input id="treasurerN" name="roleType" value="treasurer" type="radio" class="custom-control-input">
+                        <label for="treasurerN" class="form-label custom-control-label">Treasurer</label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-group">
                   <label class="form-label" for="church">Select Church</label>
                   <select
                           id="church"
@@ -129,8 +149,7 @@ include('../partials/response-message.ejs') %>
                           dir="ltr"
                           data-select2-id="1"
                           style="width: 589.333px"
-                  ><span class="selection"
-                    ><span
+                  ><span class="selection" ><span
                               class="select2-selection select2-selection--single"
                               role="combobox"
                               aria-haspopup="true"
@@ -161,6 +180,26 @@ include('../partials/response-message.ejs') %>
                           placeholder="Enter email"
                           required
                   />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="firstName">Select Role:</label>
+                  <div class="form-group">
+                    <div class="custom-controls-stacked">
+                      <div class="custom-control custom-radio">
+                        <input id="adminE" name="roleType" value="admin" type="radio" class="custom-control-input" checked="">
+                        <label for="adminE" class="form-label custom-control-label">Admin</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input id="secretaryE" name="roleType" value="secretary" type="radio" class="custom-control-input">
+                        <label for="secretaryE"  class="form-label custom-control-label">Secretary</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input id="treasurerE" name="roleType" value="treasurer" type="radio" class="custom-control-input">
+                        <label for="treasurerE" class="form-label custom-control-label">Treasurer</label>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
                 <div class="form-group">
