@@ -85,11 +85,12 @@ include('../partials/response-message.ejs') %>
             <div class="form-group">
               <div class="custom-controls-stacked">
                 <div class="custom-control custom-radio">
-                  <input id="rdCompleted" value="COMPLETED" name="radio-stacked" type="radio" class="form-label custom-control-input" checked="">
+
+                  <input id="rdCompleted" value="COMPLETED" name="radio-stacked" type="radio" class="form-label custom-control-input" <%if(settlementStatus==='COMPLETED'){%> checked="" <%} %> >
                   <label for="rdCompleted" class="custom-control-label">COMPLETED</label>
                 </div>
                 <div class="custom-control custom-radio">
-                  <input id="rdPending" value="PENDING" name="radio-stacked" type="radio" class="form-label custom-control-input" >
+                  <input id="rdPending" value="PENDING" name="radio-stacked" type="radio" class="form-label custom-control-input" <%if(settlementStatus==='PENDING'){%> checked="" <%} %> >
                   <label for="rdPending"  class="custom-control-label">PENDING </label>
                 </div>
 
@@ -165,7 +166,7 @@ include('../partials/response-message.ejs') %>
             <%}%>
             <th colspan="3" style="text-align: right">Total Profit:</th>
             <th>
-              <%=profitSum%>
+              <%=profitSum.toLocaleString('US-en', {minimumFractionDigits: 2})%>
             </th>
           </tr>
         </tfoot>

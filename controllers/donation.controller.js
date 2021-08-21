@@ -352,11 +352,7 @@ Controller.settlementSummary = async (req, res) => {
   let settlementStatus ='PENDING';
   //Set default dates
   if (!req.query.startDate && !req.query.endDate) {
-    let today = new Date();
-    let day = today.getDay() || 7; // Get current day number, converting Sun. to 7
-    // Only manipulate the date if it isn't Mon.
-    if (day !== 1) today.setHours(-24 * (day - 1)); // Set the hours to day number minus 1 multiplied by negative 24
-    startDate = new Date(today).toISOString();
+    startDate = dateFns.addDays(new Date(),-30).toISOString();
     endDate = new Date().toISOString();
   } else {
     startDate = new Date(req.query.startDate).toISOString();
@@ -365,15 +361,15 @@ Controller.settlementSummary = async (req, res) => {
   if(req.query.settlementStatus){
     settlementStatus = req.query.settlementStatus;
   }
-  let sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount',cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' GROUP BY cd.churchId `;
+  let sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit' , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' GROUP BY cd.churchId `;
   if (req.user.isSuperAdmin) {
     if (req.query.churchId) {
         churchId = req.query.churchId;
-         sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount',cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
+         sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit' , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
     }
   }else{
     churchId = req.user.churchId;
-    sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount',cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
+    sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit', cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
 
   }
   db.sequelize
@@ -381,11 +377,8 @@ Controller.settlementSummary = async (req, res) => {
       .then(function (donations) {
         let profitSum =0;
         for(let k=0;k<donations.length;k++){
-          let profit = parseFloat(donations.amountPaid) - parseFloat(donations.settleAmount);
-          donations[k].profit = profit;
-          profitSum+=profit;
+           profitSum+=donations[k].profit;
         }
-
         res.render("donations/settlements-summary", {
           title: `${settlementStatus} Settlement Summary`,
           donations,
