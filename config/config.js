@@ -19,40 +19,10 @@ const config = {
       process.env.CLOUDINARY_SECRET || "ZeoX0Bx1dzsVdzivrXxUwuYNcgg",
     stripe_apiKey:
       process.env.STRIPE_APIKEY || "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
-    stripe_publicKey:
-      process.env.STRIPE_PUBLIC_KEY || "pk_test_TYooMQauvdEDq54NiTphI7jx",
-    paypal_client_id:
-      process.env.PAYPAL_CLIENT_ID ||
-      "AUdpMlR3WKvxCWfC2EgXPTlFdvuAmgb8W7_RK013om3OdYn8Z4KKVuucK2l4kbWBtSqVu-TLIJvzgs_8",
-    firebase_cloud_api_key:
-      "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
+    stripe_publicKey: process.env.STRIPE_PUBLIC_KEY || "pk_test_TYooMQauvdEDq54NiTphI7jx",
+    paypal_client_id: process.env.PAYPAL_CLIENT_ID || "AQywa22mgRe5fTT8NKIGQLYv7jXFJb-MQP25nx14QuVnVc7Fu2ep1Gr7d3UXRF2aHi-lkkyfzufEgDXg",
+    firebase_cloud_api_key: "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
   },
-
-  test: {
-    root: rootPath,
-    app: {
-      name: "cornerstone",
-    },
-    port: process.env.PORT || 3000,
-    dbhost: process.env.DBHOST || "157.230.150.194",
-    db: process.env.DBNAME || "cornerstone",
-    dbuser: process.env.DBUSER || "appuser",
-    dbpass: process.env.DBPASS || "Pass123@$$123",
-    jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
-    session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
-    cloudinary_secret_key:
-      process.env.CLOUDINARY_SECRET || "ZeoX0Bx1dzsVdzivrXxUwuYNcgg",
-    stripe_apiKey:
-      process.env.STRIPE_APIKEY || "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
-    stripe_publicKey:
-      process.env.STRIPE_PUBLIC_KEY || "pk_test_TYooMQauvdEDq54NiTphI7jx",
-    paypal_client_id:
-      process.env.PAYPAL_CLIENT_ID ||
-      "AQWZjWXin-d5o7HCuS7Cz8tr9RwFLkjiBqdfg_u6rF7s62ly0Fgr_Np32Z-m3jkda6VBzehUoV9y0frJ",
-    firebase_cloud_api_key:
-      "key=AAAA5_xxpEE:APA91bETYeE89n0F4Ny2BrlrFfzFFi9jWmwj-bdk3UMOxdVp_OnyukR1wlUdRXIeP_4IAjzEnqmVz3wQ1l_p_PSrhDglWUJ74D5gojeBohJLaCq2CU7IlMspcj_r6z9Pr9ovvUv3HOG0",
-  },
-
   production: {
     root: rootPath,
     app: {
