@@ -26,7 +26,6 @@ window.Base64 = {
                 this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
 
         }
-
         return output;
     },
 
