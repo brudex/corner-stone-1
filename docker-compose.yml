@@ -23,7 +23,7 @@ services:
     environment:
       MYSQL_DATABASE: cornerstone
       MYSQL_USER: admin
-      MYSQL_PASSWORD: pass
+      MYSQL_PASSWORD: mixthsNyf7OQ7rw2tH6k
       MYSQL_ROOT_PASSWORD: my@secret-root
     volumes:
       - dbdata:/var/lib/mysql

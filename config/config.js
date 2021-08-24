@@ -32,7 +32,7 @@ const config = {
     dbhost: process.env.DBHOST || "213.52.128.176",
     db: process.env.DBNAME || "cornerstone",
     dbuser: process.env.DBUSER || "admin",
-    dbpass: process.env.DBPASS || "pass",
+    dbpass: process.env.DBPASS || "mixthsNyf7OQ7rw2tH6k",
     jwt_secret: process.env.JWT_SECRET || "bjdb!@#$#fdfssdy328",
     session_secret: process.env.SESSION_SECRET || "duns3030!#$Aw",
     cloudinary_secret_key:
