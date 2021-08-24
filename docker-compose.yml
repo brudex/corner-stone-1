@@ -24,7 +24,7 @@ services:
       MYSQL_DATABASE: cornerstone
       MYSQL_USER: admin
       MYSQL_PASSWORD: mixthsNyf7OQ7rw2tH6k
-      MYSQL_ROOT_PASSWORD: my@secret-root
+      MYSQL_ROOT_PASSWORD: 8wTB3uiOe2
     volumes:
       - dbdata:/var/lib/mysql
     ports:
