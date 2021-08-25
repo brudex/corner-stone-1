@@ -8,7 +8,7 @@ module.exports = {
             PORT: 3000,
             DBNAME: "cornerstone",
             DBUSER: "admin",
-            DBPASS: "pass"
+            DBPASS: "passmixthsNyf7OQ7rw2tH6k"
         }
     }]
 };
