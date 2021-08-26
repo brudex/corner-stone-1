@@ -143,10 +143,10 @@ include('../partials/response-message.ejs') %>
               </div>
             </td>
             <td>
-              <%=parseFloat(donation.amountPaid).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+              <%=parseFloat(Math.round(donation.amountPaid * 100) / 100).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
             </td>
             <td>
-              <%=parseFloat(donation.settleAmount).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+              <%=parseFloat(Math.round(donation.settleAmount * 100) / 100).toLocaleString('US-en') %>
             </td>
             <td>
               <%=parseFloat(donation.profit).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
