@@ -15,6 +15,7 @@ Controller.initiatePaymentIntent = async (req, res) => {
     let amount = Number(req.body.amount);
     donation.amount2= amount - ((amount*0.029) + 0.3);//amount minus charges
     donation.profit = donation.amount2 * 0.0105;
+    donation.amount2 =  Math.floor(donation.amount2 * 100) / 100;
     donation.paymentMode = req.body.paymentMode.toLowerCase();
     donation.donationTypeId = req.body.donationType;
     donation.paymentStatus ="01";
