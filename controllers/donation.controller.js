@@ -361,16 +361,15 @@ Controller.settlementSummary = async (req, res) => {
   if(req.query.settlementStatus){
     settlementStatus = req.query.settlementStatus;
   }
-  let sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit' , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' GROUP BY cd.churchId `;
+  let sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', cd.profit , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' GROUP BY cd.churchId `;
   if (req.user.isSuperAdmin) {
     if (req.query.churchId) {
         churchId = req.query.churchId;
-         sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit' , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
+         sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', cd.profit  , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
     }
   }else{
     churchId = req.user.churchId;
-    sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount', (sum(cd.amount)-sum(cd.amount2)) 'profit', cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
-
+    sql = `SELECT cd.churchId,c.name ,sum(cd.amount) 'amountPaid',sum(cd.amount2) 'settleAmount',  cd.profit , cd.settlementStatus from churchdonation cd LEFT JOIN church c on c.id=cd.churchId where cd.settlementStatus='${settlementStatus}' AND cd.createdAt BETWEEN '${startDate}' and '${endDate}' and churchId=${churchId} GROUP BY cd.churchId `;
   }
   db.sequelize
       .query(sql, { type: db.sequelize.QueryTypes.SELECT })

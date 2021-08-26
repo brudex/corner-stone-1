@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       pageId: DataTypes.STRING,
       amount: DataTypes.DECIMAL,
       amount2: DataTypes.DECIMAL, //amount minus charges
+      profit: DataTypes.DECIMAL, //amount minus charges
       paymentMode: DataTypes.STRING, //stripe,paypal
       donationTypeId: DataTypes.INTEGER, // Donation Type ID
       paymentStatus: DataTypes.STRING, //00=success,01=pending,03=failed,04=cancelled

@@ -12,7 +12,9 @@ Controller.initiatePaymentIntent = async (req, res) => {
     donation.userId= user.id;
     donation.pageId= uuid.v4();
     donation.amount=req.body.amount;
-    donation.amount2= (0.9605)* Number(req.body.amount); //amount minus charges
+    let amount = Number(req.body.amount);
+    donation.amount2= amount - ((amount*0.029) + 0.3);//amount minus charges
+    donation.profit = donation.amount2 * 0.0105;
     donation.paymentMode = req.body.paymentMode.toLowerCase();
     donation.donationTypeId = req.body.donationType;
     donation.paymentStatus ="01";
