@@ -20,6 +20,7 @@ Controller.initiatePaymentIntent = async (req, res) => {
     donation.paymentStatus ="01";
     donation.statusMessage = "pending";
     donation.settlementStatus = "PENDING";
+    console.log("The donation is >>>",donation);
     db.ChurchDonation.create(donation);
     res.json({ status: "00", paymentUrl : "/paymentPage/"+donation.pageId,reference:donation.pageId });
 };
