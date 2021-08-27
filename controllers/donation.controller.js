@@ -341,13 +341,14 @@ Controller.completedSettlements = async (req, res) => {
     res.render("donations/completed-settlements", {
       title: "Donations by Date",
       donations,
+      settlementSum,
       donationSum,
       churches,
       churchId,
       startDate,
       endDate,
       user: req.user,
-    }); //todo : Bright render the page
+    });
   });
 };
 
