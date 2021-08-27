@@ -180,8 +180,11 @@ include('../partials/response-message.ejs') %>
             <th style="width: 50px"></th>
             <%}%>
             <th style="width: 150px" data-tablesort-type="string">
-              GHC Amount
+              Amount(USD)
             </th>
+              <th style="width: 150px" data-tablesort-type="string">
+                Settlement Amount(USD)
+              </th>
             <th style="width: 120px" data-tablesort-type="string">
               Payment mode
             </th>
@@ -202,13 +205,15 @@ include('../partials/response-message.ejs') %>
             <td><%=donation.id %></td>
             <%}%>
             <td>
-              <%=parseFloat(donation.amount).toLocaleString('US-en',
-              {minimumFractionDigits: 2}) %>
+              <%=parseFloat(donation.amount).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
             </td>
             <td>
-              <div class="d-flex align-items-center">
-                <%=donation.paymentMode %>
-              </div>
+              <%=parseFloat(donation.amount2).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+            </td>
+            <td>
+            <div class="d-flex align-items-center">
+              <%=donation.paymentMode %>
+            </div>
             </td>
             <td>
               <div class="d-flex align-items-center">
@@ -231,14 +236,24 @@ include('../partials/response-message.ejs') %>
         <tfoot>
           <tr>
             <% if (user.isSuperAdmin) {%>
-            <th style="width: 50px"></th>
+              <th style="width: 50px"></th>
+              <th colspan="3" style="text-align: right">Total Payment:</th>
+              <th>
+                <%=donationSum.toLocaleString('US-en', {minimumFractionDigits:
+                2})%>
+              </th>
             <%}%>
-            <th colspan="3" style="text-align: right">Total:</th>
-            <th>
-              <%=donationSum.toLocaleString('US-en', {minimumFractionDigits:
-              2})%>
-            </th>
           </tr>
+          <tr>
+            <% if (user.isSuperAdmin) {%>
+              <th style="width: 50px"></th>
+              <th colspan="3" style="text-align: right">Settlement Total:</th>
+              <th>
+                <%=donationSum.toLocaleString('US-en', {minimumFractionDigits:2})%>
+              </th>
+            <%}%>
+          </tr>
+
         </tfoot>
       </table>
     </div>

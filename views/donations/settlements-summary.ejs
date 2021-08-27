@@ -163,12 +163,14 @@ include('../partials/response-message.ejs') %>
           <tr>
             <% if (user.isSuperAdmin) {%>
             <th style="width: 50px"></th>
-            <%}%>
+
             <th colspan="3" style="text-align: right">Total Profit:</th>
             <th>
               <%=profitSum.toLocaleString('US-en', {minimumFractionDigits: 2})%>
             </th>
+            <%}%>
           </tr>
+
         </tfoot>
       </table>
     </div>

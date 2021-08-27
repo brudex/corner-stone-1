@@ -243,6 +243,7 @@ Controller.pendingSettlements = async (req, res) => {
     attributes: [
       "id",
       "amount",
+      "amount2",
       "paymentMode",
       "paymentStatus",
       "settlementStatus",

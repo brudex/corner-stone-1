@@ -5,9 +5,10 @@ const stripe = require("stripe")(config.stripe_apiKey);
 const Controller = {};
 module.exports = Controller;
 
+
 Controller.initiatePaymentIntent = async (req, res) => {
     const user = req.user;
-    const donation ={};
+    const donation = {};
     donation.churchId = req.user.churchId;
     donation.userId= user.id;
     donation.pageId= uuid.v4();
