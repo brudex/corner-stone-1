@@ -239,6 +239,8 @@ Controller.pendingSettlements = async (req, res) => {
     }
   }
   let donationSum = 0;
+  let settlementSum = 0;
+
   Donations.findAll({
     attributes: [
       "id",
@@ -259,12 +261,14 @@ Controller.pendingSettlements = async (req, res) => {
   }).then(function (donations) {
     donations.forEach(function (donation) {
       donationSum += parseFloat(donation.amount);
+      settlementSum += parseFloat(donation.amount2);
     });
 
     res.render("donations/pending-settlements", {
       title: "Donations by Data",
       donations,
       donationSum,
+      settlementSum,
       churches,
       churchId,
       startDate,
@@ -310,10 +314,12 @@ Controller.completedSettlements = async (req, res) => {
     }
   }
   let donationSum = 0;
+  let settlementSum = 0;
   Donations.findAll({
     attributes: [
       "id",
       "amount",
+      "amount2",
       "paymentMode",
       "paymentStatus",
       "settlementStatus",
@@ -329,6 +335,7 @@ Controller.completedSettlements = async (req, res) => {
   }).then(function (donations) {
     donations.forEach(function (donation) {
       donationSum += parseFloat(donation.amount);
+      settlementSum += parseFloat(donation.amount2);
     });
 
     res.render("donations/completed-settlements", {
