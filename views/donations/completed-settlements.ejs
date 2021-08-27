@@ -183,9 +183,12 @@ include('../partials/response-message.ejs') %>
             <% if (user.isSuperAdmin) {%>
             <th style="width: 50px"></th>
             <%}%>
-            <th style="width: 150px" data-tablesort-type="string">
-              GHC Amount
-            </th>
+              <th style="width: 150px" data-tablesort-type="string">
+                Amount(USD)
+              </th>
+              <th style="width: 150px" data-tablesort-type="string">
+                Settlement Amount(USD)
+              </th>
             <th style="width: 120px" data-tablesort-type="string">
               Payment mode
             </th>
@@ -206,8 +209,10 @@ include('../partials/response-message.ejs') %>
             <td><%=donation.id %></td>
             <%}%>
             <td>
-              <%=parseFloat(donation.amount).toLocaleString('US-en',
-              {minimumFractionDigits: 2}) %>
+              <%=parseFloat(donation.amount).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
+            </td>
+            <td>
+              <%=parseFloat(donation.amount2).toLocaleString('US-en',{minimumFractionDigits: 2}) %>
             </td>
             <td>
               <div class="d-flex align-items-center">
