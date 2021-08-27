@@ -384,7 +384,7 @@ Controller.settlementSummary = async (req, res) => {
       .then(function (donations) {
         let profitSum =0;
         for(let k=0;k<donations.length;k++){
-           profitSum+=donations[k].profit;
+           profitSum+= Number(donations[k].profit);
         }
         res.render("donations/settlements-summary", {
           title: `${settlementStatus} Settlement Summary`,
