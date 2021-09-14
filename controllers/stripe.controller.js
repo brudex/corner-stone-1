@@ -84,7 +84,8 @@ Controller.setPaymentStatus = function (req,res){
                 donation.paymentStatus =req.body.status;
                 donation.statusMessage = req.body.statusMessage;
                 if(donation.paymentMode==='stripe' && donation.paymentStatus==="00"){
-                    const paymentDetails = JSON.parse(req.body.paymentIntent.id);
+                    const paymentDetails = JSON.parse(req.body.data);
+                    donation.paymentReference = paymentDetails.id;
                 }
                 if(donation.paymentMode==='paypal' && donation.paymentStatus==="00"){
                     const paymentDetails = JSON.parse(req.body.data);
