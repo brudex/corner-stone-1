@@ -79,7 +79,7 @@ Controller.setPaymentStatus = function (req,res){
     db.ChurchDonation.findOne({where:{pageId:req.params.pageId}})
         .then(function (donation) {
             console.log('Payment status payload >>>',req.body);
-            if(donation && donation.paymentStatus==="01"){ //todo change to time base not more than 5 mins of creation
+            if(donation && donation.paymentStatus==="01"){
                 donation.responseText = req.body.data;
                 donation.paymentStatus =req.body.status;
                 donation.statusMessage = req.body.statusMessage;
