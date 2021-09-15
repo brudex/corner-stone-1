@@ -33,15 +33,12 @@ Controller.index = async (req, res) => {
 Controller.churchAdminView = async (req, res) => {
   let appointmentsCount;
   const { churchId } = req.user;
-
   const donations = await Donation.sum("amount", {
     where: { churchId, createdAt: dateFns.format(new Date(), "yyyy-MM-dd") },
   });
-
   const membersCount = await User.count({
     where: { churchId, isAdmin: { [Op.ne]: true } },
   });
-
   const appointmentDate = await AppointmentDay.findOne({
     where: {
       churchId,

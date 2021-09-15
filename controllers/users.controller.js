@@ -16,6 +16,7 @@ const Op = Sequelize.Op;
 const generator = require("generate-password");
 const debug = require("debug")("corner-stone:userscontroller");
 const _ = require("lodash");
+const config = require("../config/config");
 
 //Image upload config
 const { allowImagesOnly, storage } = require("../utils/upload");
@@ -580,7 +581,7 @@ Controller.getUserPicture = async (req, res, next) => {
       })
     );
 
-  const imageUrl = `${req.protocol}://${req.headers.host}/uploads/${user.image}`;
+  const imageUrl = `${req.protocol}://${config.app.host}/uploads/${user.image}`;
 
   res.json({ status_code: "00", data: imageUrl });
 };

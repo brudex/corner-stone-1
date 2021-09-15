@@ -7,6 +7,7 @@ const config = {
     root: rootPath,
     app: {
       name: "cornerstone",
+      host : "localhost"
     },
     port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST  || "157.230.150.194",
@@ -25,6 +26,7 @@ const config = {
     root: rootPath,
     app: {
       name: "cornerstone",
+      host : "mycornerstoneportal.com"
     },
     port: process.env.PORT || 3000,
     dbhost: process.env.DBHOST || "213.52.128.176",
