@@ -52,7 +52,7 @@ const initialize = async (passport) => {
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findOne({ raw: true, where: { id } });
-      //If user is church admin, add church name to req.user
+      console.log("The user is >>>",user.dataValues);
       if (user.isAdmin) {
         const church = await Church.findOne({
           where: { id: user.churchId },
