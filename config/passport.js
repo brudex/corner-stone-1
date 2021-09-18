@@ -50,10 +50,11 @@ const initialize = async (passport) => {
   passport.use(new LocalStrategy({ usernameField: "email" }, authenticateUser));
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) => {
+    console.log("Passport serialize  user is >>>",id);
     try {
       const user = await User.findOne({ raw: true, where: { id } });
       console.log("The user is >>>",user.dataValues);
-      if (user.isAdmin) {
+      if(user.isAdmin) {
         const church = await Church.findOne({
           where: { id: user.churchId },
           attributes: ["name"],

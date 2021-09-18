@@ -60,7 +60,7 @@ Controller.getDonationsByMonth = async (req, res) => {
 
 Controller.getDonationsByChurchView = async (req, res) => {
   //Group donations by church
-  //todo pass the date range
+
   let donationsByChurch = await Donations.findAll({
     attributes: [
       "churchId",
