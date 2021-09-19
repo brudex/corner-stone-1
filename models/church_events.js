@@ -9,13 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       eventVenue: DataTypes.STRING,
       eventDate: DataTypes.DATE,
       eventTime: DataTypes.STRING,
-      imageBanner: DataTypes.STRING,
+      imageBanner: DataTypes.STRING
     },
     {
-      tableName: "Events",
-      classMethods: {
-        associate: (models) => {},
-      },
+      tableName: "Events"
     }
   );
 
@@ -33,3 +30,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return Events;
 };
+

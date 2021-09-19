@@ -1,5 +1,5 @@
 const { sequelize, Sequelize } = require("../models/index");
-const events = require("../models/events");
+const events = require("../models/church_events");
 const Events = events(sequelize, Sequelize);
 const db = require("../models");
 const dateFns = require("date-fns");
@@ -46,8 +46,12 @@ Controller.getUpcomingEventsView = async (req, res) => {
     order: [["createdAt", "DESC"]],
   });
 
+  console.log("The events",events.length);
   res.render("events/events", { title: "Events", events, user: req.user }); ///data is array of events
 };
+
+
+
 Controller.addEventView = async (req, res) => {
   res.render("events/add-event", { title: "Add Event", user: req.user });
 };

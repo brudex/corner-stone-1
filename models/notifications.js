@@ -2,7 +2,7 @@ const Joi = require("joi");
 const pagination = require("../utils/pagination");
 module.exports = (sequelize, DataTypes) => {
   const Notifications = sequelize.define(
-    "Events",
+    "Notifications",
     {
       churchId: DataTypes.INTEGER,
       title: DataTypes.STRING,
