@@ -20,28 +20,37 @@ Controller.getDonationsByMonth = async (req, res) => {
   let donationsByMonth;
 
   if (isSuperAdmin) {
-    donationsByMonth = await Donations.findAll({
-      attributes: [
-        "createdAt",
-        [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
-      ],
-      group: [sequelize.fn("month", sequelize.col("createdAt"))],
-      raw: true,
-    });
-  } else {
-    donationsByMonth = await Donations.findAll({
-      attributes: [
-        "createdAt",
-        [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
-      ],
-      where: { churchId },
-      group: [sequelize.fn("month", sequelize.col("createdAt"))],
-      raw: true,
-    });
-  }
+    const sql = 'SELECT `createdAt`, sum(`amount`) AS `total_amount` FROM `ChurchDonation` AS `ChurchDonation` WHERE `ChurchDonation`.`churchId` = 15 GROUP BY month(`createdAt`);';
+    donationsByMonth = await  db.sequelize
+        .query(sql, { type: db.sequelize.QueryTypes.SELECT });
 
+    // donationsByMonth = await Donations.findAll({
+    //   attributes: [
+    //     "createdAt",
+    //     [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
+    //   ],
+    //   group: [sequelize.fn("month", sequelize.col("createdAt"))],
+    //   raw: true,
+    // });
+  } else {
+
+    const sql = 'SELECT `createdAt`, sum(`amount`) AS `total_amount` FROM `ChurchDonation` AS `ChurchDonation` WHERE `ChurchDonation`.`churchId` = 15 GROUP BY month(`createdAt`);';
+    donationsByMonth = await  db.sequelize
+        .query(sql, { type: db.sequelize.QueryTypes.SELECT });
+
+    // donationsByMonth = await Donations.findAll({
+    //   attributes: [
+    //     "createdAt",
+    //     [sequelize.fn("sum", sequelize.col("amount")), "total_amount"],
+    //   ],
+    //   where: { churchId },
+    //   group: [sequelize.fn("month", sequelize.col("createdAt"))],
+    //   raw: true,
+    // });
+  }
+  console.log('The donations by month >>',donationsByMonth);
   const availableDonationMonths = donationsByMonth.map((donation) =>
-    donation.createdAt.getMonth()
+      donation.createdAt.getMonth()
   );
 
   months.forEach((month) => {
