@@ -46,8 +46,7 @@ Controller.getUpcomingEventsView = async (req, res) => {
     order: [["createdAt", "DESC"]],
   });
 
-  console.log("The events",events.length);
-  res.render("events/events", { title: "Events", events, user: req.user }); ///data is array of events
+   res.render("events/events", { title: "Events", events, user: req.user }); ///data is array of events
 };
 
 
