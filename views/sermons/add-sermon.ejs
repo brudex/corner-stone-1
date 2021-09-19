@@ -154,6 +154,7 @@ include('../partials/response-message.ejs') %>
       $("#alert-msg").text("An error Occurred");
     };
     xhr.onload = function () {
+      console.log(this.responseText);
       const response = JSON.parse(this.responseText);
       $("#progressContainer").css("visibility", "hidden");
       $("#progress").css("width", `0%`);
