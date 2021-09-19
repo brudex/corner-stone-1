@@ -223,7 +223,7 @@ const makeObservers = (src) => {
 /**
  * Get the configuration for DOM event listeners
  * @param  {Object} src The source object
- * @return {Array<Object(element, fn, church_events.js)>}
+ * @return {Array<Object(element, fn, events)>}
  */
 const listeners = (src) => {
   if (!isArray(src.listeners)) {
