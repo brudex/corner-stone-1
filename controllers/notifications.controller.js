@@ -128,7 +128,7 @@ Controller.getAllNotificationsHistory = async (req, res, next) => {
 
 Controller.getUserNotifications = async (req, res, next) => {
   const { churchId } = req.user;
-  const notifications = await Notifications.findAll({ where: { churchId } });
-
+  //const notifications = await Notifications.findAll({ where: { churchId } });
+  const notifications =[];
   res.json({ status_code: "00", data: notifications });
 };
