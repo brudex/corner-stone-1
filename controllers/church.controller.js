@@ -110,7 +110,7 @@ Controller.addChurch = async (req, res, next) => {
       return res.render(page, { title: "Add Church", values: req.body, user });
     }
     const churchRow = { ...req.body, image: req.files['church-image'][0].filename };
-    if(req.files['pastor-image'].length){
+    if(req.files['pastor-image'] && req.files['pastor-image'].length){
       churchRow.pastorImage = req.files['pastor-image'][0].filename;
     }
     await Church.create(churchRow);
