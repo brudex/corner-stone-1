@@ -144,7 +144,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.sendWelcomeMail = async function (req, { email, church, password }) {
-    const hostname = `${req.protocol}://${req.headers.host}`;
+    const hostname = `${req.protocol}://${config.app.host}`;
     const options = {
       from: '"noreply"<test@senyotheart.com>',
       to: email,
