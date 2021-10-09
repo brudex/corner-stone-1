@@ -124,7 +124,6 @@ module.exports = (sequelize, DataTypes) => {
 
   User.sendResetPasswordMail = async function (email, req) {
     const token = await jwt.sign({ email }, config.jwt_secret);
-
     const hostname = `${req.protocol}://${config.app.host}`;
     const options = {
       from: '"noreply"<test@senyotheart.com>',
@@ -139,7 +138,6 @@ module.exports = (sequelize, DataTypes) => {
           </body>
         </html>`,
     };
-
     sendMail(options);
   };
 

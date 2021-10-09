@@ -715,7 +715,7 @@ Controller.getRecentContent = async (req, res, next) => {
     recentContent = await ChurchContent.findAll({
       order: [["createdAt", "DESC"]],
       limit: limit || 20,
-      where: { churchId },
+      where: { churchId, contentType: {[Op.in]: ['sermon', 'devotional','video']} }
     });
   } else {
     recentContent = await ChurchContent.findAll({
