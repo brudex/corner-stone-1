@@ -2,9 +2,7 @@
 <div class="mdk-drawer js-mdk-drawer" id="default-drawer">
   <div class="mdk-drawer__content">
     <div
-      class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
-      data-perfect-scrollbar
-    >
+      class="sidebar sidebar-dark-pickled-bluewood sidebar-left" data-perfect-scrollbar>
       <!-- Sidebar Content -->
       <!-- <div class="d-flex align-items-center navbar-height">
         <form
@@ -31,8 +29,7 @@
           <a class="sidebar-menu-button" href="/">
             <span
               class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >home</span
-            >
+              >home</span>
             Home
           </a>
         </li>
@@ -323,12 +320,10 @@
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
-            href="#settlements"
-          >
+            href="#settlements">
             <span
               class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >receipt</span
-            >
+              >receipt</span>
             Settlements
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
@@ -336,24 +331,21 @@
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/donations/pending-settlements"
-              >
+                href="/donations/pending-settlements">
                 <span class="sidebar-menu-text">Pending Settlements</span>
               </a>
             </li>
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/donations/completed-settlements"
-              >
+                href="/donations/completed-settlements">
                 <span class="sidebar-menu-text">Completed Settlements</span>
               </a>
             </li>
             <li class="sidebar-menu-item">
               <a
                 class="sidebar-menu-button"
-                href="/donations/settlement-summary"
-              >
+                href="/donations/settlement-summary">
                 <span class="sidebar-menu-text">Settlement Summary</span>
               </a>
             </li>
@@ -361,41 +353,29 @@
         </li>
         <%}%>
         <li class="sidebar-menu-item">
-          <a
-            class="sidebar-menu-button js-sidebar-collapse"
+          <a class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
-            href="#notifications"
-          >
-            <span
-              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >send</span
-            >
+            href="#notifications">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">send</span>
             Notifications
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
+          <% if (user.isAdmin) {%>
           <ul class="sidebar-submenu collapse sm-indent" id="notifications">
-            <% if (user.isSuperAdmin) {%>
-            <li class="sidebar-menu-item">
-              <a class="sidebar-menu-button" href="/notifications/super-admin">
-                <span class="sidebar-menu-text">View Notifications</span>
-              </a>
-            </li>
-            <%}%> <% if (user.isAdmin) {%>
-            <li class="sidebar-menu-item">
-              <a class="sidebar-menu-button" href="/notifications/church">
-                <span class="sidebar-menu-text">View Notifications</span>
-              </a>
-            </li>
-            <%}%>
-            <li class="sidebar-menu-item">
+              <li class="sidebar-menu-item">
+                <a class="sidebar-menu-button" href="/notifications/church">
+                  <span class="sidebar-menu-text">View Notifications</span>
+                </a>
+              </li>
+              <li class="sidebar-menu-item">
               <a
-                class="sidebar-menu-button"
-                href="/notifications/send-notification"
-              >
+                      class="sidebar-menu-button"
+                      href="/notifications/send-notification">
                 <span class="sidebar-menu-text">Send Notifications</span>
               </a>
             </li>
           </ul>
+          <%}%>
         </li>
         <!-- <li class="sidebar-menu-item">
           <a

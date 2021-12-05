@@ -106,7 +106,7 @@ Controller.addChurch = async (req, res, next) => {
       where: { [Op.or]: [{ name }, { email }, { phone }] },
     });
     if (churchExists) {
-      req.flash("error", "Church already exist");
+      req.flash("error", "Church already exist or email already used");
       return res.render(page, { title: "Add Church", values: req.body, user });
     }
     const churchRow = { ...req.body, image: req.files['church-image'][0].filename };

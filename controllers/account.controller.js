@@ -19,10 +19,12 @@ Controller.register = (req, res) => {
   res.render("register", { title: "Express" });
 };
 
+
 Controller.logout = (req, res) => {
   req.logout();
   res.redirect("/login");
 };
+
 
 Controller.forgotPasswordView = (req, res) => {
   res.render("forgot-password", {
@@ -30,6 +32,7 @@ Controller.forgotPasswordView = (req, res) => {
     layout: "blank-layout",
   });
 };
+
 
 Controller.forgotPassword = async (req, res) => {
   const { email } = req.body;
