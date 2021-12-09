@@ -67,22 +67,17 @@ Controller.sendNotifications = async (req, res) => {
 
 Controller.superAdminSendNotifications = async (req, res) => {
   const { title, body } = req.body;
-
   const users = await User.findAll({ attributes: ["fcm_token"] });
-
   const tokens = users.map((user) => user.fcm_token);
   debug(tokens);
-
   const notification = {
     title,
     body,
   };
-
   const notificationBody = {
     notification,
     registration_ids: tokens,
   };
-
   fetch("https://fcm.googleapis.com/fcm/send", {
     method: "post",
     headers: {
@@ -106,7 +101,6 @@ Controller.superAdminSendNotifications = async (req, res) => {
 Controller.getChurchNotificationsHistory = async (req, res, next) => {
   const { churchId } = req.user;
   const paginationResults = await Notifications.paginate(req, { churchId });
-
   res.render("notifications/notifications", {
     title: "Notifications",
     user: req.user,
@@ -118,7 +112,6 @@ Controller.getAllNotificationsHistory = async (req, res, next) => {
   const paginationResults = await Notifications.paginate(req, {
     churchId: null,
   });
-
   res.render("notifications/notifications", {
     title: "Notifications",
     user: req.user,

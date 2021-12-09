@@ -297,12 +297,8 @@
           <a
             class="sidebar-menu-button js-sidebar-collapse"
             data-toggle="collapse"
-            href="#instructor_menu"
-          >
-            <span
-              class="material-icons sidebar-menu-icon sidebar-menu-icon--left"
-              >people</span
-            >
+            href="#instructor_menu">
+            <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">people</span>
             Church Members
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
@@ -360,21 +356,19 @@
             Notifications
             <span class="ml-auto sidebar-menu-toggle-icon"></span>
           </a>
-          <% if (user.isAdmin) {%>
-          <ul class="sidebar-submenu collapse sm-indent" id="notifications">
-              <li class="sidebar-menu-item">
-                <a class="sidebar-menu-button" href="/notifications/church">
-                  <span class="sidebar-menu-text">View Notifications</span>
+          <% if(user.isAdmin) {%>
+            <ul class="sidebar-submenu collapse sm-indent" id="notifications">
+                <li class="sidebar-menu-item">
+                  <a class="sidebar-menu-button" href="/notifications/church">
+                    <span class="sidebar-menu-text">View Notifications</span>
+                  </a>
+                </li>
+                <li class="sidebar-menu-item">
+                <a class="sidebar-menu-button" href="/notifications/send-notification">
+                  <span class="sidebar-menu-text">Send Notifications</span>
                 </a>
               </li>
-              <li class="sidebar-menu-item">
-              <a
-                      class="sidebar-menu-button"
-                      href="/notifications/send-notification">
-                <span class="sidebar-menu-text">Send Notifications</span>
-              </a>
-            </li>
-          </ul>
+            </ul>
           <%}%>
         </li>
         <!-- <li class="sidebar-menu-item">

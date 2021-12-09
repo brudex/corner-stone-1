@@ -595,9 +595,7 @@ Controller.editLiveStream = async (req, res) => {
   if (livestreamExists) {
     req.flash("error", "Live stream exists already ");
   }
-
   await ChurchContent.update({ title, contentData }, { where: { id } });
-
   req.flash("success", "Live stream updated successfully");
   res.redirect("back");
 };
